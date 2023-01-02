@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Session;
+use Validator;
+
+class AttendanceController extends Controller
+{
+    public function index()
+    {
+        $datacountlists = \App\Models\Attendance::get();
+        $attendance     = \App\Models\Attendance::select('attendances.*', 'users.name', 'users.mobile', 'users.role_id', 'roles.name AS role_name')
+                            ->leftJoin('users', 'users.id', '=', 'attendances.user_id')
+                            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+                            ->paginate(10);
+        return view('admin.attendance.index', compact(['attendance', 'datacountlists']));
+    }
+
+    public function edit(Request $request,$id='')
+    {
+		try 
+		{	
+			$lists 	   = DB::table('users')
+						->leftjoin('groups','groups.id','=','users.group_id')
+						->where('users.id','=',$id)
+						->select('users.*','groups.name as group_name')
+						->first();
+			if(is_object($lists)&& !empty($lists))
+			{
+				$date  = $request->input('date');
+				if(empty($date))
+				{
+					$date  =  date('Y-m-01');
+				}
+				
+				$last_day_month    = date('Y-m-t',strtotime($date));
+				$month_array 	   = Monthly_Details($date,$last_day_month,$lists->group_id,$lists->id);
+				$holiday   		   = DB::table('holiday_permissions')
+									->leftjoin('holiday_sessions','holiday_sessions.id','=','holiday_permissions.session_id')
+									->leftjoin('holiday_calendars','holiday_calendars.id','=','holiday_permissions.holiday_id')
+									->where('holiday_permissions.can_manage','=',1)
+									->where('holiday_sessions.group_id','=',$lists->group_id)
+									->where('holiday_calendars.holiday_start','>=',$date)
+									->where('holiday_calendars.holiday_start','<=',$last_day_month)
+									->get(['holiday_calendars.id','holiday_calendars.holiday_name as title','holiday_calendars.holiday_start as start','holiday_calendars.holiday_end as end']);
+					
+				return view('admin.timesheet.edit',compact('lists','date','last_day_month','holiday','month_array'));
+			}
+			else
+			{
+				//return redirect()->back();
+			}
+		}
+		catch (\Exception $ex) 
+		{	
+			$status 	= false;
+			$message 	= $ex->getMessage();
+			return redirect()->back()->withErrors(array('message' => $message));
+		}
+    }
+	
+	public function update(Request $request,$id='')
+    {
+		$x = Validator::make($request->all(), [
+												'attndance_date' => 'required|max:50',
+												]);
+        if ($x->fails())
+        {
+            return redirect()->back()->withInput($request->input())->withErrors($x->errors());
+        }
+        else
+        { 
+			try 
+			{
+				$user 		= User::find($id);
+				if(is_object($user)&& !empty($user))
+				{			
+					$attndance = $request->input('attndance_date');
+					for($i=0; $i<count($attndance); $i++)
+					{
+						$timesheet_update 						= Timesheet::where('user_id',$user->id)->where('attndance_date',$request->input('attndance_date')[$i])->first();
+						if(is_object($timesheet_update) && !empty($timesheet_update))
+						{
+							$timesheet_update->user_id				=$user->id;
+							$timesheet_update->attndance_date		=$request->input('attndance_date')[$i];
+							$timesheet_update->attndance_day		=$request->input('attndance_day')[$i];
+							$timesheet_update->working_house		=$request->input('working_house')[$i];
+							$timesheet_update->status				=$request->input('status')[$i];
+							$timesheet_update->save();
+						}
+						else
+						{	
+							$timesheet_add						=new Timesheet;
+							$timesheet_add->user_id				=$user->id;
+							$timesheet_add->attndance_date		=$request->input('attndance_date')[$i];
+							$timesheet_add->attndance_day		=$request->input('attndance_day')[$i];
+							$timesheet_add->working_house		=$request->input('working_house')[$i];
+							$timesheet_add->status				=$request->input('status')[$i];
+							$timesheet_add->save();
+						}
+					}
+					Session::flash('message', 'Record Updated Successfully !');
+					return redirect('timesheet/edit/'.$id.'');
+				}
+				else
+				{
+					return redirect()->back();
+				}
+			}
+			catch (\Exception $ex) 
+			{	
+				$status 	= false;
+				$message 	= $ex->getMessage();
+				return redirect('timesheet/edit/'.$id.'')->withErrors(array('message' => $message));
+			}
+		}
+    }
+	
+	public function comment_update(Request $request)
+    {	
+		try 
+		{	
+			$user 		= User::find($request->input('user_id'));
+			if(is_object($user)&& !empty($user))
+			{			
+				$attndance 								= $request->input('attndance_date');
+				$timesheet_update 						= Timesheet::where('user_id',$user->id)->where('attndance_date',$request->input('attndance_date'))->first();
+				if(is_object($timesheet_update) && !empty($timesheet_update))
+				{
+					$timesheet_update->user_id				=$user->id;
+					$timesheet_update->attndance_date		=$request->input('attndance_date');
+					$timesheet_update->attndance_day		=$request->input('attndance_day');
+					$timesheet_update->status				=$request->input('status');
+					$timesheet_update->comment				=$request->input('comment');
+					$timesheet_update->save();
+					echo '1';
+				}
+				else
+				{	
+					$timesheet_add						=new Timesheet;
+					$timesheet_add->user_id				=$user->id;
+					$timesheet_add->attndance_date		=$request->input('attndance_date');
+					$timesheet_add->attndance_day		=$request->input('attndance_day');
+					$timesheet_add->working_house		='0';
+					$timesheet_add->status				=$request->input('status');
+					$timesheet_add->comment				=$request->input('comment');
+					$timesheet_add->save();
+					echo '1';
+				}
+			}
+			else
+			{
+				echo '0';
+			}
+		}
+		catch (\Exception $ex) 
+		{	
+			$status 	= false;
+			$message 	= $ex->getMessage();
+			echo '0';
+		}
+    }
+
+    public function view(Request $request, $id='')
+    {
+        $attendance = \App\Models\Attendance::select('attendances.*', 'users.name', 'users.mobile', 'users.role_id', 'roles.name AS role_name')
+                            ->leftJoin('users', 'users.id', '=', 'attendances.user_id')
+                            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+                            ->find($id);
+        return view('admin.attendance.view', compact(['attendance']));
+    }
+
+    public function delete(Request $request, $id='')
+    {
+        $ids 	= $request->mul_del;
+        \App\Models\Attendance::whereIn('id',$ids)->delete();
+        Session::flash('message', 'Attendance Deleted Successfully! ');
+        return redirect('admin/attendance');
+    }
+
+}

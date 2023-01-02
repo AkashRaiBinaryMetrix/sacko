@@ -1,0 +1,2 @@
+[31-Aug-2022 07:10:39 UTC] PHP Fatal error:  Allowed memory size of 802160640 bytes exhausted (tried to allocate 400560128 bytes) in /home2/manticor/public_html/kt/saloo/app/Http/Controllers/Admin/ProductController.php on line 332
+[31-Aug-2022 07:21:38 UTC] PHP Fatal error:  Allowed memory size of 802160640 bytes exhausted (tried to allocate 400560128 bytes) in /home2/manticor/public_html/kt/saloo/app/Http/Controllers/Admin/ProductController.php on line 332
