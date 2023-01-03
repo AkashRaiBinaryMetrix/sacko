@@ -62,8 +62,18 @@
                             <h6 class="card-header">User Profile Details</h6>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control mb-1" name="name" required value="{{Auth::user()->name}}">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control mb-1" name="first_name" required value="{{Auth::user()->first_name}}">
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Middle Name</label>
+                                    <input type="text" class="form-control mb-1" name="middle_name" value="{{Auth::user()->middle_name}}">
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control mb-1" name="last_name" required value="{{Auth::user()->last_name}}">
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="form-group">

@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="row align-items-center m-l-0">
                         <div class="col-12 text-center">
-                            <img src="http://www.manticoresoft.com/kt/saloo/assets/img/hrm.svg">
+                            <img src="{{asset('assets/img/hrm.svg') }}">
 
                         </div>
                         <div class="col-12 text-center">
@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <div class="row align-items-center m-l-0">
                         <div class="col-12 text-center">
-                            <img src="http://www.manticoresoft.com/kt/saloo/assets/img/hrm.svg">
+                            <img src="{{asset('assets/img/hrm.svg') }}">
 
                         </div>
                         <div class="col-12 text-center">
@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <div class="row align-items-center m-l-0">
                         <div class="col-12 text-center">
-                            <img src="http://www.manticoresoft.com/kt/saloo/assets/img/hrm.svg">
+                            <img src="{{asset('assets/img/hrm.svg') }}">
 
                         </div>
                         <div class="col-12 text-center">
@@ -75,7 +75,7 @@ Logistics</h2>
                 <div class="card-body">
                     <div class="row align-items-center m-l-0">
                         <div class="col-12 text-center">
-                            <img src="http://www.manticoresoft.com/kt/saloo/assets/img/hrm.svg">
+                            <img src="{{asset('assets/img/hrm.svg') }}">
 
                         </div>
                         <div class="col-12 text-center">
@@ -91,7 +91,7 @@ Logistics</h2>
                 <div class="card-body">
                     <div class="row align-items-center m-l-0">
                         <div class="col-12 text-center">
-                            <img src="http://www.manticoresoft.com/kt/saloo/assets/img/hrm.svg">
+                            <img src="{{asset('assets/img/hrm.svg') }}">
 
                         </div>
                         <div class="col-12 text-center">

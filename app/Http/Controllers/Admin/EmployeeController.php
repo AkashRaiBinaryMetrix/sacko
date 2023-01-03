@@ -327,7 +327,7 @@ class EmployeeController extends Controller
         $data['hierarchy'] = \App\Models\User::where("department_id",$request->department_id)
 								//->where("role_id", "!=", "1")
                                 ->get(["id","first_name","last_name","employee_id","department_id"]);
-								echo "<pre>"; print_r($data['hierarchy']); die;
+								//echo "<pre>"; print_r($data['hierarchy']); die;
         return response()->json($data);
     }
 
