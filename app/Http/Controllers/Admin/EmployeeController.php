@@ -16,7 +16,7 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $datacountlists   = \App\Models\User::where('role_id', '3')->where('employee_type', '6')->get();
+        $datacountlists   = \App\Models\User::where('role_id', '3')->get();
 		$employee         = \App\Models\User::select('*')->where('status','1')->where('role_id', '3')->get();
         if(is_object($employee) && !empty($employee))
 		{

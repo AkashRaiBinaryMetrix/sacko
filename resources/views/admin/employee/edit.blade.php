@@ -252,14 +252,14 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.professional_level') </label>
-										<select class="form-control select2 select2-hidden-accessible" name="professional_level">                       
+										<label class="form-label">@lang('message.professional_type') </label>
+										<select class="form-control select2 select2-hidden-accessible" name="professional_type">                       
 											<option value=''>Select</option>	
 											<option value='1'>High</option>
 											<option value='0'>Low</option>                       
 										</select>
-										@if($errors->has('professional_level'))
-                                        <div class="text-danger">{{ $errors->first('professional_level') }}</div>
+										@if($errors->has('professional_type'))
+                                        <div class="text-danger">{{ $errors->first('professional_type') }}</div>
                                         @endif
 										<div class="clearfix"></div>
 									</div>
