@@ -103,7 +103,7 @@
                                         @if($errors->has('department_id'))
                                         <div class="text-danger">{{ $errors->first('department_id') }}</div>
                                         @endif
-										<div class="clearfix"></div>category
+										<div class="clearfix"></div>
 									 </div>
 								</div>
 								<div class="form-row">
@@ -250,7 +250,6 @@
                                         @endif
 										<div class="clearfix"></div>
 									</div>
-									
 								</div>
 								 <div class="form-row">
 									<div class="form-group col-md-6">
@@ -442,13 +441,13 @@
 	$(document).ready(function() {
 			$('#department-dropdown').on('change', function() {
 				//alert('HIi');
-				var idCategory = this.value;
+				var idDepartment = this.value;
 				$("#hierarchy-dropdown").html('');
 				$.ajax({
 					url:"{{url('admin/employee-by-hierarchy')}}",
 					type: "POST",
 					data: {
-						category_id: idCategory,
+						department_id: idDepartment,
 						_token: '{{csrf_token()}}'
 					},
 					dataType : 'json',

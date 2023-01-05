@@ -98,15 +98,17 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.employee_type')<span class="text-danger">*</span></label>
-										<select class="form-control select2 select2-hidden-accessible" name="employee_type" required value="{{ $employee->employee_type }}">                       
-											<option value=''>Select</option>	
-											<option value='0' @if(old('employee_type',$employee->employee_type)=='0'){{'selected="true"'}}@endif>@lang('message.tl')</option>                                              
-											<option value='1' @if(old('employee_type',$employee->employee_type)=='1'){{'selected="true"'}}@endif>@lang('message.manager')</option>                                              
-
+										<label class="form-label">@lang('message.department')<span class="text-danger">*</span> </label>
+										<select id="department-dropdown" class="form-control" name="department_id" required value="{{old('department_id')}}">
+											<option value="">Select</option>
+											@if ($department->count())
+												@foreach ($department as $val)
+													<option value="{{ $val->id }}" @if($employee->department_id==$val->id){{'selected="true"'}}@endif>{{ $val->name }}</option>
+												@endforeach
+											@endif
 										</select>
-										@if($errors->has('employee_type'))
-                                        <div class="text-danger">{{ $errors->first('employee_type') }}</div>
+                                        @if($errors->has('department_id'))
+                                        <div class="text-danger">{{ $errors->first('department_id') }}</div>
                                         @endif
 										<div class="clearfix"></div>
 									</div>
@@ -114,13 +116,9 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.hierarchy_name') </label>
-										<select class="form-control" name="hierarchy_name" >
+										<select id="hierarchy-dropdown" class="form-control" name="hierarchy_name" >
 											<option value="">Select</option>
-											<option value="0">Supervisor</option>
 										</select>
-										@if($errors->has('hierarchy_name'))
-                                        <div class="text-danger">{{ $errors->first('hierarchy_name') }}</div>
-                                        @endif
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
@@ -135,21 +133,19 @@
 									</div>
 								</div>
 								<div class="form-row">
-								 	<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.department')<span class="text-danger">*</span> </label>
-										<select class="form-control" name="department_id" required value="{{old('department_id')}}">
-											<option value="">Select</option>
-											@if ($department->count())
-												@foreach ($department as $val)
-													<option value="{{ $val->id }}" @if($employee->department_id==$val->id){{'selected="true"'}}@endif>{{ $val->name }}</option>
-												@endforeach
-											@endif
+									<div class="form-group col-md-6">
+										<label class="form-label">@lang('message.employee_type')<span class="text-danger">*</span></label>
+										<select class="form-control select2 select2-hidden-accessible" name="employee_type" required value="{{ $employee->employee_type }}">                       
+											<option value=''>Select</option>	
+											<option value='0' @if(old('employee_type',$employee->employee_type)=='0'){{'selected="true"'}}@endif>@lang('message.tl')</option>                                              
+											<option value='1' @if(old('employee_type',$employee->employee_type)=='1'){{'selected="true"'}}@endif>@lang('message.manager')</option>                                              
+
 										</select>
-                                        @if($errors->has('department_id'))
-                                        <div class="text-danger">{{ $errors->first('department_id') }}</div>
+										@if($errors->has('employee_type'))
+                                        <div class="text-danger">{{ $errors->first('employee_type') }}</div>
                                         @endif
 										<div class="clearfix"></div>
-									 </div>
+									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.contract')</label>
 										<select class="form-control select2 select2-hidden-accessible" name="contract" required>                       
@@ -252,18 +248,18 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.professional_level') </label>
-										<select class="form-control select2 select2-hidden-accessible" name="professional_level">                       
+										<label class="form-label">@lang('message.professional_type') </label>
+										<select class="form-control select2 select2-hidden-accessible" name="professional_type">                       
 											<option value=''>Select</option>	
-											<option value='1'>High</option>
-											<option value='0'>Low</option>                       
+											<option value='1' @if(old('professional_type',$employee->professional_type)=='1'){{'selected="true"'}}@endif>High</option>
+											<option value='0' @if(old('professional_type',$employee->professional_type)=='0'){{'selected="true"'}}@endif>Low</option>
+                       
 										</select>
-										@if($errors->has('professional_level'))
-                                        <div class="text-danger">{{ $errors->first('professional_level') }}</div>
+										@if($errors->has('professional_type'))
+                                        <div class="text-danger">{{ $errors->first('professional_type') }}</div>
                                         @endif
 										<div class="clearfix"></div>
 									</div>
-									
 								</div>
 								 <div class="form-row">
 									<div class="form-group col-md-6">
@@ -282,7 +278,7 @@
                                         @endif
 										<div class="clearfix"></div>
 									</div>
-								 </div>
+								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.status')<span class="text-danger">*</span></label>
@@ -384,4 +380,30 @@
 	</div>
 </div>
 <!-- [ content ] End -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#department-dropdown').on('change', function() {
+				//alert('HIi');
+				var idDepartment = this.value;
+				$("#hierarchy-dropdown").html('');
+				$.ajax({
+					url:"{{url('admin/employee-by-hierarchy')}}",
+					type: "POST",
+					data: {
+						department_id: idDepartment,
+						_token: '{{csrf_token()}}'
+					},
+					dataType : 'json',
+					success: function(result){
+						$('#hierarchy-dropdown').html('<option value="">Select Hierarchy</option>'); 
+						$.each(result.hierarchy, function(key, value){
+							$("#hierarchy-dropdown").append('<option value="' + value
+						.id + '">' + value.first_name + '</option>');
+					});
+				}
+			});
+		});
+	});
+</script>
 @endsection

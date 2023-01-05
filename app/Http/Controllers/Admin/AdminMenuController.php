@@ -3,13 +3,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use \App\Models\AdminMenu;
+use \App\Models\User;
 use Hash;
+use Auth;
 use Validator;
 use Session;
 
 class AdminMenuController extends Controller
 {
-    //
+    public static function userMenus($role)
+	{
+		$menus=AdminMenu::where('status','1')->orderBy('priority','ASC')->get();
+       
+        $user=User::where('id',Auth::user()->id)->first();
+		Session::put('menus',$menus);
+	}
+
     public function index()
     {  
         $datacountlists         = AdminMenu::get();
