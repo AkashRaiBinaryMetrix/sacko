@@ -103,7 +103,7 @@
                                         @if($errors->has('department_id'))
                                         <div class="text-danger">{{ $errors->first('department_id') }}</div>
                                         @endif
-										<div class="clearfix"></div>category
+										<div class="clearfix"></div>
 									 </div>
 								</div>
 								<div class="form-row">
