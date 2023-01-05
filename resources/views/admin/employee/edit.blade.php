@@ -255,8 +255,9 @@
 										<label class="form-label">@lang('message.professional_type') </label>
 										<select class="form-control select2 select2-hidden-accessible" name="professional_type">                       
 											<option value=''>Select</option>	
-											<option value='1'>High</option>
-											<option value='0'>Low</option>                       
+											<option value='1' @if(old('professional_type',$employee->professional_type)=='1'){{'selected="true"'}}@endif>High</option>
+											<option value='0' @if(old('professional_type',$employee->professional_type)=='0'){{'selected="true"'}}@endif>Low</option>
+                       
 										</select>
 										@if($errors->has('professional_type'))
                                         <div class="text-danger">{{ $errors->first('professional_type') }}</div>
