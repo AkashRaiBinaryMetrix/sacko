@@ -76,17 +76,17 @@ class EmployeeController extends Controller
         {	
 			try 
 			{
-                $target            		= 'storage/uploads/employee/';
-				$employeeImage     		= $request->file('image');                
-				if(!empty($employeeImage))
-				{
-					$headerImageName	= $employeeImage->getClientOriginalName();
-					$ext1				= $employeeImage->getClientOriginalExtension();
-					$temp1				= explode(".",$headerImageName);					
-					$newHeaderLogo		= 'employee'.round(microtime(true)).".".end($temp1);				
-					$headerTarget		= 'storage/uploads/employee/'.$newHeaderLogo;
-					$employeeImage->move($target,$newHeaderLogo);	
-				} 
+				$targetUser	= 'storage/uploads/employee/';
+				$image		= $request->file('image');    
+				if(!empty($image))
+				{				  
+					$headerImageName	=$image->getClientOriginalName();
+					$ext1				=$image->getClientOriginalExtension();				
+					$temp1				=explode(".",$headerImageName);				 
+					$newHeaderLogo		='image'.round(microtime(true)).".".end($temp1);				 
+					$headerTarget		=$targetUser.$newHeaderLogo;
+					$image->move($targetUser,$newHeaderLogo);
+				}
 				else
 				{
 					$headerTarget				  = '';
@@ -179,7 +179,8 @@ class EmployeeController extends Controller
 		$idType				= \App\Models\IdType::select('*')->where('status', '1')->get();
 		$category 	 		= \App\Models\Category::select('id','name')->where('status','1')->get();
         $sub_category_name	= \App\Models\SubCategory::where("category_id",$employee->category_id)->get(["name", "id"]);
-		return view('admin.employee.edit', compact(['employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name']));
+		$hierarchy_name		= \App\Models\User::get(["first_name","last_name", "id"]);
+		return view('admin.employee.edit', compact(['employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
     }
 
 	public function update(Request $request,$id)
@@ -287,12 +288,13 @@ class EmployeeController extends Controller
     public function view(Request $request, $id='')
     {
         $employee             = \App\Models\User::select("users.*", DB::raw("CONCAT(first_name, ' ', last_name) as full_name"))->find($id);
-        $employee->country    = \App\Models\Country::select('name')->find($employee->country_id);
+        $hierarchy_name       = \App\Models\User::all();
+		$employee->country    = \App\Models\Country::select('name')->find($employee->country_id);
         $employee->state      = \App\Models\State::select('name')->find($employee->state_id);
         $employee->city       = \App\Models\City::select('name')->find($employee->city_id);
         $employee->department = \App\Models\Department::select('name')->find($employee->department_id);
 		$employee->id_type	  = \App\Models\IdType::select('name')->find($employee->id_type_id);
-        return view('admin.employee.view', compact(['employee']));
+        return view('admin.employee.view', compact(['employee','hierarchy_name']));
     }
 
     public function delete(Request $request, $id='')
