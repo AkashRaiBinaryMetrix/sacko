@@ -15,20 +15,11 @@ class UserController extends Controller
 {
 	public function index()
 	{
-		$user 	= \Auth::guard()->user();
-		if($user->role_id=='2')
-		{
-			//echo "<pre>"; print_r($user->role_id); die;
-			$users = User::select(['*'])->where('id', $user->id)->where('role_id','!=','3')->where('role_id','!=','1')->paginate(10);
-			$roles = \App\Models\Role::select('*')->get();
-			return view('admin.user.index', compact(['users', 'roles']));
-		}
-		else
-		{
-			$users = User::select(['*'])->where('role_id','!=','1')->paginate(10);
-			$roles = \App\Models\Role::select('*')->get();
-			return view('admin.user.index', compact(['users', 'roles']));
-		}
+		$user 	= \Auth::guard()->user();	
+		$users 	= User::select(['*'])->where('role_id','=','2')->paginate(10);
+		$roles 	= \App\Models\Role::select('*')->get();
+		return view('admin.user.index', compact(['users', 'roles']));
+		
 	}
 	
 	public function create(Request $request)
@@ -68,7 +59,7 @@ class UserController extends Controller
 					$image->move($targetUser,$newHeaderLogo);
 					$userprofile->image = $headerTarget;
 				}
-				$userprofile->role_id 	      		  	= $request['role_id'];
+				$userprofile->role_id 	      		  	= '2';
 				$userprofile->first_name				= $request['first_name'];
 				$userprofile->middle_name				= $request['middle_name'];
 				$userprofile->last_name					= $request['last_name'];
@@ -132,7 +123,7 @@ class UserController extends Controller
 				{
 					$userprofile->password				= bcrypt($request['password']);
 				}
-				$userprofile->role_id 	  			  	= $request['role_id'];
+				$userprofile->role_id 	  			  	= '2';
 				$userprofile->first_name		 		= $request['first_name'];
 				$userprofile->middle_name				= $request['middle_name'];
 				$userprofile->last_name					= $request['last_name'];

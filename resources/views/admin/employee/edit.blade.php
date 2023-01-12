@@ -118,6 +118,9 @@
 										<label class="form-label">@lang('message.hierarchy_name') </label>
 										<select id="hierarchy-dropdown" class="form-control" name="hierarchy_name" >
 											<option value="">Select</option>
+											@foreach ($hierarchy_name as $val)
+												<option value="{{ $val->id }}" @if(old('hierarchy_name',$employee->hierarchy_name)==$val->id){{'selected="true"'}}@endif>{{ $val->first_name. ' '.$val->last_name }}</option>
+											@endforeach 
 										</select>
 										<div class="clearfix"></div>
 									</div>

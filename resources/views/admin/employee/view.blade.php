@@ -74,13 +74,19 @@
 					</tr>
 					<tr>
 						<th>@lang('message.hierarchy_name')</th>
-						<td>{{ $employee->hierarchy_name }}</td>
+						<td>
+							@foreach($hierarchy_name as $hierarchy)
+							@if($hierarchy['id']==$employee->hierarchy_name)
+							{{ $hierarchy['first_name']. ' '.$hierarchy['last_name']}}
+							@endif
+							@endforeach
+							</td>
 					</tr>
 					<tr>
 						<th>@lang('message.contract')</th>
 						<td>
-							@if($employee->contract=='0'){{ 'High' }}
-							@elseif($employee->contract=='1'){{ 'Low' }}
+							@if($employee->contract=='0'){{ 'Month' }}
+							@elseif($employee->contract=='1'){{ 'Year' }}
 							@endif
 						</td>
 					</tr>
@@ -102,7 +108,11 @@
 					</tr>
 					<tr>
 						<th>@lang('message.professional_type')</th>
-						<td>{{ $employee->professional_type }}</td>
+						<td>
+							@if($employee->professional_type=='1'){{ 'High' }}
+							@elseif($employee->professional_type=='0'){{ 'Low' }}
+							@endif
+						</td>
 					</tr>
 					
 					<tr>

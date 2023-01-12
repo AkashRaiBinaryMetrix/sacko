@@ -87,19 +87,7 @@
                                         @endif
 										<div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
-										<label class="form-label">Role</label>
-										<select class="form-control select2 select2-hidden-accessible" name="role" required>                       
-											<option value='' selected >Select</option>
-											@foreach($role as $val)
-											<option value='{{$val->id}}' @if(old('role',$user->role_id)==$val->id){{'selected="true"'}}@endif>{{$val->name}}</option>         
-											@endforeach              
-										</select> 
-										<div class="clearfix"></div>
-                                	</div>
-								</div>
-								
-								<div class="form-row">
+									
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.status') <span class="text-danger">*</span></label>
 										<select class="form-control select2 select2-hidden-accessible" name="status" required>                       
@@ -112,6 +100,7 @@
                                         @endif
 									 	<div class="clearfix"></div>
 									</div>
+								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.gender')<span class="text-danger">*</span> </label>
 										<select class="form-control select2 select2-hidden-accessible" name="gender" required>                       
@@ -124,8 +113,7 @@
                                         @endif
 										<div class="clearfix"></div>
 									 </div>
-								</div>
-								<div class="form-row">
+								
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.image') <span class="text-danger">*</span></label>
 										<input type="file" name="image"  class="form-control" id="image">

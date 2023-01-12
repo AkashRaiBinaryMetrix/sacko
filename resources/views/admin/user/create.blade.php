@@ -92,21 +92,6 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">Role<span class="text-danger">*</span></label>
-										<select class="form-control select2 select2-hidden-accessible" name="role" required>                       
-											<option value='' selected >Select</option>
-											@foreach($role as $val)
-											<option value='{{$val->id}}' @if(old('role')==$val->id){{'selected="true"'}}@endif>{{$val->name}}</option>         
-											@endforeach              
-										</select> 
-										@if($errors->has('role'))
-											<div class="text-danger">{{ $errors->first('role') }}</div>
-											@endif
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="form-row">
-									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.status')<span class="text-danger">*</span></label>
 										<select class="form-control select2 select2-hidden-accessible" name="status" required>                       
 											<option value='1' @if(old('status')=='1'){{'selected="true"'}}@endif >Active</option>
@@ -116,8 +101,10 @@
                                         <div class="text-danger">{{ $errors->first('status') }}</div>
                                         @endif
 										<div class="clearfix"></div>
-									  </div>
-									  <div class="form-group col-md-6">
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.gender')<span class="text-danger">*</span> </label>
 										<select class="form-control select2 select2-hidden-accessible" name="gender" required>                       
 											<option value=''>Select</option>	
@@ -129,8 +116,7 @@
                                         @endif
 										<div class="clearfix"></div>
 									</div>
-								</div>
-								<div class="form-row">
+								
 									<div class="form-group col-md-6">
 									<label class="form-label">@lang('message.image') </label>
 									<input type="file" name="image" class="form-control" id="image">
