@@ -142,7 +142,7 @@
 				<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 					<span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
 						@if(!empty(Auth::user()->image))
-						<img src="{!! asset(Auth::user()->image)!!}" alt="user image" class="d-block ui-w-30 rounded-circle"/>
+						<img test src="{!! asset(Auth::user()->image)!!}" alt="user image" class="d-block ui-w-30 rounded-circle"/>
 						@else   
 						<img src="{{ asset('assets/img/avatars/1.png') }}" alt="user image" class="d-block ui-w-30 rounded-circle"/> 
 						@endif
