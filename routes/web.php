@@ -44,6 +44,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::group(['middleware' => 'auth'], function (){
     
     Route::get('dashboard', [DashboardController::class, 'getIndex'])->name('admin.dashboard');
+    
+    Route::any('getTodayAttendanceData', [DashboardController::class, 'getTodayAttendanceData']);
+    
     Route::get('/dashboard/users/graph', [DashboardController::class, 'getUsersGraphData'])->name('admin.dashboard.users.graph');
     Route::get('logout', [UserController::class, 'logout'])->name('logout'); 
 
@@ -105,6 +108,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('employee/export',[EmployeeController::class,'exportemployee'])->name('admin.employee.exportemployee');
     Route::post('subcategory-by-category', [EmployeeController::class, 'getSubCategory']);
     Route::post('employee-by-hierarchy', [EmployeeController::class, 'getHierarchy']);
+    Route::get('employee-apply-leave',[EmployeeController::class, 'employeeApplyLeave'])->name('admin.employee.applyleave');
+    Route::get('employee-leave-list',[EmployeeController::class, 'employeeLeaveList'])->name('admin.employee.employeeleavelist');
+    Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
+    Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
+    Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
+    Route::get('admin-manage-managecreateproject',[AdminMenuController::class, 'adminManageManagecreateproject'])->name('admin.manage.managecreateproject');
+    Route::get('admin-manage-manageprojectlist',[EmployeeController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
+    Route::post('admin-manage-saveproject',[EmployeeController::class, 'adminManageSaveproject'])->name('admin.manage.saveproject');
 
     //Start Attendance Route
     Route::get('attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
@@ -115,7 +126,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('attendance/view/{slug?}',[AttendanceController::class, 'view']);
     Route::post('attendance/delete',[AttendanceController::class, 'delete']);
     Route::get('attendance/export',[AttendanceController::class,'exportAttendance'])->name('admin.attendance.exportAttendance');
-
+    Route::post('attendance/mark',[AttendanceController::class,'markAttendance'])->name('attendance.process');
 
     //Start Holiday Route
     Route::get('holiday_calendar/fullcalender', [HolidayCalendarController::class, 'fullcalender'])->name('admin.holiday_calendar.fullcalender');
