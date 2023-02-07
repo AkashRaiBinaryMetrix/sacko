@@ -339,5 +339,4 @@ class EmployeeController extends Controller
         return Excel::download(new ExportEmployee, 'employee.xlsx');
     }
     
-    
 }

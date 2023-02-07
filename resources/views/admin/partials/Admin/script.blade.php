@@ -71,3 +71,4 @@
 	}
 </script>
 <script src="{{ asset('assets/js/pages/dashboards_index.js') }}"></script>
+<script src="{{ asset('assets/js/custom_script.js') }}"></script>

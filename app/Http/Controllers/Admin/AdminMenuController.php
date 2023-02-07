@@ -114,4 +114,12 @@ class AdminMenuController extends Controller
         Session::flash('message', 'Menu Deleted Successfully !');
         return redirect('admin/admin-menu/');
     }
+
+    public function adminManageManagecreateproject(Request $request){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
+    }
 } 

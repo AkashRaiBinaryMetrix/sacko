@@ -10,6 +10,7 @@ use App\Carbon\Carbon;
 use App\Exports\ExportAttendance;
 use Session;
 use Validator;
+use DB;
 
 class AttendanceController extends Controller
 {
@@ -44,6 +45,39 @@ class AttendanceController extends Controller
     public function exportAttendance(Request $request)
 	{
         return Excel::download(new ExportAttendance, 'attendance.xlsx');
+    }
+
+    public function markAttendance(Request $request){
+        $mark_state = $request->mark_state;
+        $current_date = $request->current_date;
+        $current_time = $request->current_time;
+        $ampm = $request->ampm;
+        $emp_id = Auth::user()->id;
+
+        if($mark_state == "in"){
+            //punch-in
+            $aData = [
+                'user_id' => $emp_id,
+                'punch_in' => $current_date,
+                'punchin_time' => $current_time,
+                'punchin_time_ampm' => $ampm
+            ];
+
+            $iId = DB::table('attendances')->insertGetId($aData);
+        }else{
+            //punch-out
+             DB::table('attendances')
+                    ->where('user_id', $emp_id)
+                    ->update(
+                        array(
+                            'punch_out' => $current_date,
+                            'punchout_time' => $current_time,
+                            'punchout_time_ampm' => $ampm
+                    ));
+        }
+
+        return redirect()->route('admin.dashboard');
+
     }
 
 }
