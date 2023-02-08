@@ -66,12 +66,12 @@
 	            </a>
 	            <ul class="sidenav-menu">
 	                <li class="sidenav-item">
-	                    <a href="{{route($sub->url)}}" class="sidenav-link">
+	                    <a href="{{ route('admin.manage.managecreateshift') }}" class="sidenav-link">
 	                        <div>Create Shift</div>
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
-	                    <a href="{{route($sub->url)}}" class="sidenav-link">
+	                    <a href="{{ route('admin.manage.manageshiftlist') }}" class="sidenav-link">
 	                        <div>View Shifts</div>
 	                    </a>
 	                </li>

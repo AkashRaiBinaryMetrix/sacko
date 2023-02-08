@@ -213,4 +213,26 @@ class AdminMenuController extends Controller
         return view('admin.project.editproject', compact(['menus', 'datacountlists','parent_menus','projectlist']));
     }
 
+    public function adminManageShiftList(){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+
+        //get project details
+        $datacountlists = DB::table('usershifts')->get();
+
+        $projectlist    = DB::table('usershifts')->get();
+
+        return view('admin.shift.shiftlist', compact(['menus', 'datacountlists','parent_menus','projectlist']));
+    }
+
+    public function adminManageCreateShift(){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        return view('admin.shift.createshift', compact(['menus', 'datacountlists','parent_menus']));
+    }
+
 } 
