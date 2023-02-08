@@ -114,8 +114,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
     Route::get('admin-manage-managecreateproject',[AdminMenuController::class, 'adminManageManagecreateproject'])->name('admin.manage.managecreateproject');
-    Route::get('admin-manage-manageprojectlist',[EmployeeController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
-    Route::post('admin-manage-saveproject',[EmployeeController::class, 'adminManageSaveproject'])->name('admin.manage.saveproject');
+    Route::get('admin-manage-manageprojectlist',[AdminMenuController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
+    Route::post('admin-manage-saveproject',[AdminMenuController::class, 'adminManageSaveproject'])->name('admin.manage.saveproject');
+    Route::get('projectlist/delete/{slug?}',[AdminMenuController::class, 'deleteProjectFromList']);
+    Route::get('projectlist/edit/{slug?}',[AdminMenuController::class, 'editProjectFromList']);
+    Route::post('admin-manage-updateproject',[AdminMenuController::class, 'adminManageUpdateProject'])->name('admin.manage.updateproject');
 
     //Start Attendance Route
     Route::get('attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
