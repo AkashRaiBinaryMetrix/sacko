@@ -120,6 +120,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('projectlist/edit/{slug?}',[AdminMenuController::class, 'editProjectFromList']);
     Route::post('admin-manage-updateproject',[AdminMenuController::class, 'adminManageUpdateProject'])->name('admin.manage.updateproject');
 
+    //shift
+    Route::get('admin-manage-createshift',[AdminMenuController::class, 'adminManageCreateShift'])->name('admin.manage.managecreateshift');
+    Route::get('admin-manage-manageshiftlist',[AdminMenuController::class, 'adminManageShiftList'])->name('admin.manage.manageshiftlist');
+
     //Start Attendance Route
     Route::get('attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
     Route::get('attendance/create', [AttendanceController::class, 'create'])->name('admin.attendance.create');
