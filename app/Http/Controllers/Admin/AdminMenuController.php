@@ -8,6 +8,7 @@ use Hash;
 use Auth;
 use Validator;
 use Session;
+use DB;
 
 class AdminMenuController extends Controller
 {
@@ -122,4 +123,94 @@ class AdminMenuController extends Controller
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
         return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
     }
+
+    public function adminManageSaveproject(Request $request){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+
+        $project_title = $request->project_title;
+        $project_owner = $request->project_owner;
+        $project_description = $request->project_description;
+
+        DB::table('projects')->insert(
+             array(
+                    'created_by'     => $id,
+                    'title'          => $project_title,
+                    'owner'          => $project_owner,
+                    'descr'          => $project_description,
+
+             )
+        );
+
+        return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
+    }
+
+    public function adminManageManageprojectlist(){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+
+        //get project details
+        $datacountlists = DB::table('projects')->get();
+
+        $projectlist    = DB::table('projects')->get();
+
+        return view('admin.project.projectlist', compact(['menus', 'datacountlists','parent_menus','projectlist']));
+    }
+
+    public function deleteProjectFromList(Request $request, $uid=''){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+
+        $deleteId = $uid;
+        DB::table('projects')->delete($deleteId);
+
+        //get project details
+        $datacountlists = DB::table('projects')->get();
+
+        $projectlist    = DB::table('projects')->get();
+
+        return view('admin.project.projectlist', compact(['menus', 'datacountlists','parent_menus','projectlist']));
+    }
+
+    public function editProjectFromList(Request $request, $uid=''){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+
+        $projectlist    = DB::table('projects')->where("id","=",$uid)->first();
+
+        return view('admin.project.editproject', compact(['menus', 'datacountlists','parent_menus','projectlist']));
+    }
+
+    public function adminManageUpdateProject(Request $request){
+        $id = Auth::user()->id;
+        $datacountlists         = AdminMenu::get();
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+
+        $project_title = $request->project_title;
+        $project_owner = $request->project_owner;
+        $project_description = $request->project_description;
+        $uid = $request->record_id;
+
+        DB::table('projects')
+        ->where('id', $uid)  // find your user by their email
+        ->update(   array(
+                    'title'          => $project_title,
+                    'owner'          => $project_owner,
+                    'descr'          => $project_description,
+             ));  // update the record in the DB. 
+
+        $projectlist    = DB::table('projects')->where("id","=",$uid)->first();
+
+        return view('admin.project.editproject', compact(['menus', 'datacountlists','parent_menus','projectlist']));
+    }
+
 } 

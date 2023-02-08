@@ -89,7 +89,7 @@
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
-	                    <a href="{{route($sub->url)}}" class="sidenav-link">
+	                    <a href="{{ route('admin.manage.manageprojectlist') }}" class="sidenav-link">
 	                        <div>View Projects</div>
 	                    </a>
 	                </li>
