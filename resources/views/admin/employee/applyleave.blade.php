@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.menu.index') }}">Module</a></li>
-            <li class="breadcrumb-item active">Create Project / Project Scope</li>
+            <li class="breadcrumb-item active">Apply Leave / Leave</li>
         </ol>
     </div>
     <div class="row">
@@ -35,7 +35,7 @@
                     <div class="tab-pane fade show active" id="account-general">
                     	<form role="form" action="{{ route('admin.manage.saveproject') }}" method="POST" enctype="multipart/form-data"> 
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        	<h6 class="card-header" style="color:blue;">Create Project</Details></h6>
+                        	<h6 class="card-header" style="color:blue;">Apply Leave</Details></h6>
                        		<div class="card-body">
 								<div class="form-row">
 									<div class="form-group col-md-6">
