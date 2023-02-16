@@ -48,8 +48,8 @@
 			<!-- Dashboards -->
 			<li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="{{$val->icon}}"></i>
-	                <div>Manage Leave</div>
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Leaves Management</div>
 	            </a>
 	            <ul class="sidenav-menu">
 	                <li class="sidenav-item">
@@ -59,7 +59,7 @@
 	                </li>
 	            </ul>
 	        </li>
-	        <li class="sidenav-item">
+	        <!-- <li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
 	            <i class="{{$val->icon}}"></i>
 	                <div>Manage Shift</div>
@@ -76,11 +76,11 @@
 	                    </a>
 	                </li>
 	            </ul>
-	        </li>
+	        </li> -->
 	        <li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="{{$val->icon}}"></i>
-	                <div>Manage Projects</div>
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Projects Management</div>
 	            </a>
 	            <ul class="sidenav-menu">
 	                <li class="sidenav-item">
@@ -90,7 +90,7 @@
 	                </li>
 	                <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.manageprojectlist') }}" class="sidenav-link">
-	                        <div>View Projects</div>
+	                        <div>View/Edit Projects</div>
 	                    </a>
 	                </li>
 	            </ul>
@@ -105,30 +105,54 @@
 		@php
 			if(Auth::user()->role_id == 3){
 		@endphp
-		<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-			<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
-				<i class="sidenav-icon feather icon-home"></i>
-				<div>Apply Leave</div>
-			</a>
-		</li>
-		<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-			<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
-				<i class="sidenav-icon feather icon-home"></i>
-				<div>Leave List</div>
-			</a>
-		</li>
-		<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-			<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
-				<i class="sidenav-icon feather icon-home"></i>
-				<div>View Shift</div>
-			</a>
-		</li>
-		<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-			<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
-				<i class="sidenav-icon feather icon-home"></i>
-				<div>Projects List</div>
-			</a>
-		</li>
+		<li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Leaves Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	               <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>Apply Leave</div>
+						</a>
+					</li>
+					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Leave List</div>
+						</a>
+					</li>
+	            </ul>
+	    </li>
+	    <li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Shifts Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	               	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Shifts</div>
+						</a>
+					</li>
+	            </ul>
+	    </li>
+	    <li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Projects Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	               	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.dashboard') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Projects</div>
+						</a>
+					</li>
+	            </ul>
+	    </li>
 		@php
 		 }
 		@endphp

@@ -114,6 +114,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
     Route::get('admin-manage-managecreateproject',[AdminMenuController::class, 'adminManageManagecreateproject'])->name('admin.manage.managecreateproject');
+    
+
+    Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
+
     Route::get('admin-manage-manageprojectlist',[AdminMenuController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
     Route::post('admin-manage-saveproject',[AdminMenuController::class, 'adminManageSaveproject'])->name('admin.manage.saveproject');
     Route::get('projectlist/delete/{slug?}',[AdminMenuController::class, 'deleteProjectFromList']);

@@ -45,4 +45,17 @@ class DashboardController extends Controller
             echo count($result);          
         }
     }
+
+     public function adminManageHrmportal(){
+
+       
+
+        $user   =   \App\Models\User::where('id',Auth::user()->id)->first();
+        $role   =   AdminMenuController::userMenus($user->role_id);
+        Session::put('role',$user->role_id);
+
+        $attendances = DB::table('attendances')->get();
+
+        return view('admin.manage.hrmportal', compact(['user']), ['attendances' => $attendances]);
+    }
 }

@@ -10,7 +10,22 @@
 		<!-- [ Layout wrapper ] Start -->
 		<div class="layout-wrapper layout-2">
 			<div class="layout-inner">
-			@include('admin.partials.Admin.menu')
+
+		    @php
+		    	use Illuminate\Support\Facades\Route;
+				$currentPath= Route::getFacadeRoot()->current()->uri();
+
+				if($currentPath == "admin/admin-manage-hrmportal"){
+		    @endphp
+		    	@include('admin.partials.Admin.hrmmenu')
+		    @php
+		     }else{
+		    @endphp
+		    	@include('admin.partials.Admin.menu')
+		    @php 	
+		     }
+		    @endphp
+			
 			
 			<!-- [ Layout container ] Start -->
 			<div class="layout-container">
