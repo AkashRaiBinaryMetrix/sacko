@@ -110,6 +110,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('employee-by-hierarchy', [EmployeeController::class, 'getHierarchy']);
     Route::get('employee-apply-leave',[EmployeeController::class, 'employeeApplyLeave'])->name('admin.employee.applyleave');
     Route::get('employee-leave-list',[EmployeeController::class, 'employeeLeaveList'])->name('admin.employee.employeeleavelist');
+    Route::get('admin-employee-projectlist',[EmployeeController::class, 'adminEmployeeProjectList'])->name('admin.employee.projectlist');
+
+    Route::get('admin-employee-leavelist',[EmployeeController::class, 'adminEmployeeLeaveList'])->name('admin.employee.leavelist');
+
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');

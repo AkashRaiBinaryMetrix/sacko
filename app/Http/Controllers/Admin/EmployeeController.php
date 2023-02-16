@@ -54,7 +54,11 @@ class EmployeeController extends Controller
 		$category 	 	= \App\Models\Category::select('id','name')->where('status','1')->get();
         $subCategory 	= \App\Models\SubCategory::where("category_id",$request->category_id)->get(["name", "id"]);
 		$hierarchy 		= \App\Models\User::select('id','hierarchy_id')->where('department_id', $request->department_id)->get();
-		return view('admin.employee.create', compact(['countries', 'states', 'cities', 'department', 'idType', 'category', 'subCategory']));
+
+		$project_details = DB::table('projects')->get();
+		$usershifts = DB::table('usershifts')->get();
+
+		return view('admin.employee.create', compact(['project_details','usershifts','countries', 'states', 'cities', 'department', 'idType', 'category', 'subCategory']));
     }
 
 	public function store(Request $request)
@@ -180,7 +184,11 @@ class EmployeeController extends Controller
 		$category 	 		= \App\Models\Category::select('id','name')->where('status','1')->get();
         $sub_category_name	= \App\Models\SubCategory::where("category_id",$employee->category_id)->get(["name", "id"]);
 		$hierarchy_name		= \App\Models\User::get(["first_name","last_name", "id"]);
-		return view('admin.employee.edit', compact(['employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
+
+		$project_details = DB::table('projects')->get();
+		$usershifts = DB::table('usershifts')->get();
+
+		return view('admin.employee.edit', compact(['project_details','usershifts','employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
     }
 
 	public function update(Request $request,$id)
@@ -337,6 +345,74 @@ class EmployeeController extends Controller
     public function exportEmployee(Request $request)
 	{
         return Excel::download(new ExportEmployee, 'employee.xlsx');
+    }
+
+    public function adminEmployeeProjectList(){
+    	$datacountlists   = \App\Models\User::where('role_id', '3')->get();
+		$employee         = \App\Models\User::select('*')->where('status','1')->where('role_id', '3')->get();
+        if(is_object($employee) && !empty($employee))
+		{
+			if(!empty( $_GET['txt_search']))
+			{
+				$employee = DB::table('users as ch')
+						  ->where('ch.first_name', 'LIKE', "%{$_GET['txt_search']}%") 
+						  ->orWhere('ch.employee_id', 'LIKE', "%{$_GET['txt_search']}%") 
+						  ->where('ch.role_id', '!=', '1')
+						  ->select('ch.*')
+						  ->orderBy('ch.id','Desc')->paginate(10);
+			}
+			else
+			{
+				$employee = DB::table('users as ch')
+						->where('ch.role_id','!=','1')
+                        ->select('ch.*')
+                        ->orderBy('ch.id','Desc')->paginate(10);
+			}
+
+			$projectlist = DB::table('projects')->get();
+
+			return view('admin.employee.assignedprojectlist', compact(['projectlist','employee', 'datacountlists']));
+		}
+		else
+		{
+			return redirect('/');
+		}
+    }
+
+    public function adminEmployeeLeaveList(){
+    	$datacountlists   = \App\Models\User::where('role_id', '3')->get();
+		$employee         = \App\Models\User::select('*')->where('status','1')->where('role_id', '3')->get();
+        if(is_object($employee) && !empty($employee))
+		{
+			if(!empty( $_GET['txt_search']))
+			{
+				$employee = DB::table('users as ch')
+						  ->where('ch.first_name', 'LIKE', "%{$_GET['txt_search']}%") 
+						  ->orWhere('ch.employee_id', 'LIKE', "%{$_GET['txt_search']}%") 
+						  ->where('ch.role_id', '!=', '1')
+						  ->select('ch.*')
+						  ->orderBy('ch.id','Desc')->paginate(10);
+			}
+			else
+			{
+				$employee = DB::table('users as ch')
+						->where('ch.role_id','!=','1')
+                        ->select('ch.*')
+                        ->orderBy('ch.id','Desc')->paginate(10);
+			}
+
+			$projectlist = DB::table('leaves')->get();
+
+			return view('admin.employee.leavelist', compact(['projectlist','employee', 'datacountlists']));
+		}
+		else
+		{
+			return redirect('/');
+		}
+    }
+
+    public function employeeApplyLeave(){
+		return view('admin.employee.applyleave', compact([]));
     }
     
 }

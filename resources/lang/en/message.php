@@ -211,6 +211,8 @@ return [
     'id_type_details' => 'ID Type Details',
     'edit_id_type' => 'Edit ID Type',
     'view_id_type' => 'View ID Type',
+    'project_title' => 'Project Title',
+    'project_shift' => "Shift Details"
  
 
 
