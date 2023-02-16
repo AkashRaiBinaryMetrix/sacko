@@ -138,14 +138,51 @@ class AdminMenuController extends Controller
         $project_title = $request->project_title;
         $project_owner = $request->project_owner;
         $project_description = $request->project_description;
-
+        $project_type = $request->project_type;
+        $distance = $request->distance;
+        $material = $request->material;
+        $pointA = $request->pointA;
+        $pointB = $request->pointB;
+        $loading_point = $request->loading_point;
+        $dumping_point = $request->dumping_point;
+        $project_duration = $request->project_duration;
+        $material2 = $request->material2;
+        $emperical_density = $request->emperical_density;
+        $lab_density = $request->lab_density;
+        $Country = $request->Country;
+        $State = $request->State;
+        $City = $request->City;
+        $site_name = $request->site_name;
+        $site_manager = $request->site_manager;
+        $Project_Manager = $request->Project_Manager;
+        $day_work_hours = $request->day_work_hours;
+        $Number_of_Shifts = $request->Number_of_Shifts;
+ 
         DB::table('projects')->insert(
              array(
                     'created_by'     => $id,
                     'title'          => $project_title,
                     'owner'          => $project_owner,
                     'descr'          => $project_description,
-
+                    'type' => $project_type,
+                    'distance' => $distance,
+                    'material' => $material,
+                    'pointA' => $pointA,
+                    'pointB' => $pointB,
+                    'loading_point' => $loading_point,
+                    'dumping_point' => $dumping_point,
+                    'project_duration' => $project_duration,
+                    'material2' => $material2,
+                    'emperical_density' => $emperical_density,
+                    'lab_density' => $lab_density,
+                    'Country' => $Country,
+                    'State' => $State,
+                    'City' => $City,
+                    'site_name' => $site_name,
+                    'site_manager' => $site_manager,
+                    'Project_Manager' => $Project_Manager,
+                    'day_work_hours' => $day_work_hours,
+                    'Number_of_Shifts' => $Number_of_Shifts
              )
         );
 

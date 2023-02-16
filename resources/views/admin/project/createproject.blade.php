@@ -264,7 +264,7 @@
 										</div>
 										<div class="form-group col-md-6">
 												<label class="form-label">Number of Shifts</label>
-												<input type="text" class="form-control mb-1" required name="Number_of_Shifts" value="{{old('Number_of_Shifts')}}">
+												<input type="text" class="form-control mb-1" required name="Number_of_Shifts" id="Number_of_Shifts" value="{{old('Number_of_Shifts')}}">
 												@if($errors->has('Number_of_Shifts'))
 		                                        <div class="text-danger">{{ $errors->first('Number_of_Shifts') }}</div>
 		                                        @endif
@@ -319,8 +319,8 @@ $(document).ready(function(){
 		
     $("#addButton").click(function () {
 				
-	if(counter>10){
-            alert("Only 10 textboxes allow");
+	if(counter>$("#Number_of_Shifts").val()){
+            //alert("");
             return false;
 	}   
 		
