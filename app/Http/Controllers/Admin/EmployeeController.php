@@ -157,7 +157,10 @@ class EmployeeController extends Controller
                 $employee->image	      		  = $headerTarget;
 				$employee->id_upload	      	  = $headerTarget;
 				$employee->certificate	      	  = $headerTarget;
-				$employee->created_by   		  = Auth::user()->id;											
+				$employee->created_by   		  = Auth::user()->id;	
+			    $employee->project_id             = $request["project_id"];
+			    $employee->shift_id               = $request["shift_id"];
+
 				$employee->save();
 				Session::flash('message', 'Employee created Successfully  !');
 				return redirect('admin/employee');
@@ -414,5 +417,12 @@ class EmployeeController extends Controller
     public function employeeApplyLeave(){
 		return view('admin.employee.applyleave', compact([]));
     }
-    
+
+    public function managerBulkPunchin(){
+		return view('admin.employee.managerBulkPunchin', compact([]));
+    }
+
+    public function managerAttendanceList (){
+    	return view('admin.employee.managerBulkPunchin', compact([]));
+    }
 }
