@@ -343,6 +343,32 @@
 										<div class="clearfix"></div>
 									  </div>
 									</div>
+									<h6>Assign Project and Shift</h6>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label class="form-label">@lang('message.project_title')<span class="text-danger">*</span></label>
+											<select id="project_id" name="project_id" class="form-control">	
+											@foreach ($project_details as $project_detailsr)
+												<option value="{{ $project_detailsr->id }}">#SACKO{{ $project_detailsr->id }}-{{ $project_detailsr->title }}</option>	
+											@endforeach		 
+										    </select>
+	                                        @if($errors->has('city_id'))
+	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
+	                                        @endif
+											<div class="clearfix"></div>
+									  </div>
+									  <div class="form-group col-md-4">
+											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
+											<select id="shift_id" name="shift_id" class="form-control">	@foreach ($usershifts as $usershiftsr)
+												<option value="{{ $usershiftsr->id }}">{{ $usershiftsr->shift_title }}({{ $usershiftsr->shift_start_date }} to {{ $usershiftsr->shift_end_date }})</option>	
+											@endforeach		 
+										    </select>
+	                                        @if($errors->has('city_id'))
+	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
+	                                        @endif
+											<div class="clearfix"></div>
+									  </div>
+									</div>
 									<!-- <div class="form-row">
 									   <div class="form-group col-md-12">
 										<label class="form-label">@lang('message.permanent_address') <span class="text-danger">*</span></label>
@@ -353,6 +379,8 @@
 										<div class="clearfix"></div>
 									   </div>
                                 	</div> -->
+
+
 									<div class="text-right mt-3">
 									<button type="submit" class="btn btn-primary">Save </button>&nbsp;
 									<a href="{{route('admin.employee.index');}}"  class="btn btn-default">Cancel</a>

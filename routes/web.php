@@ -95,6 +95,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('user/export',[UserController::class,'exportUsers'])->name('admin.user.exportUsers');
 
     //Start Employee Route
+    Route::get('admin-employee-managerbulkpunchin',[EmployeeController::class, 'managerBulkPunchin'])->name('admin.employee.managerbulkpunchin');
     Route::get('employee', [EmployeeController::class, 'index'])->name('admin.employee.index');
     Route::get('employee/create', [EmployeeController::class, 'create'])->name('admin.employee.create');
     Route::post('employee/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
@@ -110,11 +111,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('employee-by-hierarchy', [EmployeeController::class, 'getHierarchy']);
     Route::get('employee-apply-leave',[EmployeeController::class, 'employeeApplyLeave'])->name('admin.employee.applyleave');
     Route::get('employee-leave-list',[EmployeeController::class, 'employeeLeaveList'])->name('admin.employee.employeeleavelist');
+    Route::get('admin-employee-projectlist',[EmployeeController::class, 'adminEmployeeProjectList'])->name('admin.employee.projectlist');
+
+    Route::get('admin-employee-leavelist',[EmployeeController::class, 'adminEmployeeLeaveList'])->name('admin.employee.leavelist');
+
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
     Route::get('admin-manage-managecreateproject',[AdminMenuController::class, 'adminManageManagecreateproject'])->name('admin.manage.managecreateproject');
-    
+    Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
 
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
 

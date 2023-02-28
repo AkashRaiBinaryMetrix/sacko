@@ -105,11 +105,19 @@
             <div class="card punch-status">
                 <div class="card-body">
                     <h5 class="card-title">Timesheet 
-                        <small class="text-muted">31 January 2023</small>
+                        <small class="text-muted">
+                            @php
+                                echo date("d").' '.date("F").' '.date("Y");
+                            @endphp
+                            
+                        </small>
                     </h5>
                     <div class="punch-det">
                         <h6>Punch In at</h6>
-                        <p>Tuesday, 31st Jan 2023 
+                        <p>
+                             @php
+                                echo date("l").', '.date("d").' '.date("M").' '.date("Y");
+                            @endphp
                            <input type="hidden" name="display_time" id="display_time"/>     
                         </p>
                     </div>
@@ -158,25 +166,25 @@
                         <h5 class="card-title">Statistics</h5>
                         <div class="stats-list">
                             <div class="stats-info">
-                                <p>Today <strong>0 <small>/ 8 hrs</small></strong></p>
+                                <p>Today <strong>0 <small>/ 9 hrs</small></strong></p>
                                 <div class="progress">
                                     <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100" style="width: 31%;"></div>
                                 </div>
                             </div>
                             <div class="stats-info">
-                                <p>This Week <strong>0 <small>/ 40 hrs</small></strong></p>
+                                <p>This Week <strong>9 <small>/ 40 hrs</small></strong></p>
                                 <div class="progress">
                                     <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100" style="width: 31%;"></div>
                                 </div>
                             </div>
                             <div class="stats-info">
-                                <p>This Month <strong>0 <small>/ 160 hrs</small></strong></p>
+                                <p>This Month <strong>9 <small>/ 160 hrs</small></strong></p>
                                 <div class="progress">
                                     <div class="progress-bar bg-success" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%;"></div>
                                 </div>
                             </div>
                             <div class="stats-info">
-                                <p>Remaining <strong>0 <small>/ 160 hrs</small></strong></p>
+                                <p>Remaining <strong>9 <small>/ 160 hrs</small></strong></p>
                                 <div class="progress">
                                     <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%;"></div>
                                 </div>
@@ -260,11 +268,11 @@
             <a href="#" class="btn btn-success btn-block w-100"> Export to excel </a>
         </div>
 
-        <br/><br/>
 
         <div class="col-sm-12 row">
         <div class="col-lg-12">
             <div class="table-responsive mb-4">
+                <br/>
                 <table class="table table-striped custom-table mb-0">
                     <thead>
                         <tr>

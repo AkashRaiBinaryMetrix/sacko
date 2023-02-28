@@ -211,21 +211,11 @@ return [
     'id_type_details' => 'ID Type Details',
     'edit_id_type' => 'Edit ID Type',
     'view_id_type' => 'View ID Type',
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    'project_title' => 'Project Title',
+    'project_shift' => "Shift Details",
+    'bulk_punchin' => "Bulk Punch-In",
+    'category_title' => "Select Category",
+    'subcategory_title' => "Select Sub-Category",
+    'select_group' => "Select Group",
+    'file_upload' => "Upload attendance file",
 ];

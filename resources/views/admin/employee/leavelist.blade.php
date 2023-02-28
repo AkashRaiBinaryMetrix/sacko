@@ -4,7 +4,7 @@
 <div class="layout-content">
 <!-- [ content ] Start -->
 <div class="container-fluid flex-grow-1 container-p-y">
-	<h4 class="font-weight-bold py-3 mb-0">Projects List ({{ count($datacountlists)}})</h4>
+	<h4 class="font-weight-bold py-3 mb-0">Leave List ({{ count($datacountlists)}})</h4>
 	<div class="text-muted small mt-0 mb-4 d-block breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
@@ -44,10 +44,10 @@
 											<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 											<input type="checkbox" name="cb1" value="1" onClick="isValid(this.form)">  All
 										</th>
-										<th>Project Id</th>
-										<th>Title</th>
-										<th>Owner</th>
-										<th>Description</th>
+										<th>Leave Type</th>
+										<th>From Date</th>
+										<th>To Date</th>
+										<th>Reason</th>
 										<th>Status</th>
 										<th>@lang('message.action')</th>
 									</tr>
@@ -59,10 +59,10 @@
 										<th scope="col">
 											<input type="checkbox" class="check_box" name="mul_del[]" id="mul_del[]" value="{{ $val->id }}" />
 										</th>
-										<td>#SACKO{{$val->id}}</td>
-										<td>{{$val->title}}</td>
-										<td>{{$val->owner}}</td>
-										<td>{{$val->descr}}</td>
+										<td>Earned Leave</td>
+										<td>{{$val->from_date}}</td>
+										<td>{{$val->to_date}}</td>
+										<td>{{$val->description}}</td>
 										<td>
 											@if($val->status=='1')<span class="badge badge-success">Active</span>@else<span class="badge badge-danger">InActive</span>@endif
 										</td>
