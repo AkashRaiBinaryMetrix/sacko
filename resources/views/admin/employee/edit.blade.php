@@ -153,8 +153,13 @@
 										<label class="form-label">@lang('message.contract')</label>
 										<select class="form-control select2 select2-hidden-accessible" name="contract" required>                       
 											<option value=''>Select</option>	
-											<option value='0' @if(old('contract',$employee->contract)=='0'){{'selected="true"'}}@endif>Month</option>
-											<option value='1' @if(old('contract',$employee->contract)=='1'){{'selected="true"'}}@endif>Year</option>                       
+											<!-- <option value='0' @if(old('contract',$employee->contract)=='0'){{'selected="true"'}}@endif>Month</option>
+											<option value='1' @if(old('contract',$employee->contract)=='1'){{'selected="true"'}}@endif>Year</option> -->
+											<option value='CDI'>CDI</option>
+											<option value='CDD'>CDD</option> 
+									<option value='Project base Contract'>Project base Contract</option>
+											<option value='Contractual'>Contractual</option>
+											<option value='Expert Service'>Expert Service</option>                       
 										</select>
 										@if($errors->has('contract'))
                                         <div class="text-danger">{{ $errors->first('contract') }}</div>
@@ -164,7 +169,7 @@
 								</div>
 								
 								<div class="form-row">
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.category') <span class="text-danger">*</span> </label>
 										<select id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
 											<option value='' selected >Select</option>
@@ -179,7 +184,7 @@
 											@endif
 										<div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.sub_category')</label>
 										<select id="sub-dropdown" class="form-control" name="sub_category_id">
 										<option value="">Select</option> 
@@ -190,6 +195,21 @@
 											@if($errors->has('sub_category_id'))
 											<div class="text-danger">{{ $errors->first('sub_category_id') }}</div>
 											@endif
+										<div class="clearfix"></div>
+									</div>
+									<div class="form-group col-md-4">
+										<label class="form-label">@lang('message.group_type')</label>
+										<select class="form-control select2 select2-hidden-accessible" name="group_type" required>                       
+											<option value=''>Select</option>
+											<option value='Group A'>Group A</option>
+											<option value='Group B'>Group B</option>
+											<option value='Group C'>Group C</option>
+											<option value='Group D'>Group D</option>
+											<option value='Group E'>Group E</option>
+										</select>
+										@if($errors->has('contract'))
+                                        <div class="text-danger">{{ $errors->first('contract') }}</div>
+                                        @endif
 										<div class="clearfix"></div>
 									</div>
 								</div>
@@ -367,6 +387,18 @@
 									@endif
 									<div class="clearfix"></div>
 									</div>
+									<div class="form-group col-md-4">
+										<label class="form-label">@lang('message.work_schedule')<span class="text-danger">*</span></label>
+										<select id="city-dropdown" name="work_schedule" class="form-control">
+										 <option>Select</option>
+										 <option value="Permanent">Permanent</option>
+										 <option value="Rotational">Rotational</option>
+									    </select>
+                                        @if($errors->has('city_id'))
+                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
+                                        @endif
+										<div class="clearfix"></div>
+									  </div>
 								</div>
 								<h6>Assign Project and Shift</h6>
 									<div class="form-row">

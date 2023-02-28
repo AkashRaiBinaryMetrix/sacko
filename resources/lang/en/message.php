@@ -186,7 +186,7 @@ return [
     'month_year' => 'Month/Year',
     'department' => 'Department',
     'id_type' => 'ID Type',
-    'contract' => 'Contract',
+    'contract' => 'Contract Type',
     'tl' => 'Tl',
     'manager' => 'Manager',
     'date_of_hiring' => 'Date of Hiring',
@@ -218,4 +218,6 @@ return [
     'subcategory_title' => "Select Sub-Category",
     'select_group' => "Select Group",
     'file_upload' => "Upload attendance file",
+    "group_type" => "Group Type",
+    "work_schedule" => "Work Schedule"
 ];
