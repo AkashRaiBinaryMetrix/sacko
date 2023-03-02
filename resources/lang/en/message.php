@@ -187,7 +187,7 @@ return [
     'department' => 'Department',
     'id_type' => 'ID Type',
     'contract' => 'Contract Type',
-    'tl' => 'Tl',
+    'tl' => 'Team Leader',
     'manager' => 'Manager',
     'date_of_hiring' => 'Date of Hiring',
     'resident' => 'Resident',
@@ -219,5 +219,6 @@ return [
     'select_group' => "Select Group",
     'file_upload' => "Upload attendance file",
     "group_type" => "Group Type",
-    "work_schedule" => "Work Schedule"
+    "work_schedule" => "Work Schedule",
+    "supervisor" => "Supervisor",
 ];

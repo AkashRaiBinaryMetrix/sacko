@@ -18,7 +18,7 @@ class LeaveTypeController extends Controller
 		{
 			$lists          =LeaveType::orderBy('id','DESC')->paginate(10); 
 			$datacountlists =LeaveType::get();
-			return view('leavetype.index',compact('lists','datacountlists'));
+			return view('admin.leavetype.index',compact('lists','datacountlists'));
 		}
 		catch (\Exception $ex) 
 		{	
@@ -32,7 +32,7 @@ class LeaveTypeController extends Controller
     {	
 		try 
 		{
-			return view('leavetype.create');
+			return view('admin.leavetype.create');
 		}
 		catch (\Exception $ex) 
 		{	
@@ -79,7 +79,7 @@ class LeaveTypeController extends Controller
 			$leavetype = LeaveType::find($id);
 			if(is_object($leavetype)&& !empty($leavetype))
 			{
-				return view('leavetype.edit',compact('leavetype'));
+				return view('admin.leavetype.edit',compact('leavetype'));
 			}
 			else
 			{
