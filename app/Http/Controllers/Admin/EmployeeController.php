@@ -284,6 +284,14 @@ class EmployeeController extends Controller
                 $employee->city_id        		  = $request['city_id'];	
 				$employee->status 	      		  = $request['status'];		
 				$employee->updated_by     		  = Auth::user()->id;
+
+				$employee->project_id             = $request["project_id"];
+			    $employee->shift_id               = $request["shift_id"];
+			    
+			    $employee->contract 			  = $request["contract"];
+			    $employee->group_type 			  = $request["group_type"];
+			    $employee->work_schedule		  = $request["work_schedule"];
+
 				$employee->save();	
 				Session::flash('message', 'Employee updated Successfully!');
 

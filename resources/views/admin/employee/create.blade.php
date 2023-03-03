@@ -389,8 +389,9 @@
 									  </div>
 									  <div class="form-group col-md-4">
 											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
-											<select id="shift_id" name="shift_id" class="form-control">	@foreach ($usershifts as $usershiftsr)
-												<option value="{{ $usershiftsr->id }}">{{ $usershiftsr->shift_title }}({{ $usershiftsr->shift_start_date }} to {{ $usershiftsr->shift_end_date }})</option>	
+											<select id="shift_id" name="shift_id" class="form-control" style="width: 400px;">	
+												@foreach ($usershifts as $usershiftsr)
+												<option value="{{ $usershiftsr->id }}">{{ $usershiftsr->shift_title }}({{ $usershiftsr->shift_start_time }} to {{ $usershiftsr->shift_end_time }})</option>	
 											@endforeach		 
 										    </select>
 	                                        @if($errors->has('city_id'))

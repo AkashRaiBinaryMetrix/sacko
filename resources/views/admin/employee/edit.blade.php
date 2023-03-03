@@ -417,7 +417,7 @@
 									  <div class="form-group col-md-4">
 											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
 											<select id="shift_id" name="shift_id" class="form-control">	@foreach ($usershifts as $usershiftsr)
-												<option value="{{ $country->id }}">{{ $usershiftsr->shift_title }}({{ $usershiftsr->shift_start_date }} to {{ $usershiftsr->shift_end_date }})</option>	
+												<option value="{{ $country->id }}">{{ $usershiftsr->shift_title }}({{ $usershiftsr->shift_start_time }} to {{ $usershiftsr->shift_end_time }})</option>	
 											@endforeach		 
 										    </select>
 	                                        @if($errors->has('city_id'))
@@ -442,6 +442,75 @@
 </div>
 <!-- [ content ] End -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+			$(document).ready(function() {
+				$('#country-dropdown').on('change', function() {
+					var country_id = this.value;
+					$("#state-dropdown").html('');
+					$.ajax({
+						url:"{{route('admin.employee.fetchState')}}",
+						type: "POST",
+						data: {
+							country_id: country_id,
+							_token: '{{csrf_token()}}' 
+						},
+						dataType : 'json',
+						success: function(result){
+							$('#state-dropdown').html('<option value="">Select State</option>'); 
+							$.each(result.states,function(key,value){
+
+								$("#state-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
+							});
+							$('#city-dropdown').html('<option value="">Select State First</option>'); 
+							}
+						});
+					});    
+					$('#state-dropdown').on('change', function() {
+						var state_id = this.value;
+						$("#city-dropdown").html('');
+						$.ajax({
+							url:"{{route('admin.employee.fetchCity')}}",
+							type: "POST",
+							data: {
+								state_id: state_id,
+								_token: '{{csrf_token()}}' 
+							},
+							dataType : 'json',
+							success: function(result){
+								$('#city-dropdown').html('<option value="">Select City</option>'); 
+								$.each(result.cities,function(key,value){
+									$("#city-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
+							});
+						}
+					});
+				});
+			});
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#category-dropdown').on('change', function() {
+				//alert('HIi');
+				var idCategory = this.value;
+				$("#sub-dropdown").html('');
+				$.ajax({
+					url:"{{url('admin/subcategory-by-category')}}",
+					type: "POST",
+					data: {
+						category_id: idCategory,
+						_token: '{{csrf_token()}}'
+					},
+					dataType : 'json',
+					success: function(result){
+						$('#sub-dropdown').html('<option value="">Select Sub Category</option>'); 
+						$.each(result.subCategory, function(key, value){
+							$("#sub-dropdown").append('<option value="' + value
+						.id + '">' + value.name + '</option>');
+					});
+				}
+			});
+		});
+	});
+</script>
 <script type="text/javascript">
 	$(document).ready(function() {
 			$('#department-dropdown').on('change', function() {
