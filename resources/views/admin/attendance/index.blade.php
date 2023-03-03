@@ -60,8 +60,11 @@
 										<th scope="col">
 											<input type="checkbox" class="check_box" name="mul_del[]" id="mul_del[]" value="{{ $val->id }}" />
 										</th>
-										<td>{{ $val->employee_id }}</td>
-										<td>{{ $val->name }}</td>
+<!-- 										<td>{{ $val->employee_id }}</td>
+ -->										
+										<td>SACKO31945</td>
+										<!-- <td>{{ $val->name }}</td> -->
+										<td>Akash Rai</td>
 										<td>{{ $val->punch_in }}</td>
 										<td>{{ $val->punch_out }}</td>
 										<td>
