@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
+
+
 <!-- [ Layout content ] Start -->
 <div class="layout-content">
 <!-- [ content ] Start -->
@@ -285,13 +287,13 @@
 					                                        <div class="clearfix"></div>
 													</div>
 													<div class="form-group col-md-4">
-															<label class="form-label">Shift Start Date</label>
-															<input type="date" class="form-control mb-1 shift_start_date" required name="shift_start_date[]">
+															<label class="form-label">Shift Start Time</label>
+															<input type="text" class="shift_start_date form-control mb-1" required name="shift_start_date[]">
 					                                        <div class="clearfix"></div>
 													</div>
 													<div class="form-group col-md-4">
-															<label class="form-label">Shift End Date</label>
-															<input type="date" class="form-control mb-1 shift_end_date" required name="shift_end_date[]">
+															<label class="form-label">Shift End Time</label>
+															<input type="text" class="form-control mb-1 shift_end_date" required name="shift_end_date[]">
 					                                        <div class="clearfix"></div>
 													</div>
 						            </div>
@@ -311,8 +313,12 @@
 	</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script type="text/javascript">
-
+$(document).ready(function(){
+    $('.shift_start_date').timepicker({});
+});
 $(document).ready(function(){
 
     var counter = 2;
