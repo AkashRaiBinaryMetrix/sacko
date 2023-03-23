@@ -221,4 +221,16 @@ return [
     "group_type" => "Group Type",
     "work_schedule" => "Work Schedule",
     "supervisor" => "Supervisor",
+    "date_select" => "Select Date",
+    "holiday_name" => "Holiday Name/Purpose",
+    "tax_name" => "Tax Name",
+    "tax_from" => "From",
+    "tax_to"    => "To",
+    "value_calculation" => "Value/Calculation",
+    "applicable_for" => "Applicable For",
+    "applicable_employees_categories" => "Applicable employees categories",
+    "bonus_name" => "Bonus Name",
+    "percentage_of_basic_salary" => "Percentage of basic Salary",
+    
+
 ];

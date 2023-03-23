@@ -281,6 +281,40 @@ class AdminMenuController extends Controller
         return view('admin.shift.createshift', compact(['menus', 'datacountlists','parent_menus']));
     }
 
-   
+    public function adminManageManageCalendar(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        $categories             = DB::table('categories')->get();
+
+        return view('admin.payroll.managecalendarconfiguration', compact(['menus','parent_menus','categories']));
+    }
+
+    public function adminManageManageTaxConfiguration(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        $categories             = DB::table('categories')->get();
+
+        return view('admin.payroll.managetaxconfiguration', compact(['menus','parent_menus','categories']));
+    }
+
+    public function adminManageHolidayListing(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+
+        return view('admin.payroll.adminmanageholidaylisting', compact(['menus','parent_menus','categories']));
+    }
+
+    public function adminManageManagePrimaryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+
+        return view('admin.payroll.adminmanageprimarybonus', compact(['menus','parent_menus','categories']));
+    }
 
 } 

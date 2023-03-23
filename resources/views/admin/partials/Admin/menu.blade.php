@@ -95,6 +95,39 @@
 	                </li>
 	            </ul>
 	        </li>
+	        <li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Payroll Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managecalendarconfiguration') }}" class="sidenav-link">
+	                        <div>Add New Holiday</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.manageholidaylisting') }}" class="sidenav-link">
+	                        <div>Holiday Listing</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managetaxconfiguration') }}" class="sidenav-link">
+	                        <div>Tax Configuration</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.manageprimarybonus') }}" class="sidenav-link">
+	                        <div>Manage Primary Bonus</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.manageprimarybonus') }}" class="sidenav-link">
+	                        <div>Manage Salary</div>
+	                    </a>
+	                </li>
+	            </ul>
+	        </li>
 		</ul>
 		@php
 		 }
@@ -150,6 +183,20 @@
 						<a href="{{ route('admin.employee.leavelist') }}" class="sidenav-link">
 							<i class="sidenav-icon feather icon-home"></i>
 							<div>View Leave List</div>
+						</a>
+					</li>
+	            </ul>
+	    </li>
+	    <li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Projects Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	               	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.projectlist') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Projects</div>
 						</a>
 					</li>
 	            </ul>
