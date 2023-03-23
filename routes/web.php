@@ -118,7 +118,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
+    
     Route::get('admin-manage-managecreateproject',[AdminMenuController::class, 'adminManageManagecreateproject'])->name('admin.manage.managecreateproject');
+
+    Route::get('admin-manage-managecalendarconfiguration',[AdminMenuController::class, 'adminManageManageCalendar'])->name('admin.manage.managecalendarconfiguration');
+
+      Route::get('admin-manage-manageholidaylisting',[AdminMenuController::class, 'adminManageHolidayListing'])->name('admin.manage.manageholidaylisting');
+    
+    Route::get('admin-manage-managetaxconfiguration',[AdminMenuController::class, 'adminManageManageTaxConfiguration'])->name('admin.manage.managetaxconfiguration');
+
+     Route::get('admin-manage-manageprimarybonus',[AdminMenuController::class, 'adminManageManagePrimaryBonus'])->name('admin.manage.manageprimarybonus');
+
     Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
 
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');

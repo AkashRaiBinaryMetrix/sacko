@@ -288,12 +288,12 @@
 													</div>
 													<div class="form-group col-md-4">
 															<label class="form-label">Shift Start Time</label>
-															<input type="text" class="shift_start_date form-control mb-1" required name="shift_start_date[]">
+															<input type="time" class="shift_start_date form-control mb-1" required name="shift_start_date[]">
 					                                        <div class="clearfix"></div>
 													</div>
 													<div class="form-group col-md-4">
 															<label class="form-label">Shift End Time</label>
-															<input type="text" class="form-control mb-1 shift_end_date" required name="shift_end_date[]">
+															<input type="time" class="form-control mb-1 shift_end_date" required name="shift_end_date[]">
 					                                        <div class="clearfix"></div>
 													</div>
 						            </div>
@@ -333,7 +333,7 @@ $(document).ready(function(){
 	var newTextBoxDiv = $(document.createElement('div'))
 	     .attr("id", 'TextBoxDiv' + counter);
                 
-	newTextBoxDiv.after().html("<br/><div class='form-row'><div class='form-group col-md-4'><label class='form-label'>Shift Name</label><input type='text' class='form-control mb-1' required id='textbox1' name='shift_name[]' class='form-control shift_name'><div class='clearfix'></div></div><div class='form-group col-md-4'><label class='form-label'>Shift Start Date</label><input type='date' class='form-control mb-1 shift_start_date' required name='shift_start_date[]'><div class='clearfix'></div></div><div class='form-group col-md-4'><label class='form-label'>Shift End Date</label><input type='date' class='form-control mb-1 shift_end_date' required name='shift_end_date[]'><div class='clearfix'></div></div></div>");
+	newTextBoxDiv.after().html("<br/><div class='form-row'><div class='form-group col-md-4'><label class='form-label'>Shift Name</label><input type='text' class='form-control mb-1' required id='textbox1' name='shift_name[]' class='form-control shift_name'><div class='clearfix'></div></div><div class='form-group col-md-4'><label class='form-label'>Shift Start Time</label><input type='time' class='form-control mb-1 shift_start_date' required name='shift_start_date[]'><div class='clearfix'></div></div><div class='form-group col-md-4'><label class='form-label'>Shift End Time</label><input type='time' class='form-control mb-1 shift_end_date' required name='shift_end_date[]'><div class='clearfix'></div></div></div>");
             
 	newTextBoxDiv.appendTo("#TextBoxesGroup");
 
