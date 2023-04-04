@@ -123,18 +123,30 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::get('admin-manage-managecalendarconfiguration',[AdminMenuController::class, 'adminManageManageCalendar'])->name('admin.manage.managecalendarconfiguration');
 
+    Route::post('admin-manage-saveholiday',[AdminMenuController::class, 'adminManageSaveCalendar'])->name('admin.manage.saveholiday');
+
       Route::get('admin-manage-manageholidaylisting',[AdminMenuController::class, 'adminManageHolidayListing'])->name('admin.manage.manageholidaylisting');
     
     Route::get('admin-manage-managetaxconfiguration',[AdminMenuController::class, 'adminManageManageTaxConfiguration'])->name('admin.manage.managetaxconfiguration');
 
      Route::get('admin-manage-manageprimarybonus',[AdminMenuController::class, 'adminManageManagePrimaryBonus'])->name('admin.manage.manageprimarybonus');
 
+     Route::post('admin-manage-saveprimarybonus',[AdminMenuController::class, 'adminSavePrimaryBonus'])->name('admin.manage.saveprimarybonus');
+
+     Route::get('admin-manage-managesalaryadmin',[AdminMenuController::class, 'adminManageManageSalaryAdmin'])->name('admin.manage.managesalaryadmin');
+
+     Route::post('admin-manage-savesalary',[AdminMenuController::class, 'adminManageSaveSalaryAdmin'])->name('admin.manage.savesalary');
+
+    Route::get('admin-manage-managesalarylisting',[AdminMenuController::class, 'adminManageManageSalaryListing'])->name('admin.manage.managesalarylisting');
+
     Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
 
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
 
     Route::get('admin-manage-manageprojectlist',[AdminMenuController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
+    
     Route::post('admin-manage-saveproject',[AdminMenuController::class, 'adminManageSaveproject'])->name('admin.manage.saveproject');
+
     Route::get('projectlist/delete/{slug?}',[AdminMenuController::class, 'deleteProjectFromList']);
     Route::get('projectlist/edit/{slug?}',[AdminMenuController::class, 'editProjectFromList']);
     Route::post('admin-manage-updateproject',[AdminMenuController::class, 'adminManageUpdateProject'])->name('admin.manage.updateproject');

@@ -290,6 +290,27 @@ class AdminMenuController extends Controller
         return view('admin.payroll.managecalendarconfiguration', compact(['menus','parent_menus','categories']));
     }
 
+    public function adminManageSaveCalendar(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        $categories             = DB::table('categories')->get();
+
+        DB::table('holiday_list')->insert(
+             array(
+                    'date_selection'     => $request->date_selection,
+                    'holiday_name'       => $request->holiday_name,
+                    'holiday_status'     => $request->holiday_status,
+                    'applicable_for'     => $request->applicable_for,
+                    'employee_category'  => implode(', ', $request->employee_category)
+             )
+        );
+
+        Session::flash('message', 'Record Successfully created !');
+
+        return view('admin.payroll.managecalendarconfiguration', compact(['menus','parent_menus','categories']));
+    }
+
     public function adminManageManageTaxConfiguration(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10); 
@@ -305,16 +326,93 @@ class AdminMenuController extends Controller
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
         $categories             = DB::table('categories')->get();
 
-        return view('admin.payroll.adminmanageholidaylisting', compact(['menus','parent_menus','categories']));
+        $holiday_list            = DB::table('holiday_list')->get();
+
+        return view('admin.payroll.adminmanageholidaylisting', compact(['menus','parent_menus','categories','holiday_list']));
     }
 
-    public function adminManageManagePrimaryBonus(Request $request){
+     public function adminManageManagePrimaryBonus(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10);
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
         $categories             = DB::table('categories')->get();
 
+        
+
         return view('admin.payroll.adminmanageprimarybonus', compact(['menus','parent_menus','categories']));
+     }
+
+     public function adminSavePrimaryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+
+        DB::table('primary_bonus')->insert(
+             array(
+                    'bonus_name'                       => $request->bonus_name,
+                    'percentage_of_basic_salary'       => $request->percentage_of_basic_salary,
+                    'applicable_for'                   => $request->applicable_for,
+                    'employee_category'  => implode(', ', $request->employee_category)
+             )
+        );
+
+        Session::flash('message', 'Record Successfully created !');
+
+        return view('admin.payroll.adminmanageprimarybonus', compact(['menus','parent_menus','categories']));
+     }
+
+     public function adminManageManageSalaryAdmin(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $employeeList           = DB::table('users')->where("role_id",3)->get();
+        $projectList            = DB::table('projects')->get();
+
+        return view('admin.payroll.adminmanagesalaryadmin', compact(['menus','parent_menus','categories','employeeList','projectList']));
     }
 
+    public function adminManageSaveSalaryAdmin(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $employeeList           = DB::table('users')->where("role_id",3)->get();
+        $projectList            = DB::table('projects')->get();
+        
+         DB::table('save_salary')->insert(
+             array(
+                    'emp_name'                       => $request->emp_name,
+                    'emp_id'                         => $request->emp_id,
+                    'project_id'                     => $request->project_id,
+                    'proposed_salary'                => $request->proposed_salary,
+                    'currency'                       => $request->currency,
+                    'employee_rate'                  => $request->employee_rate,
+                    'monthly_hour'                   => $request->monthly_hour,
+                    'hourly_hour'                    => $request->hourly_hour,
+                    'basic_salary'                   => $request->basic_salary,
+                    'prime_sal'                      => $request->prime_sal,
+                    'prime_rent'                     => $request->prime_rent                        
+             )
+        );
+
+        Session::flash('message', 'Record Successfully created !');
+
+        return view('admin.payroll.adminmanagesalaryadmin', compact(['menus','parent_menus','categories','employeeList','projectList']));  
+    }
+
+     public function adminManageManageSalaryListing(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $employeeList           = DB::table('users')->where("role_id",3)->get();
+        $projectList            = DB::table('projects')->get();
+
+        $salaryList            = DB::table('save_salary')->get();
+
+        return view('admin.payroll.adminmanagesalarylisting', compact(['menus','parent_menus','categories','employeeList','projectList','salaryList']));
+    }
+    
 } 

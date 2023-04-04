@@ -231,6 +231,13 @@ return [
     "applicable_employees_categories" => "Applicable employees categories",
     "bonus_name" => "Bonus Name",
     "percentage_of_basic_salary" => "Percentage of basic Salary",
-    
-
+    "Project_Id" => "Project Id",
+    "Proposed_Salary" => "Proposed Salary($)",
+    "Local_Currency" => "Local Currency",
+    "Employee_Rate" => "Employee Rate",
+    "Monthly_Hour" => "Monthly Hour",
+    "Hourly_Rate" => "Hourly Rate (USD)",
+    "Basic_Salary" => "Basic Salary (GNF)",
+    "Primary_Bonus" => "Prime d'ancienneté",
+    "Prime_de" => "Prime de rendement",
 ];

@@ -79,11 +79,14 @@
 							
 							</div>	
 							</div>
+							<form role="form" action="{{ route('admin.manage.saveprimarybonus') }}" method="POST" enctype="multipart/form-data"> 
+								                        	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                         	<div class="card-body">
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Bonus Name</label>
-										<input type="text" class="form-control mb-1" required name="holiday_name" id="holiday_name" value="{{old('holiday_name')}}">
+										<input type="text" class="form-control mb-1" required name="bonus_name" id="holiday_name" value="{{old('holiday_name')}}">
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
@@ -91,7 +94,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Percentage of Basic Salary</label>
-										<input type="text" class="form-control mb-1" required name="holiday_name" id="holiday_name" value="{{old('holiday_name')}}">
+										<input type="text" class="form-control mb-1" required name="percentage_of_basic_salary" id="holiday_name" value="{{old('holiday_name')}}">
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
@@ -127,6 +130,7 @@
 									</div>
 								</div>
 							</div>
+						</form>
                        
                         	
                        		
