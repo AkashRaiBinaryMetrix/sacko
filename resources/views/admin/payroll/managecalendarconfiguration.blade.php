@@ -37,7 +37,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                    	<form role="form" action="{{ route('admin.manage.saveproject') }}" method="POST" enctype="multipart/form-data"> 
+                    	<form role="form" action="{{ route('admin.manage.saveholiday') }}" method="POST" enctype="multipart/form-data"> 
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                         	<h6 class="card-header" style="color:blue;">Configure Holidays</Details></h6>
                        		<div class="card-body">
@@ -61,8 +61,8 @@
 									<div class="form-group col-md-6">
 										<label class="form-label">Status</label>
 										<select class="form-control mb-1" required name="holiday_status" id="holiday_status" >
-											<option value="1">Active</option>
-											<option value="0">In-Active</option>
+											<option value="Active">Active</option>
+											<option value="In-Active">In-Active</option>
 										</select>
 										@if($errors->has('holiday_status'))
                                         <div class="text-danger">{{ $errors->first('holiday_status') }}</div>
@@ -79,7 +79,6 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Applicable employees categories</label>
-										
 										<br/><br/>
 										@foreach($categories as $result)
 										<input type='checkbox' name='employee_category[]' id='employee_category' value='{{$result->id}}' />

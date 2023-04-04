@@ -122,8 +122,13 @@
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
-	                    <a href="{{ route('admin.manage.manageprimarybonus') }}" class="sidenav-link">
-	                        <div>Manage Salary</div>
+	                    <a href="{{ route('admin.manage.managesalaryadmin') }}" class="sidenav-link">
+	                        <div>Add Payroll</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managesalarylisting') }}" class="sidenav-link">
+	                        <div>Payroll Listing</div>
 	                    </a>
 	                </li>
 	            </ul>
