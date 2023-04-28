@@ -69,7 +69,7 @@
                                         @endif
                                         <div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-6" style="visibility: hidden;">
 										<label class="form-label">Applicable For</label>
 										<input type="text" class="form-control mb-1" required name="applicable_for" id="applicable_for" value="{{old('applicable_for')}}">
 										@if($errors->has('holiday_name'))

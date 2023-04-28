@@ -67,7 +67,19 @@ class AdminMenuController extends Controller
     {
         $menu                   = AdminMenu::find($id); 
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->where('id','!=',$menu->id)->get(); 
+
+
         return view('admin.menu.edit', compact(['menu','parent_menus']));
+    }
+
+    public function editHolidayList(Request $request, $id=''){
+        $menu                   = AdminMenu::find($id); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->where('id','!=',$menu->id)->get(); 
+        $id = Auth::user()->id;
+        $categories             = DB::table('categories')->get();
+        $holiday_list = DB::table('holiday_list')->where('id','=',$id)->get();
+
+        return view('admin.payroll.editHolidayRecord', compact(['menu','parent_menus','categories','holiday_list']));
     }
 
     public function update(Request $request, $id)
@@ -311,6 +323,8 @@ class AdminMenuController extends Controller
         return view('admin.payroll.managecalendarconfiguration', compact(['menus','parent_menus','categories']));
     }
 
+
+
     public function adminManageManageTaxConfiguration(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10); 
@@ -331,7 +345,35 @@ class AdminMenuController extends Controller
         return view('admin.payroll.adminmanageholidaylisting', compact(['menus','parent_menus','categories','holiday_list']));
     }
 
-     public function adminManageManagePrimaryBonus(Request $request){
+    public function adminManageUpdateHoliday(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        
+        $categories             = DB::table('categories')->get();
+
+        DB::table('holiday_list')
+        ->where('id', $request->record_id)  // find your user by their email
+        ->update(
+                    array(
+                        'date_selection'     => $request->date_selection,
+                        'holiday_name'       => $request->holiday_name,
+                        'holiday_status'     => $request->holiday_status,
+                        'applicable_for'     => $request->applicable_for,
+                        'applicable_for'     => '',
+                        'employee_category'  => implode(', ', $request->employee_category)
+                    )
+                );
+
+        $holiday_list = DB::table('holiday_list')->where('id','=',$request->record_id)->get();
+
+        Session::flash('message', 'Record Successfully updated !');
+
+        return view('admin.payroll.editHolidayRecord', compact(['menus','parent_menus','categories','holiday_list']));
+    }
+
+    
+    public function adminManageManagePrimaryBonus(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10);
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
