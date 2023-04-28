@@ -125,6 +125,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::post('admin-manage-saveholiday',[AdminMenuController::class, 'adminManageSaveCalendar'])->name('admin.manage.saveholiday');
 
+     Route::post('admin-manage-updateholiday',[AdminMenuController::class, 'adminManageUpdateHoliday'])->name('admin.manage.updateholiday');
+
       Route::get('admin-manage-manageholidaylisting',[AdminMenuController::class, 'adminManageHolidayListing'])->name('admin.manage.manageholidaylisting');
     
     Route::get('admin-manage-managetaxconfiguration',[AdminMenuController::class, 'adminManageManageTaxConfiguration'])->name('admin.manage.managetaxconfiguration');
@@ -136,6 +138,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
      Route::get('admin-manage-managesalaryadmin',[AdminMenuController::class, 'adminManageManageSalaryAdmin'])->name('admin.manage.managesalaryadmin');
 
      Route::post('admin-manage-savesalary',[AdminMenuController::class, 'adminManageSaveSalaryAdmin'])->name('admin.manage.savesalary');
+
+Route::any('editholidaylist/{id}',[AdminMenuController::class, 'editHolidayList']);
+
+    //Route::post('employee/edit/{slug?}',[EmployeeController::class, 'edit']);
 
     Route::get('admin-manage-managesalarylisting',[AdminMenuController::class, 'adminManageManageSalaryListing'])->name('admin.manage.managesalarylisting');
 

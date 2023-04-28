@@ -1,5 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
+
 <!-- [ Layout content ] Start -->
 <div class="layout-content">
 <!-- [ content ] Start -->
@@ -36,7 +37,16 @@
                     <div class="tab-pane fade show active" id="account-general">
                         	<h6 class="card-header" style="color:blue;">Holiday Listing</Details></h6>
                        		<div class="card-body">
-								<div class="form-row">
+                       			<style>
+	#table_wrapper {
+        margin: 4px, 4px;
+        padding: 4px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+</style>
+								<div class="form-row" id="table_wrapper">
 								<table id="report-table" class="table table-bordered table-striped mb-0">
 								<thead>
 									<tr>
@@ -57,12 +67,16 @@
 										<td>{{$hresult->applicable_for}}</td>
 										<td>
 											@php
-												$holiday_list_emp = DB::table('categories')->whereIn('id',array($hresult->employee_category))->get();
+											    $idsArr = explode(',',$hresult->employee_category);  
+												$holiday_list_emp = DB::table('categories')->whereIn('id',$idsArr)->get();
+
+												foreach($holiday_list_emp as $res){
+													echo $res->name.",";
+												}
 											@endphp
-											{{$holiday_list_emp[0]->name}}
 										</td>
  									 	<td>
- 									 		<i class="feather icon-edit" title="Edit"></i>
+ 									 		<a href="{{ url('admin/editholidaylist/'.$hresult->id) }}"><i class="feather icon-edit" title="Edit"></i></a>
  									 		<i class="feather icon-delete" title="Active/In-Active"></i>
  									 	</td>
 									</tr>
