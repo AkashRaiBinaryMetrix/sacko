@@ -43,10 +43,10 @@
 										<th>@lang('message.employee_name')</th>
 										<th>@lang('message.employee_id')</th>
 										<th>@lang('message.Project_Id')</th>
-										<th>@lang('message.Proposed_Salary')</th>
-										<th>@lang('message.Local_Currency')</th>
-										<th>@lang('message.Employee_Rate')</th>
-										<th>@lang('message.Monthly_Hour')</th>
+<!-- 										<th>@lang('message.Proposed_Salary')</th>
+ -->										<th>@lang('message.Local_Currency')</th>
+<!-- 										<th>@lang('message.Employee_Rate')</th>
+ -->										<th>@lang('message.Monthly_Hour')</th>
 										<th>@lang('message.Hourly_Rate')</th>
 										<th>@lang('message.Basic_Salary')</th>
 										<th>@lang('message.Primary_Bonus')</th>
@@ -70,10 +70,10 @@
 											@endphp
 											{{$projectName[0]->title}}
 										</td>
-										<td>{{$result->proposed_salary}}</td>
-										<td>{{$result->currency}}</td>
-										<td>{{$result->employee_rate}}</td>
-										<td>{{$result->monthly_hour}}</td>
+<!-- 										<td>{{$result->proposed_salary}}</td>
+ -->										<td>{{$result->currency}}</td>
+<!-- 										<td>{{$result->employee_rate}}</td>
+ -->										<td>{{$result->monthly_hour}}</td>
 										<td>{{$result->hourly_hour}}</td>
 										<td>{{$result->basic_salary}}</td>
 										<td>{{$result->prime_sal}}</td>

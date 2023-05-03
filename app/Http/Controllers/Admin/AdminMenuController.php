@@ -428,14 +428,14 @@ class AdminMenuController extends Controller
                     'emp_name'                       => $request->emp_name,
                     'emp_id'                         => $request->emp_id,
                     'project_id'                     => $request->project_id,
-                    'proposed_salary'                => $request->proposed_salary,
+                    'proposed_salary'                => "",
                     'currency'                       => $request->currency,
-                    'employee_rate'                  => $request->employee_rate,
+                    'employee_rate'                  => "",
                     'monthly_hour'                   => $request->monthly_hour,
                     'hourly_hour'                    => $request->hourly_hour,
                     'basic_salary'                   => $request->basic_salary,
                     'prime_sal'                      => $request->prime_sal,
-                    'prime_rent'                     => $request->prime_rent                        
+                    'prime_rent'                     => $request->prime_rent
              )
         );
 

@@ -437,4 +437,13 @@ class EmployeeController extends Controller
     public function managerAttendanceList (){
     	return view('admin.employee.managerBulkPunchin', compact([]));
     }
+
+    public function updateHolidayStatus(Request $request){
+    	$id     = $request->id;
+    	$status = $request->status;
+
+    	DB::table('holiday_list')
+        ->where('id', $id)  // find your user by their email
+        ->update(array('status' => $status));  // update the record in the DB. 
+    }
 }

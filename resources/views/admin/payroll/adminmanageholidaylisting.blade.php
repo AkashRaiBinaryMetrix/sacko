@@ -77,7 +77,19 @@
 										</td>
  									 	<td>
  									 		<a href="{{ url('admin/editholidaylist/'.$hresult->id) }}"><i class="feather icon-edit" title="Edit"></i></a>
- 									 		<i class="feather icon-delete" title="Active/In-Active"></i>
+ 									 		
+ 									 		@php
+ 									 		  if($hresult->status == 0){
+ 									 		@endphp
+ 									 		 	<buton type="button" onclick="change_status({{$hresult->id}},1);">Active</buton>
+ 									 		@php
+ 									 		 }else{
+ 									 		@endphp 	
+ 									 			<buton type="button" onclick="change_status({{$hresult->id}},0);">De-Active</buton>
+ 									 	    @php
+ 									 	     }
+ 									 	    @endphp
+
  									 	</td>
 									</tr>
 									@endforeach
@@ -96,48 +108,21 @@
 </div>
 
 <script type="text/javascript">
-			$(document).ready(function() {
-				$('#country-dropdown').on('change', function() {
-					var country_id = this.value;
-					$("#state-dropdown").html('');
-					$.ajax({
-						url:"{{route('admin.employee.fetchState')}}",
+	function change_status(id,status){
+		$.ajax({
+						url:"{{route('admin.employee.updateholidaystatus')}}",
 						type: "POST",
 						data: {
-							country_id: country_id,
+							 id: id,
+							 status: status,
 							_token: '{{csrf_token()}}' 
 						},
 						dataType : 'json',
 						success: function(result){
-							$('#state-dropdown').html('<option value="">Select State</option>'); 
-							$.each(result.states,function(key,value){
-
-								$("#state-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
-							});
-							$('#city-dropdown').html('<option value="">Select State First</option>'); 
-							}
-						});
-					});    
-					$('#state-dropdown').on('change', function() {
-						var state_id = this.value;
-						$("#city-dropdown").html('');
-						$.ajax({
-							url:"{{route('admin.employee.fetchCity')}}",
-							type: "POST",
-							data: {
-								state_id: state_id,
-								_token: '{{csrf_token()}}' 
-							},
-							dataType : 'json',
-							success: function(result){
-								$('#city-dropdown').html('<option value="">Select City</option>'); 
-								$.each(result.cities,function(key,value){
-									$("#city-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
-							});
+								window.location.reaload();
 						}
-					});
-				});
-			});
+		});
+	}
 </script>
 <!-- [ content ] End -->
 @endsection

@@ -74,7 +74,7 @@
                                         @endif
                                         <div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-6" style="display: none;">
 										<label class="form-label">Proposed Salary($)</label>
 										<input type="number" class="form-control mb-1" required name="proposed_salary" id="datepicker"/>
 										@if($errors->has('date_select'))
@@ -92,7 +92,7 @@
                                         @endif
                                         <div class="clearfix"></div>
 								    </div>
-								    <div class="form-group col-md-6">
+								    <div class="form-group col-md-6" style="display:none;">
 										<label class="form-label">Employee Rate</label>
 										<input type="text" class="form-control mb-1" required name="employee_rate" id="datepicker"/>
 										@if($errors->has('date_select'))
@@ -143,7 +143,7 @@
 								</div>
 							</div>
 							<div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Add To Payroll</button>&nbsp;
+									<button type="submit" class="btn btn-primary">Save To Payroll</button>&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
 							<div class="clearfix"></div>
