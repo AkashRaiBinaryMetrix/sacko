@@ -88,7 +88,7 @@
                                         <div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">Project Owner</label>
+										<label class="form-label">Contractor</label>
 										<input type="text" class="form-control mb-1" required name="project_owner" value="{{old('project_owner')}}">
 										@if($errors->has('project_owner'))
                                         <div class="text-danger">{{ $errors->first('project_owner') }}</div>
