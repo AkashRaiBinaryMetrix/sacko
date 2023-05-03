@@ -117,6 +117,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::any('admin-employee-updateholidaystatus',[EmployeeController::class, 'updateHolidayStatus'])->name('admin.employee.updateholidaystatus');
 
+    Route::any('admin-employee-updatesecondstatus',[EmployeeController::class, 'updateSecondStatus'])->name('admin.employee.updatesecondstatus');
+
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('employee-manage-createshift',[EmployeeController::class, 'adminManageCreateshift'])->name('admin.manage.createshift');
     Route::get('admin-manage-shiftlisting',[EmployeeController::class, 'adminManageShiftlisting'])->name('admin.manage.shiftlisting');
@@ -129,19 +131,31 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
      Route::post('admin-manage-updateholiday',[AdminMenuController::class, 'adminManageUpdateHoliday'])->name('admin.manage.updateholiday');
 
+     Route::post('admin-manage-updateprimarybonus',[AdminMenuController::class, 'adminManageUpdatePrimaryBonus'])->name('admin.manage.updateprimarybonus');
+
+     Route::post('admin-manage-updatesecondrybonus',[AdminMenuController::class, 'adminManageUpdateSecondryBonus'])->name('admin.manage.updatesecondrybonus');
+
       Route::get('admin-manage-manageholidaylisting',[AdminMenuController::class, 'adminManageHolidayListing'])->name('admin.manage.manageholidaylisting');
     
     Route::get('admin-manage-managetaxconfiguration',[AdminMenuController::class, 'adminManageManageTaxConfiguration'])->name('admin.manage.managetaxconfiguration');
 
      Route::get('admin-manage-manageprimarybonus',[AdminMenuController::class, 'adminManageManagePrimaryBonus'])->name('admin.manage.manageprimarybonus');
 
+     Route::get('admin-manage-managesecondrybonus',[AdminMenuController::class, 'adminManageManageSecondryBonus'])->name('admin.manage.managesecondrybonus');
+
      Route::post('admin-manage-saveprimarybonus',[AdminMenuController::class, 'adminSavePrimaryBonus'])->name('admin.manage.saveprimarybonus');
+
+     Route::post('admin-manage-savesecondrybonus',[AdminMenuController::class, 'adminSaveSecondryBonus'])->name('admin.manage.savesecondrybonus');
 
      Route::get('admin-manage-managesalaryadmin',[AdminMenuController::class, 'adminManageManageSalaryAdmin'])->name('admin.manage.managesalaryadmin');
 
      Route::post('admin-manage-savesalary',[AdminMenuController::class, 'adminManageSaveSalaryAdmin'])->name('admin.manage.savesalary');
 
 Route::any('editholidaylist/{id}',[AdminMenuController::class, 'editHolidayList']);
+
+Route::any('editsecondrybonus/{id}',[AdminMenuController::class, 'editSecondryBonus']);
+
+Route::any('editprimarybonus/{id}',[AdminMenuController::class, 'editPrimaryBonus']);
 
     //Route::post('employee/edit/{slug?}',[EmployeeController::class, 'edit']);
 

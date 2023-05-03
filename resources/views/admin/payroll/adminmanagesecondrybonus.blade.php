@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.menu.index') }}">Module</a></li>
-            <li class="breadcrumb-item active">Payroll Management / Primary Bonus</li>
+            <li class="breadcrumb-item active">Payroll Management / Secondry Bonus</li>
         </ol>
     </div>
     <div class="row">
@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                        	<h6 class="card-header" style="color:blue;">Primary Bonus</Details></h6>
+                        	<h6 class="card-header" style="color:blue;">Secondry Bonus</Details></h6>
  	<div class="card-body">
 								<div class="form-row">
 								<table id="report-table" class="table table-bordered table-striped mb-0">
@@ -48,7 +48,7 @@
 								</thead>
 								<tbody>
 									@php
-									    $list = DB::table('primary_bonus')->get();
+									    $list = DB::table('secondry_bonus')->get();
 										foreach($list as $hresult){
 									@endphp
 									<tr>
@@ -65,7 +65,20 @@
 											@endphp
 										</td>
  									 	<td>
- 									 		<a href="{{ url('admin/editprimarybonus/'.$hresult->id) }}"><i class="feather icon-edit" title="Edit"></i></a>
+ 									 		<a href="{{ url('admin/editsecondrybonus/'.$hresult->id) }}"><i class="feather icon-edit" title="Edit"></i></a>
+
+ 									 		@php
+ 									 		  if($hresult->status == 0){
+ 									 		@endphp
+ 									 		 	<buton type="button" onclick="change_status({{$hresult->id}},1);">Active</buton>
+ 									 		@php
+ 									 		 }else{
+ 									 		@endphp 	
+ 									 			<buton type="button" onclick="change_status({{$hresult->id}},0);">De-Active</buton>
+ 									 	    @php
+ 									 	     }
+ 									 	    @endphp
+
  									 	</td>
 									</tr>
 									@php
@@ -76,7 +89,7 @@
 							
 							</div>	
 							</div>
-							<form role="form" action="{{ route('admin.manage.saveprimarybonus') }}" method="POST" enctype="multipart/form-data"> 
+							<form role="form" action="{{ route('admin.manage.savesecondrybonus') }}" method="POST"> 
 								                        	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         	<div class="card-body">
@@ -113,17 +126,9 @@
                                         @endif
                                         <div class="clearfix"></div>
                                         <div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Save</button>&nbsp;
+									<button type="submit" name="btnsubmit" class="btn btn-primary">Save</button>&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
-									</div>
-									<div class="form-group col-md-6" style="visibility:hidden;">
-										<label class="form-label">Applicable For</label>
-										<input type="text" class="form-control mb-1" required name="applicable_for" id="applicable_for" value="{{old('applicable_for')}}">
-										@if($errors->has('holiday_name'))
-                                        <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
-                                        @endif
-                                        <div class="clearfix"></div>
 									</div>
 								</div>
 							</div>
@@ -139,50 +144,22 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript">
-			$(document).ready(function() {
-				$('#country-dropdown').on('change', function() {
-					var country_id = this.value;
-					$("#state-dropdown").html('');
-					$.ajax({
-						url:"{{route('admin.employee.fetchState')}}",
+	function change_status(id,status){
+		$.ajax({
+						url:"{{route('admin.employee.updatesecondstatus')}}",
 						type: "POST",
 						data: {
-							country_id: country_id,
+							 id: id,
+							 status: status,
 							_token: '{{csrf_token()}}' 
 						},
 						dataType : 'json',
 						success: function(result){
-							$('#state-dropdown').html('<option value="">Select State</option>'); 
-							$.each(result.states,function(key,value){
-
-								$("#state-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
-							});
-							$('#city-dropdown').html('<option value="">Select State First</option>'); 
-							}
-						});
-					});    
-					$('#state-dropdown').on('change', function() {
-						var state_id = this.value;
-						$("#city-dropdown").html('');
-						$.ajax({
-							url:"{{route('admin.employee.fetchCity')}}",
-							type: "POST",
-							data: {
-								state_id: state_id,
-								_token: '{{csrf_token()}}' 
-							},
-							dataType : 'json',
-							success: function(result){
-								$('#city-dropdown').html('<option value="">Select City</option>'); 
-								$.each(result.cities,function(key,value){
-									$("#city-dropdown").append('<option value="'+value.id+'">'+value.name+'</option>');
-							});
+								window.location.reaload();
 						}
-					});
-				});
-			});
+		});
+	}
 </script>
 <!-- [ content ] End -->
 @endsection
