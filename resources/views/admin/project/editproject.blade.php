@@ -170,7 +170,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label class="form-label">Emperical density</label>
-											<input type="text" class="form-control mb-1" required name="emperical_density" value="{{old('emperical_density')}}">
+											<input type="text" class="form-control mb-1" name="emperical_density" value="{{old('emperical_density')}}">
 											@if($errors->has('emperical_density'))
 	                                        <div class="text-danger">{{ $errors->first('emperical_density') }}</div>
 	                                        @endif
@@ -178,7 +178,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label class="form-label">Lab density</label>
-											<input type="text" class="form-control mb-1" required name="lab_density" value="{{old('lab_density')}}">
+											<input type="text" class="form-control mb-1" name="lab_density" value="{{old('lab_density')}}">
 											@if($errors->has('lab_density'))
 	                                        <div class="text-danger">{{ $errors->first('lab_density') }}</div>
 	                                        @endif
