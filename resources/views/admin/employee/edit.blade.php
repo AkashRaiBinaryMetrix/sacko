@@ -72,7 +72,7 @@
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.email')<span class="text-danger">*</span></label>	
+										<label class="form-label">@lang('message.email')<span class="text-danger"></span></label>	
 										<input type="email" class="form-control" name="email" placeholder="Enter Mail ID" value="{{old('email',$employee->email)}}" >
 										@if($errors->has('email'))
                                         <div class="text-danger">{{ $errors->first('email') }}</div>
@@ -80,7 +80,7 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label class="form-label">@lang('message.password')<span class="text-danger">*</span></label>
+										<label class="form-label">@lang('message.password')<span class="text-danger"></span></label>
 										<input type="password" class="form-control" name="password" placeholder="Enter Password"  value="{{old('password')}}">
                                         @if($errors->has('password'))
                                         <div class="text-danger">{{ $errors->first('password') }}</div>

@@ -123,7 +123,7 @@ return [
     'sub_category' => 'Sub Category',
     'basic_info' => 'Basic Info',
     'images' => 'Images',
-    'employee_type' => 'Employee Type',
+    'employee_type' => 'Employee Role',
     'created_at' => 'Created at',
     'registered_on' => 'Registered on',
     'view_user' => 'View User',
