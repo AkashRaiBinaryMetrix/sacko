@@ -82,6 +82,27 @@ class AdminMenuController extends Controller
         return view('admin.payroll.editHolidayRecord', compact(['menu','parent_menus','categories','holiday_list']));
     }
 
+    public function editSecondryBonus(Request $request, $id=''){
+        $menu                   = AdminMenu::find($id); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->where('id','!=',$menu->id)->get(); 
+        $id = Auth::user()->id;
+        $categories             = DB::table('categories')->get();
+
+        $holiday_list = DB::table('secondry_bonus')->where('id','=',$id)->get();
+
+        return view('admin.payroll.editSecondryRecord', compact(['menu','parent_menus','categories','holiday_list']));
+    }
+
+    public function editPrimaryBonus(Request $request, $id=''){
+        $menu                   = AdminMenu::find($id); 
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->where('id','!=',$menu->id)->get(); 
+        $id = Auth::user()->id;
+        $categories             = DB::table('categories')->get();
+        $holiday_list = DB::table('primary_bonus')->where('id','=',$id)->get();
+
+        return view('admin.payroll.editPrimaryBonus', compact(['menu','parent_menus','categories','holiday_list']));
+    }
+
     public function update(Request $request, $id)
 	{	
 		$v = Validator::make($request->all(), [
@@ -372,6 +393,56 @@ class AdminMenuController extends Controller
         return view('admin.payroll.editHolidayRecord', compact(['menus','parent_menus','categories','holiday_list']));
     }
 
+    public function adminManageUpdatePrimaryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        
+        $categories             = DB::table('categories')->get();
+
+        DB::table('primary_bonus')
+        ->where('id', $request->record_id)  // find your user by their email
+        ->update(
+                    array(
+                        'bonus_name'       => $request->bonus_name,
+                        'percentage_of_basic_salary'     => $request->percentage_of_basic_salary,
+                        'applicable_for'     => 0,
+                        'employee_category'  => implode(', ', $request->employee_category)
+                    )
+                );
+
+        $holiday_list = DB::table('primary_bonus')->where('id','=',$request->record_id)->get();
+
+        Session::flash('message', 'Record Successfully updated !');
+
+        return view('admin.payroll.editPrimaryBonus', compact(['menus','parent_menus','categories','holiday_list']));
+    }
+
+    public function adminManageUpdateSecondryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        
+        $categories             = DB::table('categories')->get();
+
+        DB::table('secondry_bonus')
+        ->where('id', $request->record_id)  // find your user by their email
+        ->update(
+                    array(
+                        'bonus_name'       => $request->bonus_name,
+                        'percentage_of_basic_salary'     => $request->percentage_of_basic_salary,
+                        'applicable_for'     => 0,
+                        'employee_category'  => implode(', ', $request->employee_category)
+                    )
+                );
+
+        $holiday_list = DB::table('secondry_bonus')->where('id','=',$request->record_id)->get();
+
+        Session::flash('message', 'Record Successfully updated !');
+
+        return view('admin.payroll.editSecondryRecord', compact(['menus','parent_menus','categories','holiday_list']));
+    }
+
     
     public function adminManageManagePrimaryBonus(Request $request){
         $id = Auth::user()->id;
@@ -379,9 +450,16 @@ class AdminMenuController extends Controller
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
         $categories             = DB::table('categories')->get();
 
-        
-
         return view('admin.payroll.adminmanageprimarybonus', compact(['menus','parent_menus','categories']));
+     }
+
+     public function adminManageManageSecondryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+
+        return view('admin.payroll.adminmanagesecondrybonus', compact(['menus','parent_menus','categories']));
      }
 
      public function adminSavePrimaryBonus(Request $request){
@@ -402,6 +480,27 @@ class AdminMenuController extends Controller
         Session::flash('message', 'Record Successfully created !');
 
         return view('admin.payroll.adminmanageprimarybonus', compact(['menus','parent_menus','categories']));
+     }
+
+     public function adminSaveSecondryBonus(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+
+        DB::table('secondry_bonus')->insert(
+             array(
+                    'bonus_name'                       => $request->bonus_name,
+                    'percentage_of_basic_salary'       => $request->percentage_of_basic_salary,
+                    'applicable_for'                   => 0,
+                    'employee_category'  => implode(', ', $request->employee_category),
+                    'status' => 0
+             )
+        );
+
+        Session::flash('message', 'Record Successfully created !');
+
+        return view('admin.payroll.adminmanagesecondrybonus', compact(['menus','parent_menus','categories']));
      }
 
      public function adminManageManageSalaryAdmin(Request $request){

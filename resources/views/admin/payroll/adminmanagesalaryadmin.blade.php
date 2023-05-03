@@ -143,7 +143,7 @@
 								</div>
 							</div>
 							<div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Save To Payroll</button>&nbsp;
+									<button type="submit" class="btn btn-primary">Add To Payroll</button>&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
 							<div class="clearfix"></div>

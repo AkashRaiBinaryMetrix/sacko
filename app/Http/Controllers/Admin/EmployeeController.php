@@ -446,4 +446,13 @@ class EmployeeController extends Controller
         ->where('id', $id)  // find your user by their email
         ->update(array('status' => $status));  // update the record in the DB. 
     }
+
+    public function updateSecondStatus(Request $request){
+    	$id     = $request->id;
+    	$status = $request->status;
+
+    	DB::table('secondry_bonus')
+        ->where('id', $id)  // find your user by their email
+        ->update(array('status' => $status));  // update the record in the DB. 
+    }
 }

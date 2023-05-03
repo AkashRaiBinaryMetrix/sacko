@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.menu.index') }}">Module</a></li>
-            <li class="breadcrumb-item active">Payroll Management / Primary Bonus</li>
+            <li class="breadcrumb-item active">Payroll Management / Secondry Bonus</li>
         </ol>
     </div>
     <div class="row">
@@ -34,56 +34,23 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                        	<h6 class="card-header" style="color:blue;">Primary Bonus</Details></h6>
+                        	<h6 class="card-header" style="color:blue;">Edit Secondry Bonus</Details></h6>
  	<div class="card-body">
 								<div class="form-row">
-								<table id="report-table" class="table table-bordered table-striped mb-0">
-								<thead>
-									<tr>
-										<th>@lang('message.bonus_name')</th>
-										<th>@lang('message.percentage_of_basic_salary')</th>
-										<th>Employee Categories</th>
-										<th>@lang('message.action')</th>
-									</tr>
-								</thead>
-								<tbody>
-									@php
-									    $list = DB::table('primary_bonus')->get();
-										foreach($list as $hresult){
-									@endphp
-									<tr>
-										<td>{{$hresult->bonus_name}}</td>
-										<td>{{$hresult->percentage_of_basic_salary}}</td>
-										<td>
-											@php
-											    $idsArr = explode(',',$hresult->employee_category);  
-												$holiday_list_emp = DB::table('categories')->whereIn('id',$idsArr)->get();
-
-												foreach($holiday_list_emp as $res){
-													echo $res->name.",";
-												}
-											@endphp
-										</td>
- 									 	<td>
- 									 		<a href="{{ url('admin/editprimarybonus/'.$hresult->id) }}"><i class="feather icon-edit" title="Edit"></i></a>
- 									 	</td>
-									</tr>
-									@php
-									 }
-									@endphp
-								</tbody>
-							</table>
+								
 							
 							</div>	
 							</div>
-							<form role="form" action="{{ route('admin.manage.saveprimarybonus') }}" method="POST" enctype="multipart/form-data"> 
+							<form role="form" action="{{ route('admin.manage.updatesecondrybonus') }}" method="POST" enctype="multipart/form-data"> 
 								                        	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+								                        	<input type="hidden" name="record_id" value="{{$holiday_list[0]->id}}">
 
                         	<div class="card-body">
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Bonus Name</label>
-										<input type="text" class="form-control mb-1" required name="bonus_name" id="holiday_name" value="{{old('holiday_name')}}">
+										<input type="text" class="form-control mb-1" required name="bonus_name" id="holiday_name" value="{{$holiday_list[0]->bonus_name}}">
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
@@ -91,7 +58,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Percentage of Basic Salary</label>
-										<input type="text" class="form-control mb-1" required name="percentage_of_basic_salary" id="holiday_name" value="{{old('holiday_name')}}">
+										<input type="text" class="form-control mb-1" required name="percentage_of_basic_salary" id="holiday_name" value="{{$holiday_list[0]->percentage_of_basic_salary}}">
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
@@ -100,30 +67,28 @@
 									<div class="form-group col-md-6">
 										<label class="form-label">Applicable employees categories</label>
 										<br/><br/>
-										@foreach($categories as $result)
-										<input type='checkbox' name='employee_category[]' id='employee_category' value='{{$result->id}}' />
+										
+
+@foreach($categories as $result)
+											@php
+												$employee_category = $holiday_list[0]->employee_category;
+											@endphp
+										<input type='checkbox' name='employee_category[]' id='employee_category' value='{{$result->id}}' {{(strpos($holiday_list[0]->employee_category,$result->id) !== false) ? 'checked':''}}/>
 										<label for='sales'>{{$result->name}}</label>
 										<br/>
 										@endforeach
-										<input type='checkbox' name='employee_category[]' id='employee_category' value='All Employees' />
-										<label for='sales'>All Employees</label>
+
+
+
 
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
                                         <div class="clearfix"></div>
                                         <div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Save</button>&nbsp;
+									<button type="submit" class="btn btn-primary">Update</button>&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
-									</div>
-									<div class="form-group col-md-6" style="visibility:hidden;">
-										<label class="form-label">Applicable For</label>
-										<input type="text" class="form-control mb-1" required name="applicable_for" id="applicable_for" value="{{old('applicable_for')}}">
-										@if($errors->has('holiday_name'))
-                                        <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
-                                        @endif
-                                        <div class="clearfix"></div>
 									</div>
 								</div>
 							</div>

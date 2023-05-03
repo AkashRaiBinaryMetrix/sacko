@@ -121,6 +121,11 @@
 	                        <div>Manage Primary Bonus</div>
 	                    </a>
 	                </li>
+	                 <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managesecondrybonus') }}" class="sidenav-link">
+	                        <div>Manage Secondry Bonus</div>
+	                    </a>
+	                </li>
 	                <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.managesalaryadmin') }}" class="sidenav-link">
 	                        <div>Add Payroll</div>
