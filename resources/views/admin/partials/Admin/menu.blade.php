@@ -29,11 +29,23 @@
             </a>
             <ul class="sidenav-menu">
 				@foreach(getSubMenu(Auth::user()->role_id,$val->module_id) as $sub)
+				@php
+ 							if($sub->name == "Manage Employee"){
+
+ 							}else{
+                        @endphp
                 <li class="sidenav-item">
                     <a href="{{route($sub->url)}}" class="sidenav-link">
-                        <div>{{$sub->name}}</div>
+                        
+                        	<div>
+                        		{{$sub->name}}
+                        	</div>
+                       
                     </a>
                 </li>
+                 @php
+                         }
+                        @endphp
 				@endforeach
             </ul>
         </li>
