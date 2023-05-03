@@ -42,38 +42,35 @@
 									<tr>
 										<th>@lang('message.bonus_name')</th>
 										<th>@lang('message.percentage_of_basic_salary')</th>
-										<th>@lang('message.applicable_for')</th>
+										<th>Employee Categories</th>
 										<th>@lang('message.action')</th>
 									</tr>
 								</thead>
 								<tbody>
+									@php
+									    $list = DB::table('primary_bonus')->get();
+										foreach($list as $hresult){
+									@endphp
 									<tr>
-										<td>Cherté  de vie (10%)</td>
-										<td>10%</td>
-										<td>All Employee</td>
+										<td>{{$hresult->bonus_name}}</td>
+										<td>{{$hresult->percentage_of_basic_salary}}</td>
+										<td>
+											@php
+											    $idsArr = explode(',',$hresult->employee_category);  
+												$holiday_list_emp = DB::table('categories')->whereIn('id',$idsArr)->get();
+
+												foreach($holiday_list_emp as $res){
+													echo $res->name.",";
+												}
+											@endphp
+										</td>
  									 	<td>
- 									 		<i class="feather icon-edit" title="Edit"></i>
- 									 		<i class="feather icon-delete" title="Active/In-Active"></i>
+ 									 		<a href="{{url('')}}"><i class="feather icon-edit" title="Edit"></i></a>
  									 	</td>
 									</tr>
-									<tr>
-										<td>Logement (9%)</td>
-										<td>9%</td>
-										<td>All Employee</td>
- 									 	<td>
- 									 		<i class="feather icon-edit" title="Edit"></i>
- 									 		<i class="feather icon-delete" title="Active/In-Active"></i>
- 									 	</td>
-									</tr>
-									<tr>
-										<td>Transport (6%)</td>
-										<td>6%</td>
-										<td>All Employee</td>
- 									 	<td>
- 									 		<i class="feather icon-edit" title="Edit"></i>
- 									 		<i class="feather icon-delete" title="Active/In-Active"></i>
- 									 	</td>
-									</tr>
+									@php
+									 }
+									@endphp
 								</tbody>
 							</table>
 							
