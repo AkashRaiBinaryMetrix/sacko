@@ -1,7 +1,5 @@
 @extends('admin.layouts.app')
 @section('content')
-
-
 <!-- [ Layout content ] Start -->
 <div class="layout-content">
 <!-- [ content ] Start -->
@@ -35,7 +33,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                    	<form role="form" action="{{ url('admin/search/employees') }}" method="POST" enctype="multipart/form-data" autocomplete="off"> 
+                    	<form role="form" action="{{ url('admin.employee.filterresult') }}" method="POST" enctype="multipart/form-data" autocomplete="off"> 
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                         	<h6 class="card-header">@lang('message.bulk_punchin')</Details></h6>
                        		<div class="card-body">
@@ -104,48 +102,28 @@
                 <table class="table table-striped custom-table mb-0">
                     <thead>
                         <tr>
-                            <!-- <th>#</th> -->
+                            <th>#</th>
                             <th>Date </th>
                             <th>Employee Name </th>
                             <th>Employee ID </th>
-                            <!-- <th>Punch In</th>
-                            <th>Punch Out</th> -->
+                            <th>Punch In</th>
+                            <th>Punch Out</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-						
-						@if(isset($employeesData))
-							@foreach($employeesData as $value)
-								<tr>
-									<!-- <td>1</td> -->
-									<td>{{date("d-M-Y")}}</td>
-									<td>{{ $value->first_name ?? ''}}</td>
-									<td>{{ $value->employee_id ?? ''}}</td>
-									<td>
-										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK PRESENT</a>
-										<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
-									</td>
-									<!-- @if($value->status == 0)
-									<td>
-										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK PRESENT</a>
-										<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
-									</td>
-									@elseif($value->status == 1)
-									<td>
-										<a href="" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> Time Out</a>
-										<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
-									</td>
-									@else
-									
-									@endif -->
-								</tr>
-							@endforeach
-						@else
-						<tr>
-							
-						</tr>
-						@endif
+                        <tr>
+                            <td>1</td>
+                            <td>28 Feb 2023</td>
+                            <td>Akash</td>
+                            <td>AKAS001</td>
+                            <td>06:07:00 pm</td>
+                            <td>NA</td>
+                            <td>
+					             <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK PRESENT</a>
+					             <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -124,7 +124,7 @@
                                         @endif
                                         <div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-6" style="visibility:hidden;">
 										<label class="form-label">Prime d'ancienneté</label>
 										<input type="text" class="form-control mb-1" required name="prime_sal" id="datepicker"/>
 										@if($errors->has('date_select'))
@@ -132,7 +132,7 @@
                                         @endif
                                         <div class="clearfix"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-6" style="visibility:hidden;">
 										<label class="form-label">Prime de rendement</label>
 										<input type="text" class="form-control mb-1" required name="prime_rent" id="datepicker"/>
 										@if($errors->has('date_select'))

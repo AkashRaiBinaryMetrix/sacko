@@ -164,9 +164,7 @@ Route::any('editprimarybonus/{id}',[AdminMenuController::class, 'editPrimaryBonu
     Route::get('admin-manage-managesalarylisting',[AdminMenuController::class, 'adminManageManageSalaryListing'])->name('admin.manage.managesalarylisting');
 
     Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
-    Route::post('search/employees', [EmployeeController::class, 'searchEmployees'])->name('admin.search.employees');
-    Route::any('employees/present/{id}', [EmployeeController::class, 'present'])->name('admin.present');
-    
+
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
 
     Route::get('admin-manage-manageprojectlist',[AdminMenuController::class, 'adminManageManageprojectlist'])->name('admin.manage.manageprojectlist');
@@ -276,8 +274,6 @@ Route::any('editprimarybonus/{id}',[AdminMenuController::class, 'editPrimaryBonu
 	Route::get('id_type/view/{slug?}',[IdTypeController::class, 'view']);
     Route::post('id_type/delete',[IdTypeController::class, 'delete']);
 
-
-    
 
 
 
