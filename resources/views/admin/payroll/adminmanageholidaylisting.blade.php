@@ -119,9 +119,11 @@
 						},
 						dataType : 'json',
 						success: function(result){
-								window.location.reaload();
+								
 						}
 		});
+		location.reload(true);
+
 	}
 </script>
 <!-- [ content ] End -->

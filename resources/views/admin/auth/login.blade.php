@@ -28,15 +28,58 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pages/authentication.css') }}">
 </head>
 <body>
+
     <!-- [ Preloader ] Start -->
     <div class="page-loader">
         <div class="bg-primary"></div>
     </div>
+
     <!-- [ Preloader ] End -->
     <!-- [ Content ] Start -->
     <div class="authentication-wrapper authentication-2 ui-bg-cover ui-bg-overlay-container px-4" style="background-image: url('assets/img/bg/21.jpg');">
+
+
         <div class="ui-bg-overlay bg-dark opacity-25"></div>
         <div class="authentication-inner py-5">
+            <style>
+   .goog-logo-link {
+   display:none !important;
+}
+
+.goog-te-gadget {
+   color: transparent !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+   color: blue !important;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd{
+   display: none !important;
+}
+
+iframe#\:1\.container{
+display:none !important;
+}
+div#goog-gt-{
+display:none !important;
+}
+
+#goog-gt-tt{
+    display: none !important;
+}
+</style>
+
+<div id="google_translate_element" style="margin-left: 33%;margin-top: 12px;margin-bottom: -9px;"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en',
+                includedLanguages: 'en,fr',}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
             <div class="card">
                 <div class="p-4 p-sm-5">
                     <!-- [ Logo ] Start -->
