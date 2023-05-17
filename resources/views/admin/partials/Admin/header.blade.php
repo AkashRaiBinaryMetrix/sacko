@@ -28,6 +28,49 @@
 				</span>
 			</label>
 		</div>
+
+
+<style>
+   .goog-logo-link {
+   display:none !important;
+}
+
+.goog-te-gadget {
+   color: transparent !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+   color: blue !important;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd{
+   display: none !important;
+}
+
+iframe#\:1\.container{
+display:none !important;
+}
+div#goog-gt-{
+display:none !important;
+}
+
+#goog-gt-tt{
+	display: none !important;
+}
+</style>
+
+<div id="google_translate_element" style="margin-left: 33%;margin-top: 12px;margin-bottom: -9px;"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en',
+                includedLanguages: 'en,fr',}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
 		<div class="navbar-nav align-items-lg-center ml-auto">
 			<div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
 				<a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">

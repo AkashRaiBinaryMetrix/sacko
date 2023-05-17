@@ -167,6 +167,9 @@ class AdminMenuController extends Controller
         $datacountlists         = AdminMenu::get();
         $menus                  = AdminMenu::select('*')->paginate(10); 
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get(); 
+        $countries         = \App\Models\Country::get(["name", "id"]);
+        $states         = \App\Models\State::where("country_id",$request->country_id)->get(["name", "id"]);
+        $cities         = \App\Models\City::where("state_id",$request->state_id)->get(["name", "id"]);
 
         $project_title = $request->project_title;
         $project_owner = $request->project_owner;
@@ -219,7 +222,9 @@ class AdminMenuController extends Controller
              )
         );
 
-        return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
+         return view('admin.project.createproject', compact(['countries', 'states', 'cities','menus', 'datacountlists','parent_menus']));
+         
+        // return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
     }
 
     public function adminManageManageprojectlist(){

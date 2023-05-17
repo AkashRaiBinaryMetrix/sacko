@@ -71,7 +71,7 @@
 									</div>
 									<div class="form-group col-md-6" style="visibility: hidden;">
 										<label class="form-label">Applicable For</label>
-										<input type="text" class="form-control mb-1" required name="applicable_for" id="applicable_for" value="{{old('applicable_for')}}">
+										<input type="text" class="form-control mb-1"  name="applicable_for" id="applicable_for" value="{{old('applicable_for')}}">
 										@if($errors->has('holiday_name'))
                                         <div class="text-danger">{{ $errors->first('holiday_name') }}</div>
                                         @endif
@@ -95,7 +95,7 @@
 							</div>
 								
 							<div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Save</button>&nbsp;
+									<button type="submit" name="btnSubmit" class="btn btn-primary">Save</button>&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
 							<div class="clearfix"></div>
