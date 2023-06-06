@@ -519,6 +519,19 @@ class AdminMenuController extends Controller
         return view('admin.payroll.adminmanagesalaryadmin', compact(['menus','parent_menus','categories','employeeList','projectList']));
     }
 
+    public function manageAdvancepaymentPage(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $employeeList           = DB::table('users')->where("role_id",3)->get();
+        $projectList            = DB::table('projects')->get();
+
+        return view('admin.payroll.manageAdvancepaymentPage', compact(['menus','parent_menus','categories','employeeList','projectList']));
+    }
+
+
+
     public function adminManageSaveSalaryAdmin(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10);

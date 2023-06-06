@@ -6,12 +6,12 @@
 <div class="layout-content">
 <!-- [ content ] Start -->
 <div class="container-fluid flex-grow-1 container-p-y">
-    <h4 class="font-weight-bold py-3 mb-0">@lang('message.bulk_punchin')</h4>
+    <h4 class="font-weight-bold py-3 mb-0">Present Employees</h4>
     <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.employee.index') }}">Attendance</a></li>
-            <li class="breadcrumb-item active">@lang('message.bulk_punchin')</li>
+            <li class="breadcrumb-item active">Present Employees</li>
         </ol>
     </div>
     <div class="row">
@@ -35,9 +35,9 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                    	<form role="form" action="{{ url('admin/search/employees') }}" method="POST" enctype="multipart/form-data" autocomplete="off"> 
+                    	<form role="form" action="{{ url('admin/search/presentemployees') }}" method="POST" enctype="multipart/form-data" autocomplete="off"> 
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        	<h6 class="card-header">@lang('message.bulk_punchin')</Details></h6>
+                        	<h6 class="card-header">Present Employees</Details></h6>
                        		<div class="card-body">
 									<div class="form-row">
 									
@@ -108,6 +108,7 @@
                             <th>Date </th>
                             <th>Employee Name </th>
                             <th>Employee ID </th>
+                            <th>Punch-In Time </th>
                             <!-- <th>Punch In</th>
                             <th>Punch Out</th> -->
                             <th></th>
@@ -117,25 +118,23 @@
 						
 						@if(isset($employeesData))
 							@foreach($employeesData as $value)
-								@php
-									//check if for current date record already exists
-									$punchin_date = date('d-m-Y');
-									$employee_id = $value->id;
-									$projectlist = DB::table('attendances')
-											->where('punch_in','=',$punchin_date)
-											->where('user_id','=',$employee_id)
-											->get();
-
-									if(count($projectlist) == 0){
-								@endphp
+							@php
+								if($value->id == 2){
+							@endphp
 								<tr>
 									<!-- <td>1</td> -->
 									<td>{{date("d-M-Y")}}</td>
 									<td>{{ $value->first_name ?? ''}}</td>
 									<td>{{ $value->employee_id ?? ''}}</td>
 									<td>
-										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK PRESENT</a>
-										<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
+										@php
+										    date_default_timezone_set("Asia/Calcutta");   //India time (GMT+5:30)
+											echo date('h:i A');
+										@endphp
+									</td>
+									<td>
+										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
+										<!-- <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a> -->
 									</td>
 									<!-- @if($value->status == 0)
 									<td>

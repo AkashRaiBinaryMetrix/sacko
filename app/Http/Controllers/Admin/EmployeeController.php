@@ -355,6 +355,7 @@ class EmployeeController extends Controller
         						->where('category_id', '=', $request->category_id)
         						->where('sub_category_id', '=', $request->subcategory_id)
         						->where('employee_type', '!=', '1')
+        						->groupBy('group_type')
         						->get(["group_type"]);
         return response()->json($data);
     }
@@ -368,6 +369,7 @@ class EmployeeController extends Controller
         	->where('users.sub_category_id', '=', $request->sub_category_id)
         	->where('users.group_type', '=', $request->group_id)
         	->where('users.employee_type', '!=', '1')
+        	->groupBy('usershifts.id')
         	->get(['usershifts.id','usershifts.shift_title']);
 
         return response()->json($data);
@@ -461,6 +463,19 @@ class EmployeeController extends Controller
 		return view('admin.employee.managerBulkPunchin', compact(['category']));
     }
 
+    public function presentEmployee(){
+    	$category 	 	= \App\Models\Category::select('id','name')->where('status','1')->get();
+
+		return view('admin.employee.presentEmployee', compact(['category']));
+    }
+
+    public function absentEmployee(){
+    	$category 	 	= \App\Models\Category::select('id','name')->where('status','1')->get();
+
+		return view('admin.employee.absentEmployee', compact(['category']));
+    }
+
+
     public function managerAttendanceList (){
     	return view('admin.employee.managerBulkPunchin', compact([]));
     }
@@ -498,6 +513,72 @@ class EmployeeController extends Controller
 																]);
 	}
 
+	public function searchAbsentEmployees(Request $request)
+	{
+		$v = Validator::make($request->all(), [
+											'category_id' 			  => 'required',
+											'sub_category_id' 		  => 'required',
+											'group_category_id' 	  => 'required',
+											'shift_group_category_id' => 'required',
+											]);
+		if ($v->fails())
+		{
+		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
+		}
+
+
+		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
+		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
+		                  ->where('sub_category_id',$request->sub_category_id ?? '')
+		                  ->where('group_type',$request->group_category_id ?? '')
+		                  ->where('shift_id',$request->shift_group_category_id ?? '')
+						 
+						  ->get();
+						//   dd($request->all(),$employeesData);
+					Session::flash('message', 'Featch Employees Successfully !');
+		    return view('admin.employee.absentEmployee')->with([
+																	'employeesData'           => $employeesData,
+																	'category'                => $category,
+																	'category_id'             => $request->category_id,
+																	'sub_category_id'         => $request->sub_category_id,
+																	'group_category_id'       => $request->group_category_id,
+																	'shift_group_category_id' => $request->shift_group_category_id,
+																]);
+	}
+
+	public function searchPresentEmployees(Request $request)
+	{
+		$v = Validator::make($request->all(), [
+											'category_id' 			  => 'required',
+											'sub_category_id' 		  => 'required',
+											'group_category_id' 	  => 'required',
+											'shift_group_category_id' => 'required',
+											]);
+		if ($v->fails())
+		{
+		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
+		}
+
+
+		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
+		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
+		                  ->where('sub_category_id',$request->sub_category_id ?? '')
+		                  ->where('group_type',$request->group_category_id ?? '')
+		                  ->where('shift_id',$request->shift_group_category_id ?? '')
+						 
+						  ->get();
+						//   dd($request->all(),$employeesData);
+					Session::flash('message', 'Featch Employees Successfully !');
+		    return view('admin.employee.presentEmployee')->with([
+																	'employeesData'           => $employeesData,
+																	'category'                => $category,
+																	'category_id'             => $request->category_id,
+																	'sub_category_id'         => $request->sub_category_id,
+																	'group_category_id'       => $request->group_category_id,
+																	'shift_group_category_id' => $request->shift_group_category_id,
+																]);
+	}
+
 
 	public function present($id)
 	{
@@ -506,11 +587,14 @@ class EmployeeController extends Controller
 		$employeesData = \App\Models\User::where('id',$id)->first();
 		try 
 		{ 
-			$offset      = 5*60*60; //converting 5 hours to seconds.
+			$timestamp = time();
+
+			$offset      = 19800; //converting 5 hours to seconds.
 			$dateFormat  = "d-m-Y H:i";
 			$timeNdate   = gmdate($dateFormat, time()+$offset);
-			$utcDate     = date('H:i', strtotime($timeNdate));
-			$newDateTime = date('A', strtotime($timeNdate));
+			
+			$utcDate     = date('H:i', strtotime(gmdate('r', $timestamp)));
+			$newDateTime = date('A', strtotime(gmdate('r', $timestamp)));
 			
 				$attendance                     = new \App\Models\Attendance();
 				$attendance->user_id 		  	= $employeesData->id ?? '';
