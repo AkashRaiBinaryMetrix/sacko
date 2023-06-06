@@ -147,6 +147,11 @@
 	                        <div>Add Payroll</div>
 	                    </a>
 	                </li>
+	                 <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.advancepayment') }}" class="sidenav-link">
+	                        <div>Advance Payment</div>
+	                    </a>
+	                </li>
 	                <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.managesalarylisting') }}" class="sidenav-link">
 	                        <div>Payroll Listing</div>
@@ -174,6 +179,18 @@
 						<a href="{{ route('admin.employee.managerbulkpunchin') }}" class="sidenav-link">
 							<i class="sidenav-icon feather icon-home"></i>
 							<div>Bulk Punch-In</div>
+						</a>
+					</li>
+					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.presentemployee') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Present Employees</div>
+						</a>
+					</li>
+					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.absentemployee') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View Absent Employees</div>
 						</a>
 					</li>
 					 <!-- <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">

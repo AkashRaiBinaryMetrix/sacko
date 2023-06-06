@@ -96,6 +96,12 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     //Start Employee Route
     Route::get('admin-employee-managerbulkpunchin',[EmployeeController::class, 'managerBulkPunchin'])->name('admin.employee.managerbulkpunchin');
+
+    Route::get('admin-employee-presentemployee',[EmployeeController::class, 'presentEmployee'])->name('admin.employee.presentemployee');
+
+    Route::get('admin-employee-absentemployee',[EmployeeController::class, 'absentEmployee'])->name('admin.employee.absentemployee');
+
+
     Route::get('employee', [EmployeeController::class, 'index'])->name('admin.employee.index');
     Route::get('employee/create', [EmployeeController::class, 'create'])->name('admin.employee.create');
     Route::post('employee/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
@@ -151,6 +157,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
      Route::get('admin-manage-managesalaryadmin',[AdminMenuController::class, 'adminManageManageSalaryAdmin'])->name('admin.manage.managesalaryadmin');
 
+      Route::get('admin-manage-advancepayment',[AdminMenuController::class, 'manageAdvancepaymentPage'])->name('admin.manage.advancepayment');
+
      Route::post('admin-manage-savesalary',[AdminMenuController::class, 'adminManageSaveSalaryAdmin'])->name('admin.manage.savesalary');
 
 Route::any('editholidaylist/{id}',[AdminMenuController::class, 'editHolidayList']);
@@ -164,7 +172,13 @@ Route::any('editprimarybonus/{id}',[AdminMenuController::class, 'editPrimaryBonu
     Route::get('admin-manage-managesalarylisting',[AdminMenuController::class, 'adminManageManageSalaryListing'])->name('admin.manage.managesalarylisting');
 
     Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
+    
     Route::post('search/employees', [EmployeeController::class, 'searchEmployees'])->name('admin.search.employees');
+    
+    Route::post('search/absentmployees', [EmployeeController::class, 'searchAbsentEmployees'])->name('admin.search.absentmployees');
+
+    Route::post('search/presentemployees', [EmployeeController::class, 'searchPresentEmployees'])->name('admin.search.presentemployees');
+
     Route::any('employees/present/{id}', [EmployeeController::class, 'present'])->name('admin.present');
     
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
