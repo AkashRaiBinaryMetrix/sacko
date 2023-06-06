@@ -135,7 +135,7 @@
 									<td>{{ $value->employee_id ?? ''}}</td>
 									<td>
 										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK PRESENT</a>
-										<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
+										<a href="{{ url('admin/employees/absent',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a>
 									</td>
 									<!-- @if($value->status == 0)
 									<td>
