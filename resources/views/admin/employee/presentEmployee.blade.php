@@ -109,6 +109,7 @@
                             <th>Employee Name </th>
                             <th>Employee ID </th>
                             <th>Punch-In Time </th>
+                            <th>Punch-Out Time </th>
                             <!-- <th>Punch In</th>
                             <th>Punch Out</th> -->
                             <th></th>
@@ -119,21 +120,25 @@
 						@if(isset($employeesData))
 							@foreach($employeesData as $value)
 							@php
-								if($value->id == 2){
+								//check if for current date record already exists
+									$punchin_date = date('d-m-Y');
+									$employee_id = $value->id;
+									$projectlist = DB::table('attendances')
+											->where('punch_in','=',$punchin_date)
+											->where('user_id','=',$employee_id)
+											->get();
+
+									if($projectlist[0]->status == 1 && $projectlist[0]->punchout_time == ""){
 							@endphp
-								<tr>
+							<tr>
 									<!-- <td>1</td> -->
 									<td>{{date("d-M-Y")}}</td>
 									<td>{{ $value->first_name ?? ''}}</td>
 									<td>{{ $value->employee_id ?? ''}}</td>
+									<td>{{ $projectlist[0]->punchin_time }} {{ $projectlist[0]->punchin_time_ampm }}</td>
+									<td></td>
 									<td>
-										@php
-										    date_default_timezone_set("Asia/Calcutta");   //India time (GMT+5:30)
-											echo date('h:i A');
-										@endphp
-									</td>
-									<td>
-										<a href="{{ url('admin/employees/present',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
+										<a href="{{ url('admin/employees/presentpunchout',[$projectlist[0]->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
 										<!-- <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a> -->
 									</td>
 									<!-- @if($value->status == 0)
@@ -151,7 +156,7 @@
 									@endif -->
 								</tr>
 								@php
-								 }
+										}
 								@endphp
 							@endforeach
 						@else

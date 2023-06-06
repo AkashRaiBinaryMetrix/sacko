@@ -513,6 +513,42 @@ class EmployeeController extends Controller
 																]);
 	}
 
+	public function searchPresentEmployees(Request $request)
+	{
+		$v = Validator::make($request->all(), [
+											'category_id' 			  => 'required',
+											'sub_category_id' 		  => 'required',
+											'group_category_id' 	  => 'required',
+											'shift_group_category_id' => 'required',
+											]);
+		if ($v->fails())
+		{
+		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
+		}
+
+
+		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
+		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
+		                  ->where('sub_category_id',$request->sub_category_id ?? '')
+		                  ->where('group_type',$request->group_category_id ?? '')
+		                  ->where('shift_id',$request->shift_group_category_id ?? '')
+						 
+						  ->get();
+						//   dd($request->all(),$employeesData);
+
+
+
+					Session::flash('message', 'Featch Employees Successfully !');
+		    return view('admin.employee.presentEmployee')->with([
+																	'employeesData'           => $employeesData,
+																	'category'                => $category,
+																	'category_id'             => $request->category_id,
+																	'sub_category_id'         => $request->sub_category_id,
+																	'group_category_id'       => $request->group_category_id,
+																	'shift_group_category_id' => $request->shift_group_category_id,
+																]);
+	}
+
 	public function searchAbsentEmployees(Request $request)
 	{
 		$v = Validator::make($request->all(), [
@@ -546,41 +582,83 @@ class EmployeeController extends Controller
 																]);
 	}
 
-	public function searchPresentEmployees(Request $request)
-	{
-		$v = Validator::make($request->all(), [
-											'category_id' 			  => 'required',
-											'sub_category_id' 		  => 'required',
-											'group_category_id' 	  => 'required',
-											'shift_group_category_id' => 'required',
-											]);
-		if ($v->fails())
-		{
-		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
-		}
-
-
-		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
-		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
-		                  ->where('sub_category_id',$request->sub_category_id ?? '')
-		                  ->where('group_type',$request->group_category_id ?? '')
-		                  ->where('shift_id',$request->shift_group_category_id ?? '')
-						 
-						  ->get();
-						//   dd($request->all(),$employeesData);
-					Session::flash('message', 'Featch Employees Successfully !');
-		    return view('admin.employee.presentEmployee')->with([
-																	'employeesData'           => $employeesData,
-																	'category'                => $category,
-																	'category_id'             => $request->category_id,
-																	'sub_category_id'         => $request->sub_category_id,
-																	'group_category_id'       => $request->group_category_id,
-																	'shift_group_category_id' => $request->shift_group_category_id,
-																]);
-	}
+	
 
 
 	public function present($id)
+	{
+		
+
+		$employeesData = \App\Models\User::where('id',$id)->first();
+		try 
+		{ 
+			$timestamp = time();
+
+			$offset      = 19800; //converting 5 hours to seconds.
+			$dateFormat  = "d-m-Y H:i";
+			$timeNdate   = gmdate($dateFormat, time()+$offset);
+
+			$utcDate     = date('H:i', strtotime(gmdate('r', $timestamp)));
+			$newDateTime = date('A', strtotime(gmdate('r', $timestamp)));
+			
+				$attendance                     = new \App\Models\Attendance();
+				$attendance->user_id 		  	= $employeesData->id ?? '';
+				$attendance->punchin_time 		= $utcDate ?? '';
+				$attendance->punch_in 	        = date('d-m-Y', strtotime($timeNdate)) ?? '';		
+				$attendance->punchin_time_ampm 	= $newDateTime ?? '';		
+				$attendance->status 	        = 1;		
+				$attendance->save();
+				
+			
+				Session::flash('message', 'User attendees add Successfully !');
+				return redirect('admin/admin-employee-managerbulkpunchin');
+		} 
+		catch (\Exception $e) 
+		{
+			$status 	= false;
+			$message 	= $e->getMessage();
+			return redirect('admin/sub_category/create')->withInput($request->input())->withErrors(array('message' => $message));
+		}
+	}
+
+	public function presentpunchout($id)
+	{	
+		//get user id from record
+		$projectlist = DB::table('attendances')
+											->where('id','=',$id)
+											->get();
+
+		$employeesData = \App\Models\User::where('id',$projectlist[0]->user_id)->first();
+		try 
+		{ 
+			$timestamp = time();
+
+			$offset      = 19800; //converting 5 hours to seconds.
+			$dateFormat  = "d-m-Y H:i";
+			$timeNdate   = gmdate($dateFormat, time()+$offset);
+
+			$utcDate     = date('H:i', strtotime(gmdate('r', $timestamp)));
+			$newDateTime = date('A', strtotime(gmdate('r', $timestamp)));
+
+			DB::table('attendances')
+				        ->where('id', $id)  // find your user by their email
+				        ->update(array(
+				        	'punchout_time' => $utcDate ?? '',
+				        	'punchout_time_ampm' => $newDateTime ?? ''
+				        ));  // update the record in the DB. 
+			
+			Session::flash('message', 'User attendees updated Successfully !');
+			return redirect('admin/admin-employee-presentemployee');
+		} 
+		catch (\Exception $e) 
+		{
+			$status 	= false;
+			$message 	= $e->getMessage();
+			return redirect('admin/sub_category/create')->withInput($request->input())->withErrors(array('message' => $message));
+		}
+	}
+
+	public function absent($id)
 	{
 		
 
@@ -598,10 +676,10 @@ class EmployeeController extends Controller
 			
 				$attendance                     = new \App\Models\Attendance();
 				$attendance->user_id 		  	= $employeesData->id ?? '';
-				$attendance->punchin_time 		= $utcDate ?? '';
+				$attendance->punchin_time 		= '';
 				$attendance->punch_in 	        = date('d-m-Y', strtotime($timeNdate)) ?? '';		
-				$attendance->punchin_time_ampm 	= $newDateTime ?? '';		
-				$attendance->status 	        = 1;		
+				$attendance->punchin_time_ampm 	= '';		
+				$attendance->status 	        = 0;		
 				$attendance->save();
 				
 			

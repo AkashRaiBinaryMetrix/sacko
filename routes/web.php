@@ -174,12 +174,18 @@ Route::any('editprimarybonus/{id}',[AdminMenuController::class, 'editPrimaryBonu
     Route::get('admin-employee-managerattendancelist',[EmployeeController::class, 'managerAttendanceList'])->name('admin.employee.managerattendancelist');
     
     Route::post('search/employees', [EmployeeController::class, 'searchEmployees'])->name('admin.search.employees');
+
+    Route::post('search/presentemployees', [EmployeeController::class, 'searchPresentEmployees'])->name('admin.search.employees');
     
     Route::post('search/absentmployees', [EmployeeController::class, 'searchAbsentEmployees'])->name('admin.search.absentmployees');
 
     Route::post('search/presentemployees', [EmployeeController::class, 'searchPresentEmployees'])->name('admin.search.presentemployees');
 
     Route::any('employees/present/{id}', [EmployeeController::class, 'present'])->name('admin.present');
+
+    Route::any('employees/presentpunchout/{id}', [EmployeeController::class, 'presentpunchout'])->name('admin.presentpunchout');
+
+    Route::any('employees/absent/{id}', [EmployeeController::class, 'absent'])->name('admin.present');
     
     Route::get('admin-manage-hrmportal',[DashboardController::class, 'adminManageHrmportal'])->name('admin.manage.hrmportal');
 
