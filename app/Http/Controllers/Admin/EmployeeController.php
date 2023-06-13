@@ -370,6 +370,8 @@ class EmployeeController extends Controller
         	->where('users.group_type', '=', $request->group_id)
         	->where('users.employee_type', '!=', '1')
         	->groupBy('usershifts.id')
+        	->groupBy('users.shift_id')
+        	->groupBy('usershifts.shift_title')
         	->get(['usershifts.id','usershifts.shift_title']);
 
         return response()->json($data);
@@ -515,71 +517,116 @@ class EmployeeController extends Controller
 
 	public function searchPresentEmployees(Request $request)
 	{
-		$v = Validator::make($request->all(), [
-											'category_id' 			  => 'required',
-											'sub_category_id' 		  => 'required',
-											'group_category_id' 	  => 'required',
-											'shift_group_category_id' => 'required',
-											]);
-		if ($v->fails())
-		{
-		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
-		}
+		// $v = Validator::make($request->all(), [
+		// 									'category_id' 			  => 'required',
+		// 									'sub_category_id' 		  => 'required',
+		// 									'group_category_id' 	  => 'required',
+		// 									'shift_group_category_id' => 'required',
+		// 									]);
+		// if ($v->fails())
+		// {
+		// return redirect()->back()->withInput($request->input())->withErrors($v->errors());
+		// }
 
 
 		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
-		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
-		                  ->where('sub_category_id',$request->sub_category_id ?? '')
-		                  ->where('group_type',$request->group_category_id ?? '')
-		                  ->where('shift_id',$request->shift_group_category_id ?? '')
+
+		// $employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
+		//                   ->where('sub_category_id',$request->sub_category_id ?? '')
+		//                   ->where('group_type',$request->group_category_id ?? '')
+		//                   ->where('shift_id',$request->shift_group_category_id ?? '')
 						 
-						  ->get();
+		// 				  ->get();
 						//   dd($request->all(),$employeesData);
 
 
 
 					Session::flash('message', 'Featch Employees Successfully !');
-		    return view('admin.employee.presentEmployee')->with([
+		    // return view('admin.employee.presentEmployee')->with([
+						// 											'employeesData'           => $employeesData,
+						// 											'category'                => $category,
+						// 											'category_id'             => $request->category_id,
+						// 											'sub_category_id'         => $request->sub_category_id,
+						// 											'group_category_id'       => $request->group_category_id,
+						// 											'shift_group_category_id' => $request->shift_group_category_id,
+						// 										]);
+
+					$getDate = $request->filter_date;
+					$orderdate = explode('-', $getDate);
+					$year = $orderdate[0];
+					$month   = $orderdate[1];
+					$date  = $orderdate[2];
+					$final_date = $date."-".$month."-".$year;
+
+					$employeesData = DB::table('attendances')->where('punch_in','=',$final_date)->get();
+
+
+					return view('admin.employee.presentEmployee')->with([
 																	'employeesData'           => $employeesData,
 																	'category'                => $category,
-																	'category_id'             => $request->category_id,
-																	'sub_category_id'         => $request->sub_category_id,
-																	'group_category_id'       => $request->group_category_id,
-																	'shift_group_category_id' => $request->shift_group_category_id,
+																	'category_id'             => "",
+																	'sub_category_id'         => "",
+																	'group_category_id'       => "",
+																	'shift_group_category_id' => "",
 																]);
 	}
 
 	public function searchAbsentEmployees(Request $request)
 	{
-		$v = Validator::make($request->all(), [
-											'category_id' 			  => 'required',
-											'sub_category_id' 		  => 'required',
-											'group_category_id' 	  => 'required',
-											'shift_group_category_id' => 'required',
-											]);
-		if ($v->fails())
-		{
-		return redirect()->back()->withInput($request->input())->withErrors($v->errors());
-		}
+		// $v = Validator::make($request->all(), [
+		// 									'category_id' 			  => 'required',
+		// 									'sub_category_id' 		  => 'required',
+		// 									'group_category_id' 	  => 'required',
+		// 									'shift_group_category_id' => 'required',
+		// 									]);
+		// if ($v->fails())
+		// {
+		// return redirect()->back()->withInput($request->input())->withErrors($v->errors());
+		// }
 
 
 		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
-		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
-		                  ->where('sub_category_id',$request->sub_category_id ?? '')
-		                  ->where('group_type',$request->group_category_id ?? '')
-		                  ->where('shift_id',$request->shift_group_category_id ?? '')
+
+		// $employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
+		//                   ->where('sub_category_id',$request->sub_category_id ?? '')
+		//                   ->where('group_type',$request->group_category_id ?? '')
+		//                   ->where('shift_id',$request->shift_group_category_id ?? '')
 						 
-						  ->get();
-						//   dd($request->all(),$employeesData);
+		// 				  ->get();
+
+		$getDate = $request->filter_date;
+					$orderdate = explode('-', $getDate);
+					$year = $orderdate[0];
+					$month   = $orderdate[1];
+					$date  = $orderdate[2];
+					
+					$final_date = $date."-".$month."-".$year;
+
+					$employeesData = DB::table('attendances')
+										->where('punch_in','=',$final_date)
+										->where('status','=',0)
+										->get();
+
 					Session::flash('message', 'Featch Employees Successfully !');
-		    return view('admin.employee.absentEmployee')->with([
+
+					return view('admin.employee.absentEmployee')->with([
 																	'employeesData'           => $employeesData,
 																	'category'                => $category,
-																	'category_id'             => $request->category_id,
-																	'sub_category_id'         => $request->sub_category_id,
-																	'group_category_id'       => $request->group_category_id,
-																	'shift_group_category_id' => $request->shift_group_category_id,
+																	'category_id'             => "",
+																	'sub_category_id'         => "",
+																	'group_category_id'       => "",
+																	'shift_group_category_id' => "",
 																]);
+
+
+		    // return view('admin.employee.absentEmployee')->with([
+						// 											'employeesData'           => $employeesData,
+						// 											'category'                => $category,
+						// 											'category_id'             => $request->category_id,
+						// 											'sub_category_id'         => $request->sub_category_id,
+						// 											'group_category_id'       => $request->group_category_id,
+						// 											'shift_group_category_id' => $request->shift_group_category_id,
+						// 										]);
 	}
 
 	

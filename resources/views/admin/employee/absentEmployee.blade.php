@@ -39,9 +39,18 @@
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                         	<h6 class="card-header">Absent Employees</Details></h6>
                        		<div class="card-body">
-									<div class="form-row">
-									
+									<div class="form-row">	
+
 										<div class="form-group col-md-6">
+											<label class="form-label">Select Date<span class="text-danger">*</span></label>
+										    <input type="date" class="form-control" name="filter_date" id="datepicker">
+											@if($errors->has('state_id'))
+	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
+	                                        @endif
+											<div class="clearfix"></div>
+										</div> 
+									
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.category_title')<span class="text-danger">*</span></label>
 											<select id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
 											<option value='' selected >Select</option>
@@ -55,9 +64,9 @@
 	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.subcategory_title')<span class="text-danger">*</span></label>
 											<select id="sub-dropdown" class="form-control" name="sub_category_id">
 										    </select>
@@ -65,9 +74,9 @@
 	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 										
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.select_group')<span class="text-danger">*</span></label>
 											<select id="group-dropdown" class="form-control" name="group_category_id">
 										    </select>
@@ -75,9 +84,9 @@
 	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
 											<select id="shift-dropdown" class="form-control" name="shift_group_category_id">
 										    </select>
@@ -85,7 +94,7 @@
 	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 									
 									</div>
 								
@@ -118,13 +127,17 @@
 						@if(isset($employeesData))
 							@foreach($employeesData as $value)
 							@php
-								if($value->id != 2){
+
+									$projectlist = DB::table('users')
+											->where('id','=',$value->user_id)
+											->get();
+
 							@endphp
 								<tr>
 									<!-- <td>1</td> -->
-									<td>{{date("d-M-Y")}}</td>
-									<td>{{ $value->first_name ?? ''}}</td>
-									<td>{{ $value->employee_id ?? ''}}</td>
+									<td>{{ $value->punch_in}}</td>
+									<td>{{$projectlist[0]->first_name}} {{$projectlist[0]->last_name}}</td>
+									<td>{{$projectlist[0]->employee_id}}</td>
 									<td>
 										
 									</td>
@@ -143,7 +156,7 @@
 									@endif -->
 								</tr>
 								@php
-								 }
+								
 								@endphp
 							@endforeach
 						@else

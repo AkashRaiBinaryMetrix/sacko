@@ -1,7 +1,8 @@
 @extends('admin.layouts.app')
 @section('content')
 
-
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
 <!-- [ Layout content ] Start -->
 <div class="layout-content">
 <!-- [ content ] Start -->
@@ -40,8 +41,17 @@
                         	<h6 class="card-header">Present Employees</Details></h6>
                        		<div class="card-body">
 									<div class="form-row">
-									
+
 										<div class="form-group col-md-6">
+											<label class="form-label">Select Date<span class="text-danger">*</span></label>
+										    <input type="date" class="form-control" name="filter_date" id="datepicker">
+											@if($errors->has('state_id'))
+	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
+	                                        @endif
+											<div class="clearfix"></div>
+										</div> 
+									
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.category_title')<span class="text-danger">*</span></label>
 											<select id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
 											<option value='' selected >Select</option>
@@ -55,9 +65,9 @@
 	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.subcategory_title')<span class="text-danger">*</span></label>
 											<select id="sub-dropdown" class="form-control" name="sub_category_id">
 										    </select>
@@ -65,9 +75,9 @@
 	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 										
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.select_group')<span class="text-danger">*</span></label>
 											<select id="group-dropdown" class="form-control" name="group_category_id">
 										    </select>
@@ -75,9 +85,9 @@
 	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
 											<select id="shift-dropdown" class="form-control" name="shift_group_category_id">
 										    </select>
@@ -86,7 +96,7 @@
 	                                        @endif
 											<div class="clearfix"></div>
 										</div>
-									
+									 -->
 									</div>
 								
 									<div class="text-right mt-3">
@@ -120,25 +130,20 @@
 						@if(isset($employeesData))
 							@foreach($employeesData as $value)
 							@php
-								//check if for current date record already exists
-									$punchin_date = date('d-m-Y');
-									$employee_id = $value->id;
-									$projectlist = DB::table('attendances')
-											->where('punch_in','=',$punchin_date)
-											->where('user_id','=',$employee_id)
+							$projectlist = DB::table('users')
+											->where('id','=',$value->user_id)
 											->get();
-
-									if($projectlist[0]->status == 1 && $projectlist[0]->punchout_time == ""){
+									if($value->status == 1 && $value->punchout_time == ""){
 							@endphp
 							<tr>
 									<!-- <td>1</td> -->
-									<td>{{date("d-M-Y")}}</td>
-									<td>{{ $value->first_name ?? ''}}</td>
-									<td>{{ $value->employee_id ?? ''}}</td>
-									<td>{{ $projectlist[0]->punchin_time }} {{ $projectlist[0]->punchin_time_ampm }}</td>
+									<td>{{ $value->punch_in}}</td>
+									<td>{{$projectlist[0]->first_name}} {{$projectlist[0]->last_name}}</td>
+									<td>{{$projectlist[0]->employee_id}}</td>
+									<td>{{ $value->punchin_time }} {{ $value->punchin_time_ampm }}</td>
 									<td></td>
 									<td>
-										<a href="{{ url('admin/employees/presentpunchout',[$projectlist[0]->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
+										<a href="{{ url('admin/employees/presentpunchout',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
 										<!-- <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a> -->
 									</td>
 									<!-- @if($value->status == 0)
@@ -177,7 +182,14 @@
 	</div>
 </div>
 <!-- [ content ] End -->
+ 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+  $( function() {
+    $("#datepicker").datepicker();
+  } );
+  </script>
+
 <script type="text/javascript">
 			$(document).ready(function() {
 				$('#country-dropdown').on('change', function() {
