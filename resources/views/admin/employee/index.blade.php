@@ -36,7 +36,7 @@
 						  <a style="width:78px" href="javascript:muldelete()" data-size="xl" class="btn btn-danger btn-sm mb-3 btn-round"> <i class="feather icon-trash-2"></i> Delete </a>
 					    </div>
 						<div class="col-sm-2 text-right">
-						  <a href="{{ url('admin/employee/create') }}" data-size="xl" class="btn btn-success btn-sm mb-3 btn-round"><i class="feather icon-plus"></i> Add employee </a>
+						  <a href="{{ url('admin/employee/createnew') }}" data-size="xl" class="btn btn-success btn-sm mb-3 btn-round"><i class="feather icon-plus"></i> Add employee </a>
 						</div>
 
 					</div>

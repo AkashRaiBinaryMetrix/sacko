@@ -41,29 +41,8 @@
                        		<div class="card-body">
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label class="form-label">Employee Name</label>
-										<select class="form-control mb-1" required name="emp_name" id="datepicker">
-											<option>Select</option>
-											@foreach($employeeList as $result)
-												<option value="{{$result->id}}">{{$result->first_name}}{{$result->last_name}}</option>
-											@endforeach
-										</select>
-										@if($errors->has('date_select'))
-                                        <div class="text-danger">{{ $errors->first('date_select') }}</div>
-                                        @endif
-                                        <div class="clearfix"></div>
-									</div>
-									<div class="form-group col-md-6" style="display:none;">
-										<label class="form-label">Employee ID</label>
-										<input type="readonly" class="form-control mb-1" required name="emp_id" id="datepicker"/>
-										@if($errors->has('date_select'))
-                                        <div class="text-danger">{{ $errors->first('date_select') }}</div>
-                                        @endif
-                                        <div class="clearfix"></div>
-									</div>
-									<div class="form-group col-md-6">
 										<label class="form-label">Project Id</label>
-										<select class="form-control mb-1" required name="project_id" id="datepicker">
+										<select class="form-control mb-1"  name="project_id" id="datepicker">
 											<option>Select</option>
 											@foreach($projectList as $result)
 												<option value="{{$result->id}}">{{$result->title}}</option>
@@ -74,9 +53,42 @@
                                         @endif
                                         <div class="clearfix"></div>
 									</div>
+									<div class="form-group col-md-6">
+										<label class="form-label">Category</label>
+											<select id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
+											<option value='' selected >Select</option>
+											@if ($categories->count())
+												@foreach($categories as $val)
+													<option value='{{$val->id}}' @if(old('category_id')==$val->id){{'selected="true"'}}@endif>{{$val->name}}</option>  
+												@endforeach 
+											@endif             
+										</select>
+										@if($errors->has('date_select'))
+                                        <div class="text-danger">{{ $errors->first('date_select') }}</div>
+                                        @endif
+                                        <div class="clearfix"></div>
+									</div>
+
+									<div class="form-group col-md-6">
+											<label class="form-label">@lang('message.subcategory_title')<span class="text-danger">*</span></label>
+											<select id="sub-dropdown" class="form-control" name="sub_category_id">
+										    </select>
+											@if($errors->has('state_id'))
+	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
+	                                        @endif
+											<div class="clearfix"></div>
+									</div>
+
+									<div class="form-group col-md-6">
+											<label class="form-label">Employee Name<span class="text-danger">*</span></label>
+											<select id="employee_name_fill" class="form-control" name="employee_name_fill">
+										    </select>
+											<div class="clearfix"></div>
+									</div>
+										
 									<div class="form-group col-md-6" style="display: none;">
 										<label class="form-label">Proposed Salary($)</label>
-										<input type="number" class="form-control mb-1" required name="proposed_salary" id="datepicker"/>
+										<input type="number" class="form-control mb-1"  name="proposed_salary" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -84,7 +96,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Local Currency</label>
-										<select class="form-control mb-1" required name="currency" id="datepicker">
+										<select class="form-control mb-1" name="currency" id="datepicker">
 											<option value="GNF">GNF</option>
 										</select>
 										@if($errors->has('date_select'))
@@ -94,7 +106,7 @@
 								    </div>
 								    <div class="form-group col-md-6" style="display:none;">
 										<label class="form-label">Employee Rate</label>
-										<input type="text" class="form-control mb-1" required name="employee_rate" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="employee_rate" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -102,7 +114,7 @@
 									</div>
 									<div class="form-group col-md-6" style="display:none;">
 										<label class="form-label">Monthly Hour</label>
-										<input type="text" class="form-control mb-1" required name="monthly_hour" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="monthly_hour" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -110,7 +122,7 @@
 									</div>
 									<div class="form-group col-md-6" style="display:none;">
 										<label class="form-label">Hourly rate (USD)</label>
-										<input type="text" class="form-control mb-1" required name="hourly_hour" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="hourly_hour" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -118,7 +130,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Payment(GNF)</label>
-										<input type="text" class="form-control mb-1" required name="basic_salary" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="basic_salary" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -126,7 +138,7 @@
 									</div>
 									<div class="form-group col-md-6" style="visibility:hidden;">
 										<label class="form-label">Prime d'ancienneté</label>
-										<input type="text" class="form-control mb-1" required name="prime_sal" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="prime_sal" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -134,7 +146,7 @@
 									</div>
 									<div class="form-group col-md-6" style="visibility:hidden;">
 										<label class="form-label">Prime de rendement</label>
-										<input type="text" class="form-control mb-1" required name="prime_rent" id="datepicker"/>
+										<input type="text" class="form-control mb-1"  name="prime_rent" id="datepicker"/>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -143,7 +155,8 @@
 								</div>
 							</div>
 							<div class="text-right mt-3">
-									<button type="submit" class="btn btn-primary">Save</button>&nbsp;
+									<button type="submit" name="btnSubmit" class="btn btn-primary">Save</button>
+									&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>
 							<div class="clearfix"></div>
@@ -156,4 +169,84 @@
 	</div>
 </div>
 <!-- [ content ] End -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#category-dropdown').on('change', function() {
+				//alert('HIi');
+				var idCategory = this.value;
+				$("#sub-dropdown").html('');
+				$.ajax({
+					url:"{{url('admin/subcategory-by-category')}}",
+					type: "POST",
+					data: {
+						category_id: idCategory,
+						_token: '{{csrf_token()}}'
+					},
+					dataType : 'json',
+					success: function(result){
+						$('#sub-dropdown').html('<option value="">Select Sub Category</option>'); 
+						$.each(result.subCategory, function(key, value){
+							$("#sub-dropdown").append('<option value="' + value
+						.id + '">' + value.name + '</option>');
+					});
+				}
+			});
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#sub-dropdown').on('change', function() {
+				//alert('HIi');
+				var idCategory = this.value;
+				$("#employee_name_fill").html('');
+				$.ajax({
+					url:"{{url('admin/group-by-category-subcat')}}",
+					type: "POST",
+					data: {
+						category_id: $('#category-dropdown').val(),
+						subcategory_id: idCategory,
+						_token: '{{csrf_token()}}'
+					},
+					dataType : 'json',
+					success: function(result){
+						$('#employee_name_fill').html('<option value="">Select Employee</option>'); 
+						$.each(result.subCategory, function(key, value){
+							$("#employee_name_fill").append('<option value="' + value
+						.id + '">' + value.first_name + '</option>');
+					});
+				}
+			});
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#group-dropdown').on('change', function() {
+				var idCategory = this.value;
+				$("#shift-dropdown").html('');
+				$.ajax({
+					url:"{{url('admin/shift-group-by-category-subcat')}}",
+					type: "POST",
+					data: {
+						category_id: $('#category-dropdown').val(),
+						sub_category_id: $('#sub-dropdown').val(),
+						group_id: idCategory,
+						_token: '{{csrf_token()}}'
+					},
+					dataType : 'json',
+					success: function(result){
+						$('#shift-dropdown').html('<option value="">Select Shift</option>'); 
+						$.each(result.subCategory, function(key, value){
+							$("#shift-dropdown").append('<option value="' + value
+						.id + '">' + value.shift_title + '</option>');
+					});
+				}
+			});
+		});
+	});
+</script>
 @endsection

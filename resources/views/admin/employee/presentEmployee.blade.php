@@ -118,6 +118,7 @@
                             <th>Date </th>
                             <th>Employee Name </th>
                             <th>Employee ID </th>
+                            <th>Role</th>
                             <th>Punch-In Time </th>
                             <th>Punch-Out Time </th>
                             <!-- <th>Punch In</th>
@@ -130,18 +131,32 @@
 						@if(isset($employeesData))
 							@foreach($employeesData as $value)
 							@php
+							
 							$projectlist = DB::table('users')
 											->where('id','=',$value->user_id)
 											->get();
-									if($value->status == 1 && $value->punchout_time == ""){
+
+							if($value->status == 1 && $value->punchout_time == ""){
+
+							  $employeeType = DB::table('users')
+								->where('employee_id','=',$projectlist[0]->employee_id)
+								->get();
+
+								if($employeeType[0]->employee_type == "0"){
+									$employee_type = "Team Leader";
+								}else{
+									$employee_type = "Manager";
+								}
+
 							@endphp
 							<tr>
 									<!-- <td>1</td> -->
 									<td>{{ $value->punch_in}}</td>
 									<td>{{$projectlist[0]->first_name}} {{$projectlist[0]->last_name}}</td>
 									<td>{{$projectlist[0]->employee_id}}</td>
+									<td>{{$employee_type}}</td>
 									<td>{{ $value->punchin_time }} {{ $value->punchin_time_ampm }}</td>
-									<td></td>
+									<td>{{ $value->punchout_time }} {{ $value->punchout_time_ampm }}</td>
 									<td>
 										<a href="{{ url('admin/employees/presentpunchout',[$value->id]) }}" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> PUNCh OUT</a>
 										<!-- <a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-bookmark"></span> MARK ABSENT</a> -->

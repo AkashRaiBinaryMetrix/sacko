@@ -117,6 +117,7 @@
                             <th>Date </th>
                             <th>Employee Name </th>
                             <th>Employee ID </th>
+                            <th>Role</th>
                             <!-- <th>Punch In</th>
                             <th>Punch Out</th> -->
                             <th></th>
@@ -132,6 +133,16 @@
 											->where('id','=',$value->user_id)
 											->get();
 
+							  $employeeType = DB::table('users')
+								->where('employee_id','=',$projectlist[0]->employee_id)
+								->get();
+
+								if($employeeType[0]->employee_type == "0"){
+									$employee_type = "Team Leader";
+								}else{
+									$employee_type = "Manager";
+								}
+
 							@endphp
 								<tr>
 									<!-- <td>1</td> -->
@@ -139,7 +150,7 @@
 									<td>{{$projectlist[0]->first_name}} {{$projectlist[0]->last_name}}</td>
 									<td>{{$projectlist[0]->employee_id}}</td>
 									<td>
-										
+										{{$employee_type}}
 									</td>
 									<!-- @if($value->status == 0)
 									<td>

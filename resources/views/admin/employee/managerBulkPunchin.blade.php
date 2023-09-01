@@ -67,7 +67,7 @@
 											<div class="clearfix"></div>
 										</div>
 										
-										<div class="form-group col-md-6">
+										<!-- <div class="form-group col-md-6">
 											<label class="form-label">@lang('message.select_group')<span class="text-danger">*</span></label>
 											<select id="group-dropdown" class="form-control" name="group_category_id">
 										    </select>
@@ -75,7 +75,7 @@
 	                                        <div class="text-danger">{{ $errors->first('city_id') }}</div>
 	                                        @endif
 											<div class="clearfix"></div>
-										</div>
+										</div> -->
 
 										<div class="form-group col-md-6">
 											<label class="form-label">@lang('message.project_shift')<span class="text-danger">*</span></label>
@@ -249,7 +249,7 @@
 			$('#sub-dropdown').on('change', function() {
 				//alert('HIi');
 				var idCategory = this.value;
-				$("#group-dropdown").html('');
+				$("#shift-dropdown").html('');
 				$.ajax({
 					url:"{{url('admin/group-by-category-subcat')}}",
 					type: "POST",
@@ -259,11 +259,11 @@
 						_token: '{{csrf_token()}}'
 					},
 					dataType : 'json',
-					success: function(result){
-						$('#group-dropdown').html('<option value="">Select Group</option>'); 
+						success: function(result){
+						$('#shift-dropdown').html('<option value="">Select Shift</option>'); 
 						$.each(result.subCategory, function(key, value){
-							$("#group-dropdown").append('<option value="' + value
-						.group_type + '">' + value.group_type + '</option>');
+							$("#shift-dropdown").append('<option value="' + value
+						.id + '">' + value.shift_title + '</option>');
 					});
 				}
 			});
