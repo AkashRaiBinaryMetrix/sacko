@@ -18,7 +18,7 @@
 				<div class="card-body">
 				<form class="" id="sort_customers" action="" method="GET" autocomplete="off">
 					<div class="row align-items-center m-l-0">
-						<div class="col-sm-3 text-right mb-4">
+						<!-- <div class="col-sm-3 text-right mb-4">
 						<input type="text"  class="form-control employee-input" placeholder="Employee ID/Name" name="txt_search" id="txt_search" @if(!empty( $_GET['txt_search']))value="{{$_GET['txt_search']}}" @endif >
 						</div>
 						<div class="col-sm-2 text-right ">
@@ -26,15 +26,15 @@
 						</div>
 						<div class="col-sm-1 text-right">
 							<a href="{{ route('admin.employee.index') }}" class="btn btn-info btn-sm mb-3 btn-round"> {{__('Reset')}}</a>
-						</div>
+						</div> -->
 					    
-						<div class="col-sm-1 text-center">
+					<!-- 	<div class="col-sm-1 text-center">
 						  <a href="{{ url('admin/employee/export') }}" data-size="xl" class="btn btn-warning btn-sm mb-3 btn-round">Export</a>
-						</div>
+						</div> -->
 						
-						<div class="col-sm-2 text-center">
+						<!-- <div class="col-sm-2 text-center">
 						  <a style="width:78px" href="javascript:muldelete()" data-size="xl" class="btn btn-danger btn-sm mb-3 btn-round"> <i class="feather icon-trash-2"></i> Delete </a>
-					    </div>
+					    </div> -->
 						<div class="col-sm-2 text-right">
 						  <a href="{{ url('admin/employee/createnew') }}" data-size="xl" class="btn btn-success btn-sm mb-3 btn-round"><i class="feather icon-plus"></i> Add employee </a>
 						</div>
@@ -95,7 +95,10 @@
 											@if($val->status=='1')<span class="badge badge-success">Active</span>@else<span class="badge badge-danger">InActive</span>@endif
 										</td>
 										<td>
-											<a data-size="lg"  class="btn btn-icon btn-outline-success" data-toggle="tooltip" title="Edit" href="{{ url('admin/employee/edit',$val->id) }}">
+											<!-- <a data-size="lg"  class="btn btn-icon btn-outline-success" data-toggle="tooltip" title="Edit" href="{{ url('admin/employee/edit',$val->id) }}">
+												<i class="feather icon-edit"></i>
+											</a> -->
+											<a data-size="lg"  class="btn btn-icon btn-outline-success" data-toggle="tooltip" title="Edit" href="{{ url('admin/employee/editnew',$val->id) }}">
 												<i class="feather icon-edit"></i>
 											</a>
 											<a data-size="lg"  class="btn btn-icon btn-outline-primary" data-toggle="tooltip" title="View" href="{{ url('admin/employee/view',$val->id) }}">
