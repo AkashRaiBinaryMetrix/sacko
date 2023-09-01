@@ -63,6 +63,23 @@ class EmployeeController extends Controller
 		return view('admin.employee.create', compact(['project_details','usershifts','countries', 'states', 'cities', 'department', 'idType', 'category', 'subCategory']));
     }
 
+    public function createNew(Request $request)
+    {
+        $countries 		= \App\Models\Country::get(["name", "id"]);
+        $states 		= \App\Models\State::where("country_id",$request->country_id)->get(["name", "id"]);
+        $cities 		= \App\Models\City::where("state_id",$request->state_id)->get(["name", "id"]);
+		$department	 	= \App\Models\Department::select('*')->where('status', '1')->get();
+		$idType		 	= \App\Models\IdType::select('*')->where('status', '1')->get();
+		$category 	 	= \App\Models\Category::select('id','name')->where('status','1')->get();
+        $subCategory 	= \App\Models\SubCategory::where("category_id",$request->category_id)->get(["name", "id"]);
+		$hierarchy 		= \App\Models\User::select('id','hierarchy_id')->where('department_id', $request->department_id)->get();
+
+		$project_details = DB::table('projects')->get();
+		$usershifts = DB::table('usershifts')->get();
+
+		return view('admin.employee.createNew', compact(['project_details','usershifts','countries', 'states', 'cities', 'department', 'idType', 'category', 'subCategory']));
+    }
+
 	public function store(Request $request)
     {	
         $v = Validator::make($request->all(), [
@@ -351,12 +368,25 @@ class EmployeeController extends Controller
 
     public function getGroupSubCategory(Request $request)
     {
-        $data['subCategory'] = DB::table('users')
-        						->where('category_id', '=', $request->category_id)
-        						->where('sub_category_id', '=', $request->subcategory_id)
-        						->where('employee_type', '!=', '1')
-        						->groupBy('group_type')
-        						->get(["group_type"]);
+        // $data['subCategory'] = DB::table('users')
+        // 						->where('category_id', '=', $request->category_id)
+        // 						->where('sub_category_id', '=', $request->subcategory_id)
+        // 						->where('employee_type', '!=', '1')
+        // 						->get();
+
+        $data['subCategory'] =  DB::table('users')
+			->select('users.shift_id','usershifts.id','usershifts.shift_title')
+			->join('usershifts','usershifts.id','=','users.shift_id')
+			->where('users.category_id', '=', $request->category_id)
+        	->where('users.sub_category_id', '=', $request->subcategory_id)
+        	//->where('users.group_type', '=', $request->group_id)
+        	->where('users.employee_type', '!=', '1')
+        	->groupBy('usershifts.id')
+        	->groupBy('users.shift_id')
+        	->groupBy('usershifts.shift_title')
+        	->get(['usershifts.id','usershifts.shift_title']);
+
+
         return response()->json($data);
     }
 
@@ -487,7 +517,7 @@ class EmployeeController extends Controller
 		$v = Validator::make($request->all(), [
 											'category_id' 			  => 'required',
 											'sub_category_id' 		  => 'required',
-											'group_category_id' 	  => 'required',
+											//'group_category_id' 	  => 'required',
 											'shift_group_category_id' => 'required',
 											]);
 		if ($v->fails())
@@ -499,7 +529,7 @@ class EmployeeController extends Controller
 		$category 	   = \App\Models\Category::select('id','name')->where('status','1')->get();
 		$employeesData = \App\Models\User::where('category_id',$request->category_id ?? '')
 		                  ->where('sub_category_id',$request->sub_category_id ?? '')
-		                  ->where('group_type',$request->group_category_id ?? '')
+		                  //->where('group_type',$request->group_category_id ?? '')
 		                  ->where('shift_id',$request->shift_group_category_id ?? '')
 						 
 						  ->get();

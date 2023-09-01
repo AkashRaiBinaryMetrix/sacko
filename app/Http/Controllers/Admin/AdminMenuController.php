@@ -542,8 +542,8 @@ class AdminMenuController extends Controller
         
          DB::table('save_salary')->insert(
              array(
-                    'emp_name'                       => $request->emp_name,
-                    'emp_id'                         => $request->emp_id,
+                    'emp_name'                       => $request->employee_name_fill,
+                    'emp_id'                         => $request->employee_name_fill,
                     'project_id'                     => $request->project_id,
                     'proposed_salary'                => "",
                     'currency'                       => $request->currency,

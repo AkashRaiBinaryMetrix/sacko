@@ -11,9 +11,6 @@
 		</a>
 	</div>
 	<br/><br/>
-
-	
-
 	<div class="sidenav-divider mt-0"></div>
 	<!-- Links -->
 	<ul class="sidenav-inner py-1">
@@ -26,6 +23,9 @@
 		</li>
 		@if(is_object(getMenu(Auth::user()->role_id)))
 		@foreach(getMenu(Auth::user()->role_id) as $val)
+		@php
+			if($val->name != "Attendance Management"){
+		@endphp
 		<li class="sidenav-item">
             <a href="javascript:" class="sidenav-link sidenav-toggle">
             <i class="{{$val->icon}}"></i>
@@ -44,7 +44,6 @@
                         	<div>
                         		{{$sub->name}}
                         	</div>
-                       
                     </a>
                 </li>
                  @php
@@ -53,9 +52,11 @@
 				@endforeach
             </ul>
         </li>
+        @php
+         }
+        @endphp
 		@endforeach
 		@endif
-
 		<!--Admin Menus-->
 		@php
 			if(Auth::user()->role_id == 1){
@@ -63,37 +64,6 @@
 		<ul class="sidenav-inner py-1">
 			<!-- Dashboards -->
 			<li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Leaves Management</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	                <li class="sidenav-item">
-	                    <a href="{{route($sub->url)}}" class="sidenav-link">
-	                        <div>Leave List</div>
-	                    </a>
-	                </li>
-	            </ul>
-	        </li>
-	        <!-- <li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="{{$val->icon}}"></i>
-	                <div>Manage Shift</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	                <li class="sidenav-item">
-	                    <a href="{{ route('admin.manage.managecreateshift') }}" class="sidenav-link">
-	                        <div>Create Shift</div>
-	                    </a>
-	                </li>
-	                <li class="sidenav-item">
-	                    <a href="{{ route('admin.manage.manageshiftlist') }}" class="sidenav-link">
-	                        <div>View Shifts</div>
-	                    </a>
-	                </li>
-	            </ul>
-	        </li> -->
-	        <li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
 	            <i class="sidenav-icon feather icon-home"></i>
 	                <div>Projects Management</div>
@@ -114,7 +84,47 @@
 	        <li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
 	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Payroll Management</div>
+	                <div>Employee Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	            	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.index') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>Add Employee</div>
+						</a>
+					</li>
+	               <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.index') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View/Edit Employees</div>
+						</a>
+					</li>
+	            </ul>
+	    	</li>
+	    	<li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Fleet Management</div>
+	            </a>
+	            <ul class="sidenav-menu">
+	            	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.index') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>Add Vehicle</div>
+						</a>
+					</li>
+	               <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+						<a href="{{ route('admin.employee.index') }}" class="sidenav-link">
+							<i class="sidenav-icon feather icon-home"></i>
+							<div>View/Edit Vehicles</div>
+						</a>
+					</li>
+	            </ul>
+	    	</li>
+	    	<li class="sidenav-item">
+	            <a href="javascript:" class="sidenav-link sidenav-toggle">
+	            <i class="sidenav-icon feather icon-home"></i>
+	                <div>Payment Management</div>
 	            </a>
 	            <ul class="sidenav-menu">
 	                <li class="sidenav-item">
@@ -143,18 +153,23 @@
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
-	                    <a href="{{ route('admin.manage.managesalaryadmin') }}" class="sidenav-link">
-	                        <div>Add Payroll</div>
-	                    </a>
-	                </li>
-	                 <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.advancepayment') }}" class="sidenav-link">
 	                        <div>Advance Payment</div>
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managesalaryadmin') }}" class="sidenav-link">
+	                        <div>Add Payroll</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.managesalarylisting') }}" class="sidenav-link">
 	                        <div>Payroll Listing</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.managesalarylisting') }}" class="sidenav-link">
+	                        <div>Generate Payslip</div>
 	                    </a>
 	                </li>
 	            </ul>
@@ -164,105 +179,6 @@
 		 }
 		@endphp
 		<!--Admin Menus-->
-
-		<!--Manager Menus-->
-		@php
-			if(Auth::user()->role_id == 2){
-		@endphp
-		<li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Attendance Management</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	               <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.managerbulkpunchin') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>Bulk Punch-In</div>
-						</a>
-					</li>
-					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.presentemployee') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>View Present Employees</div>
-						</a>
-					</li>
-					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.absentemployee') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>View Absent Employees</div>
-						</a>
-					</li>
-					 <!-- <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.managerattendancelist') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>Attendance List</div>
-						</a>
-					</li> -->
-	            </ul>
-	    </li>
-		@php
-		 }
-		@endphp
-		<!--Manager Menus-->
-
-        <!--Employee Menus-->
-		@php
-			if(Auth::user()->role_id == 3){
-		@endphp
-		<li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Leaves Management</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	               <li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.applyleave') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>Apply Leave</div>
-						</a>
-					</li>
-					<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.leavelist') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>View Leave List</div>
-						</a>
-					</li>
-	            </ul>
-	    </li>
-	    <li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Projects Management</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	               	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.projectlist') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>View Projects</div>
-						</a>
-					</li>
-	            </ul>
-	    </li>
-	    <li class="sidenav-item">
-	            <a href="javascript:" class="sidenav-link sidenav-toggle">
-	            <i class="sidenav-icon feather icon-home"></i>
-	                <div>Projects Management</div>
-	            </a>
-	            <ul class="sidenav-menu">
-	               	<li class="sidenav-item {{ Request::is('dashboard') ? 'active' : '' }}">
-						<a href="{{ route('admin.employee.projectlist') }}" class="sidenav-link">
-							<i class="sidenav-icon feather icon-home"></i>
-							<div>View Projects</div>
-						</a>
-					</li>
-	            </ul>
-	    </li>
-		@php
-		 }
-		@endphp
-		<!--Employee Menus-->
-
 	</ul>
 </div>
 <!-- [ Layout sidenav ] End -->

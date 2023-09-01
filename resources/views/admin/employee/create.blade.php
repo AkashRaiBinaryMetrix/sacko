@@ -184,7 +184,7 @@
 									</div>
 									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.group_type')</label>
-										<select class="form-control select2 select2-hidden-accessible" name="group_type" required>                       
+										<select class="form-control select2 select2-hidden-accessible" name="group_type">                       
 											<option value=''>Select</option>
 											<option value='Group A'>Group A</option>
 											<option value='Group B'>Group B</option>
