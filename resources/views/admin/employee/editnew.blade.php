@@ -70,12 +70,12 @@ h2{
 <div class="layout-content">
 <!-- [ content ] Start -->
 <div class="container-fluid flex-grow-1 container-p-y">
-    <h4 class="font-weight-bold py-3 mb-0">@lang('message.create_employee')</h4>
+    <h4 class="font-weight-bold py-3 mb-0">@lang('message.edit_employee')</h4>
     <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.employee.index') }}">@lang('message.employee')</a></li>
-            <li class="breadcrumb-item active">@lang('message.create_employee')</li>
+            <li class="breadcrumb-item active">@lang('message.edit_employee')</li>
         </ol>
     </div>
     <div class="row">
@@ -104,7 +104,8 @@ h2{
 
 
 
-                    	<form role="form" action="{{ url('admin/employee/storenew') }}" method="POST" enctype="multipart/form-data" autocomplete="off"> 
+                    	<form role="form" action="{{ url('admin/employee/updatenew',$employee->id) }}" method="POST" enctype="multipart/form-data">
+                    	  
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                         	<h6 class="card-header">@lang('message.employee_details')
 
@@ -120,13 +121,18 @@ h2{
 								  <label class="tab" id="four-tab" for="four">ACTIVATION</label>
 								  </div>
 								  <div class="panels" style="max-width: 939px !important;box-shadow: none !important;">
+								  
 								  <!--Personal-->
 								  <div class="panel" id="one-panel">
 								    <div class="panel-title">PERSONAL INFORMATION</div>
 								    <div class="form-row">
 									<div class="form-group col-md-4">
+										@php
+										 //echo "<pre>";
+										 //print_r($employee);
+										@endphp
 										<label class="form-label">@lang('message.first_name')<span class="text-danger">*</span></label>
-										<input type="text" class="form-control" name="first_name" placeholder="First Name" required value="{{old('first_name')}}">
+										<input type="text" class="form-control" name="first_name" placeholder="First Name" required value="{{$employee->first_name}}">
                                         @if($errors->has('first_name'))
                                         <div class="text-danger">{{ $errors->first('first_name') }}</div>
                                         @endif
@@ -134,7 +140,7 @@ h2{
 									</div>
 									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.middle_name') </label>
-										<input type="text"  class="form-control" name="middle_name" placeholder="Middle Name" value="{{old('middle_name')}}">
+										<input type="text"  class="form-control" name="middle_name" placeholder="Middle Name" value="{{$employee->middle_name}}">
                                         @if($errors->has('middle_name'))
                                         <div class="text-danger">{{ $errors->first('middle_name') }}</div>
                                         @endif
@@ -142,7 +148,7 @@ h2{
 									 </div>
 									 <div class="form-group col-md-4">
 										<label class="form-label">@lang('message.last_name')<span class="text-danger">*</span> </label>
-										<input type="text"  class="form-control" name="last_name" placeholder="Last Name" required value="{{old('last_name')}}">
+										<input type="text"  class="form-control" name="last_name" placeholder="Last Name" required value="{{$employee->last_name}}">
                                         @if($errors->has('last_name'))
                                         <div class="text-danger">{{ $errors->first('last_name') }}</div>
                                         @endif
@@ -152,7 +158,7 @@ h2{
 								 <div class="form-row">
 								 	<div class="form-group col-md-6">
 										<label class="form-label">DOB<span class="text-danger">*</span> </label>
-										<input type="date"  class="form-control" name="date_of_birth" required value="{{old('date_of_birth')}}">
+										<input type="date"  class="form-control" name="date_of_birth" required value="{{$employee->date_of_birth}}">
                                         @if($errors->has('date_of_birth'))
                                         <div class="text-danger">{{ $errors->first('date_of_birth') }}</div>
                                         @endif
@@ -160,14 +166,14 @@ h2{
 									 </div>
 									 <div class="form-group col-md-6">
 										<label class="form-label">Place of birth<span class="text-danger">*</span> </label>
-										<input type="text"  class="form-control" name="place_of_birth" required>
+										<input type="text"  class="form-control" name="place_of_birth" value="{{$employee->place_of_birth}}" required>
 										<div class="clearfix"></div>
 									 </div>
 								  </div>
 								  <div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.nationality')<span class="text-danger">*</span> </label>
-										<input type="text"  class="form-control" name="nationality" placeholder="Enter Nationality" required value="{{old('nationality')}}">
+										<input type="text"  class="form-control" name="nationality" placeholder="Enter Nationality" required value="{{$employee->nationality}}">
                                         @if($errors->has('nationality'))
                                         <div class="text-danger">{{ $errors->first('nationality') }}</div>
                                         @endif
@@ -175,7 +181,7 @@ h2{
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Current Address<span class="text-danger">*</span></label>
-										<textarea type="text"  class="form-control" name="current_address" placeholder="Enter Current Address" required></textarea>
+										<textarea type="text"  class="form-control" name="current_address" placeholder="Enter Current Address" required>{{$employee->current_address}}</textarea>
 										<div class="clearfix"></div>
 									</div>
 									<div class="form-group col-md-4">
@@ -184,7 +190,7 @@ h2{
 											<option value="">Select</option>
 											@if ($countries->count())
 												@foreach ($countries as $country)
-													<option value="{{ $country->id }}">{{ $country->name }}</option>
+													<option value="{{ $country->id }}" {{ $employee->country_id == $country->id ? 'selected' : ''}}>{{ $country->name }}</option>
 												@endforeach
 											@endif
 										</select>
@@ -196,6 +202,12 @@ h2{
 									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.state')<span class="text-danger">*</span></label>
 										<select id="state-dropdown" name="state_id" class="form-control" required>
+											<option value="">Select</option>
+											@if ($state_name->count())
+											@foreach ($state_name as $state)
+												<option value="{{ $state->id }}" {{ ($employee->state_id==$state->id) ? 'selected' : ''}}>{{ $state->name }}</option>
+											@endforeach
+										@endif
 										</select>
 										@if($errors->has('state_id'))
                                         <div class="text-danger">{{ $errors->first('state_id') }}</div>
@@ -204,8 +216,14 @@ h2{
 									</div>
 									<div class="form-group col-md-4">
 										<label class="form-label">@lang('message.city')<span class="text-danger">*</span></label>
-										<select id="city-dropdown" name="city_id" class="form-control" required>				 
-									  </select>
+										<select id="city-dropdown" name="city_id" class="form-control" required>	
+											<option value="">Select</option>
+											@if ($city_name->count())
+											@foreach ($city_name as $data)
+											<option value="{{$data->id}}" {{ ($employee->city_id==$data->id) ? 'selected' : ''}}>{{$data->name}}</option>
+											@endforeach
+											@endif					 
+									    </select>
                                         @if($errors->has('city_id'))
                                         <div class="text-danger">{{ $errors->first('city_id') }}</div>
                                         @endif
@@ -217,7 +235,7 @@ h2{
 											<option value="">Select</option>
 											@if ($idType->count())
 												@foreach ($idType as $val)
-													<option value="{{ $val->id }}">{{ $val->name }}</option>
+													<option value="{{ $val->id }}" {{ $employee->id_type_id == $val->id ? 'selected' : ''}}>{{ $val->name }}</option>
 												@endforeach
 											@endif
 										</select>
@@ -228,7 +246,7 @@ h2{
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.id_reference')</label>
-										<input type="text" class="form-control" name="id_reference" required value="{{old('id_reference')}}">
+										<input type="text" class="form-control" name="id_reference" required value="{{$employee->id_reference}}">
                                         @if($errors->has('id_reference'))
                                         <div class="text-danger">{{ $errors->first('id_reference') }}</div>
                                         @endif
@@ -252,7 +270,7 @@ h2{
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">@lang('message.mobile')<span class="text-danger">*</span></label>
-										<input type="number"  class="form-control" maxlength="10" name="mobile" placeholder="Employee Mobile" required value="{{old('mobile')}}">
+										<input type="number"  class="form-control" maxlength="10" name="mobile" placeholder="Employee Mobile" required value="{{$employee->mobile}}">
                                         @if($errors->has('mobile'))
                                         <div class="text-danger">{{ $errors->first('mobile') }}</div>
                                         @endif
@@ -261,38 +279,38 @@ h2{
 								  </div>
 								  <div class="form-group col-md-6">
 										<label class="form-label">Email<span class="text-danger">*</span></label>
-										<input type="email"  class="form-control" name="email" placeholder="Employee Email" required>
+										<input type="email"  class="form-control" name="email" placeholder="Employee Email" value="{{$employee->email}}" required>
 										<div class="clearfix"></div>
 								  </div>
 								   <div class="form-row">
 								  	<label class="form-label">Next of King.<span class="text-danger">*</span></label>
 								  	<div class="form-group col-md-6">
 										<label class="form-label" style="margin-top: 22px;margin-left: -84px;">Name<span class="text-danger">*</span></label>
-										<input type="text"  class="form-control" name="king_name" placeholder="Name" required style="margin-left: -82px;">
+										<input type="text"  class="form-control" name="king_name" placeholder="Name" required style="margin-left: -82px;" value="{{$employee->king_name}}">
 										<div class="clearfix"></div>
 								   </div>
 								   <div class="form-group col-md-6">
 										<label class="form-label">Address<span class="text-danger">*</span></label>
-										<input type="text"  class="form-control" name="king_address" placeholder="Address" required>
+										<input type="text"  class="form-control" name="king_address" placeholder="Address" value="{{$employee->king_address}}" required>
 										<div class="clearfix"></div>
 								   </div>
 								   <div class="form-group col-md-6">
 										<label class="form-label">Phone Number<span class="text-danger">*</span></label>
-										<input maxlength="10" type="number"  class="form-control" name="king_number" placeholder="Phone Number" required>
+										<input maxlength="10" type="number"  class="form-control" name="king_number" placeholder="Phone Number" value="{{$employee->king_number}}" required>
 										<div class="clearfix"></div>
 								   </div>
 								   <div class="form-group col-md-6">
 										<label class="form-label">Marital Status</label>
 										<select  required class="form-control" name="marital_status" >
 											<option value="">Select</option>
-											<option value="Single">Single</option>
-											<option value="Married">Married</option>
+											<option value="Single" {{ $employee->marital_status == 'Single' ? 'selected' : ''}}>Single</option>
+											<option value="Married" {{ $employee->marital_status == 'Married' ? 'selected' : ''}}>Married</option>
 										</select>
 										<div class="clearfix"></div>
 								  </div>
 								  <div class="form-group col-md-6">
 										<label class="form-label">Number of Dependent</label>
-										<input type="number"  class="form-control" name="number_of_dependent" placeholder="Number of Dependent" required>
+										<input type="number"  class="form-control" name="number_of_dependent" placeholder="Number of Dependent" value="{{$employee->number_of_dependent}}" required>
 										<div class="clearfix"></div>
 								  </div>
 								  </div>
@@ -303,7 +321,7 @@ h2{
 								   <div class="panel" id="three-panel">Please complete personal information</div>
 								   <div class="panel" id="four-panel">Please complete personal information</div>
 
-								  <button>Save</button>
+								  <button>Update</button>
 								  </div>
 							</div>
 

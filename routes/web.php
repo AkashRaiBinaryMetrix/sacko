@@ -111,8 +111,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
 
     Route::post('employee/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
+
+    Route::post('employee/storenew', [EmployeeController::class, 'storenew'])->name('admin.employee.storenew');
+
     Route::get('employee/edit/{slug?}',[EmployeeController::class, 'edit']);
+
+    Route::get('employee/editnew/{slug?}',[EmployeeController::class, 'editnew']);
+
     Route::post('employee/update/{slug?}',[EmployeeController::class, 'update']);
+
+    Route::post('employee/updatenew/{slug?}',[EmployeeController::class, 'updatenew']);
+
     Route::post('employee/assignUpdate',[EmployeeController::class, 'assignUpdate']);
 	Route::get('employee/view/{slug?}',[EmployeeController::class, 'view']);
     Route::post('employee/delete',[EmployeeController::class, 'delete']);

@@ -197,6 +197,82 @@ class EmployeeController extends Controller
         }   
     }
 
+    public function storenew(Request $request)
+    {	
+			try 
+			{
+                $employee                 		  = new \App\Models\User();
+
+                $targetUser	= 'storage/uploads/employee/';
+				$image		= $request->file('image');    
+				if(!empty($image))
+				{				  
+					$headerImageName	=$image->getClientOriginalName();
+					$ext1				=$image->getClientOriginalExtension();				
+					$temp1				=explode(".",$headerImageName);				 
+					$newHeaderLogo		='image'.round(microtime(true)).".".end($temp1);				 
+					$headerTarget		=$targetUser.$newHeaderLogo;
+					$image->move($targetUser,$newHeaderLogo);
+				}
+				else
+				{
+					$headerTarget				  = '';
+				}
+
+				$target            		= 'storage/uploads/employee/';
+				$employeeId     		= $request->file('id_upload');                
+				if(!empty($employeeId))
+				{
+					$headerImageName	= $employeeId->getClientOriginalName();
+					$ext1				= $employeeId->getClientOriginalExtension();
+					$temp1				= explode(".",$headerImageName);					
+					$newHeaderLogo		= 'employee'.round(microtime(true)).".".end($temp1);				
+					$headerTarget		= 'storage/uploads/employee/'.$newHeaderLogo;
+					$employeeId->move($target,$newHeaderLogo);	
+				} 
+				else
+				{
+					$headerTarget				  = '';
+				}
+
+                //personal information
+                $employee->first_name 		  	  = $request['first_name'];
+				$employee->middle_name 		  	  = $request['middle_name'];
+				$employee->last_name 		  	  = $request['last_name'];
+				$employee->date_of_birth		  = $request['date_of_birth'];
+				$employee->place_of_birth 		  = $request['place_of_birth'];
+				$employee->nationality    		  = $request['nationality'];
+				$employee->current_address        = $request['current_address'];
+				$employee->country_id     		  = $request['country_id'];
+                $employee->state_id       		  = $request['state_id'];
+                $employee->city_id        		  = $request['city_id'];
+                $employee->id_type_id    	  	  = $request['id_type_id'];
+                $employee->id_reference     	  = $request['id_reference'];
+                $employee->id_upload	      	  = $headerTarget;
+                $employee->image	      		  = $headerTarget;
+                $employee->mobile 	      		  = $request['mobile'];
+                $employee->email 	      		  = $request['email'];
+                $employee->marital_status 		  = $request['marital_status'];
+                $employee->king_name 		      = $request['king_name'];
+                $employee->king_address 		  = $request['king_address'];
+                $employee->king_number 		      = $request['king_number'];
+                $employee->number_of_dependent 	  = $request['number_of_dependent'];
+                $employee->role_id 	      		  = '3';
+                //personal information
+
+                $employee->save();
+
+				Session::flash('message', 'Employee created Successfully  !');
+				return redirect('admin/employee/editnew/'.$employee->id);
+			} 
+			catch (\Exception $e) 
+			{
+				$status 	= false;
+				$message 	= $e->getMessage();
+				return redirect('admin/employee/createnew')->withInput($request->input())->withErrors(array('message' => $message));
+			}
+    }
+
 	public function edit(Request $request, $id='')
     {
         $employee 	        = \App\Models\User::find($id); 
@@ -215,6 +291,26 @@ class EmployeeController extends Controller
 		$usershifts = DB::table('usershifts')->get();
 
 		return view('admin.employee.edit', compact(['project_details','usershifts','employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
+    }
+
+    public function editnew(Request $request, $id='')
+    {
+        $employee 	        = \App\Models\User::find($id); 
+        $countries         	= \App\Models\Country::get(["name", "id"]);
+        $state_name         = \App\Models\State::get(["name", "id"]);
+        $city_name         	= \App\Models\City::get(["name", "id"]);
+        $states          	= \App\Models\State::where("country_id",$request->country_id)->get(["name", "id"]);
+        $cities          	= \App\Models\City::where("state_id",$request->state_id)->get(["name", "id"]);
+        $department			= \App\Models\Department::select('*')->where('status', '1')->get();
+		$idType				= \App\Models\IdType::select('*')->where('status', '1')->get();
+		$category 	 		= \App\Models\Category::select('id','name')->where('status','1')->get();
+        $sub_category_name	= \App\Models\SubCategory::where("category_id",$employee->category_id)->get(["name", "id"]);
+		$hierarchy_name		= \App\Models\User::get(["first_name","last_name", "id"]);
+
+		$project_details = DB::table('projects')->get();
+		$usershifts = DB::table('usershifts')->get();
+
+		return view('admin.employee.editnew', compact(['project_details','usershifts','employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
     }
 
 	public function update(Request $request,$id)
@@ -325,6 +421,82 @@ class EmployeeController extends Controller
 
 		}
 		
+	}
+
+	public function updatenew(Request $request,$id)
+	{
+			try 
+			{   
+				$employee	= \App\Models\User::where('id',$id)->first();
+
+                $targetUser	= 'storage/uploads/employee/';
+				$image		= $request->file('image');    
+				if(!empty($image))
+				{				  
+					$headerImageName	=$image->getClientOriginalName();
+					$ext1				=$image->getClientOriginalExtension();				
+					$temp1				=explode(".",$headerImageName);				 
+					$newHeaderLogo		='image'.round(microtime(true)).".".end($temp1);				 
+					$headerTarget		=$targetUser.$newHeaderLogo;
+					$image->move($targetUser,$newHeaderLogo);
+				}
+				else
+				{
+					$headerTarget				  = '';
+				}
+
+				$target            		= 'storage/uploads/employee/';
+				$employeeId     		= $request->file('id_upload');                
+				if(!empty($employeeId))
+				{
+					$headerImageName	= $employeeId->getClientOriginalName();
+					$ext1				= $employeeId->getClientOriginalExtension();
+					$temp1				= explode(".",$headerImageName);					
+					$newHeaderLogo		= 'employee'.round(microtime(true)).".".end($temp1);				
+					$headerTarget		= 'storage/uploads/employee/'.$newHeaderLogo;
+					$employeeId->move($target,$newHeaderLogo);	
+				} 
+				else
+				{
+					$headerTarget				  = '';
+				}
+
+                //personal information
+                $employee->first_name 		  	  = $request['first_name'];
+				$employee->middle_name 		  	  = $request['middle_name'];
+				$employee->last_name 		  	  = $request['last_name'];
+				$employee->date_of_birth		  = $request['date_of_birth'];
+				$employee->place_of_birth 		  = $request['place_of_birth'];
+				$employee->nationality    		  = $request['nationality'];
+				$employee->current_address        = $request['current_address'];
+				$employee->country_id     		  = $request['country_id'];
+                $employee->state_id       		  = $request['state_id'];
+                $employee->city_id        		  = $request['city_id'];
+                $employee->id_type_id    	  	  = $request['id_type_id'];
+                $employee->id_reference     	  = $request['id_reference'];
+                $employee->id_upload	      	  = $headerTarget;
+                $employee->image	      		  = $headerTarget;
+                $employee->mobile 	      		  = $request['mobile'];
+                $employee->email 	      		  = $request['email'];
+                $employee->marital_status 		  = $request['marital_status'];
+                $employee->king_name 		      = $request['king_name'];
+                $employee->king_address 		  = $request['king_address'];
+                $employee->king_number 		      = $request['king_number'];
+                $employee->number_of_dependent 	  = $request['number_of_dependent'];
+                $employee->role_id 	      		  = '3';
+                //personal information
+
+                $employee->save();
+                
+				Session::flash('message', 'Employee updated Successfully!');
+				return back();
+			} 
+			catch (\Exception $e) 
+			{
+				$status 	= false;
+				$message 	= $e->getMessage();
+				return redirect('admin/employee/editnew/'.$id)->withInput($request->input())->withErrors(array('message' => $message));
+			}
 	}
 
     public function view(Request $request, $id='')
