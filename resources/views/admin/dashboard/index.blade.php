@@ -33,8 +33,9 @@
                             <img src="{{asset('assets/img/hrm.svg') }}">
                         </div>
                         <div class="col-12 text-center">
-                            <a href="{{ route('admin.manage.hrmportal') }}"><h2 class="m-b-0">HRM <br>Managment</h2></a>
+                            <!-- <a href="{{ route('admin.manage.hrmportal') }}"><h2 class="m-b-0">HRM <br>Managment</h2></a> -->
                             <!--<h6 class="text-muted m-b-10">Dealer</h6>-->
+                            <h2 class="m-b-0">HRM <br>Managment</h2>
                         </div>
                     </div>
                 </div>

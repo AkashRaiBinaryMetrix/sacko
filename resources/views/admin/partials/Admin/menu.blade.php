@@ -101,7 +101,7 @@
 					</li>
 	            </ul>
 	    	</li>
-	    	<li class="sidenav-item">
+	    <!-- 	<li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
 	            <i class="sidenav-icon feather icon-home"></i>
 	                <div>Fleet Management</div>
@@ -120,7 +120,7 @@
 						</a>
 					</li>
 	            </ul>
-	    	</li>
+	    	</li> -->
 	    	<li class="sidenav-item">
 	            <a href="javascript:" class="sidenav-link sidenav-toggle">
 	            <i class="sidenav-icon feather icon-home"></i>

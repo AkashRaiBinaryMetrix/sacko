@@ -122,6 +122,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::post('employee/updatenew/{slug?}',[EmployeeController::class, 'updatenew']);
 
+    Route::any('employee/deleteCertificate',[EmployeeController::class, 'deleteCertificate'])->name('deleteCertificate');
+    
+    Route::any('employee/deleteExperience',[EmployeeController::class, 'deleteExperience'])->name('deleteExperience');
+
     Route::post('employee/assignUpdate',[EmployeeController::class, 'assignUpdate']);
 	Route::get('employee/view/{slug?}',[EmployeeController::class, 'view']);
     Route::post('employee/delete',[EmployeeController::class, 'delete']);

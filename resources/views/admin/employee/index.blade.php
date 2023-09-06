@@ -61,8 +61,8 @@
 											<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 											<input type="checkbox" name="cb1" value="1" onClick="isValid(this.form)">  All
 										</th>
-										<th>@lang('message.employee_id')</th>
-										<th>@lang('message.employee_type')</th>
+										<!-- <th>@lang('message.employee_id')</th>
+										<th>@lang('message.employee_type')</th> -->
 										<th>@lang('message.employee_name')</th>
 										<th>@lang('message.email')</th>
 										<th>@lang('message.mobile')</th>
@@ -78,11 +78,11 @@
 										<th scope="col">
 											<input type="checkbox" class="check_box" name="mul_del[]" id="mul_del[]" value="{{ $val->id }}" />
 										</th>
-										<td>{{ $val->employee_id }}</td>
+										<!-- <td>{{ $val->employee_id }}</td>
 										<td>@if($val->employee_type=='0'){{'TL'}}
 											@elseif($val->employee_type=='1'){{'Manager'}}
 											@endif
-										</td>
+										</td> -->
 										<td>{{ $val->first_name. ' '.$val->middle_name. ' '.$val->last_name }}</td>
 										<td>{{ $val->email }}</td>
 										<td>{{ $val->mobile }}</td>
@@ -101,9 +101,9 @@
 											<a data-size="lg"  class="btn btn-icon btn-outline-success" data-toggle="tooltip" title="Edit" href="{{ url('admin/employee/editnew',$val->id) }}">
 												<i class="feather icon-edit"></i>
 											</a>
-											<a data-size="lg"  class="btn btn-icon btn-outline-primary" data-toggle="tooltip" title="View" href="{{ url('admin/employee/view',$val->id) }}">
+										<!-- 	<a data-size="lg"  class="btn btn-icon btn-outline-primary" data-toggle="tooltip" title="View" href="{{ url('admin/employee/view',$val->id) }}">
 												<i class="feather icon-eye"></i>
-											</a>
+											</a> -->
 										</td>
 									</tr>
 									@endforeach
