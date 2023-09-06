@@ -310,7 +310,10 @@ class EmployeeController extends Controller
 		$project_details = DB::table('projects')->get();
 		$usershifts = DB::table('usershifts')->get();
 
-		return view('admin.employee.editnew', compact(['project_details','usershifts','employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name']));
+		$certifcatesData = DB::table('certifcates')->where('user_id','=',$id)->get();
+		$expData = DB::table('exp')->where('user_id','=',$id)->get();
+
+		return view('admin.employee.editnew', compact(['project_details','usershifts','employee', 'countries', 'state_name', 'city_name', 'states', 'cities', 'department', 'idType', 'category', 'sub_category_name','hierarchy_name','certifcatesData','expData']));
     }
 
 	public function update(Request $request,$id)
@@ -461,6 +464,22 @@ class EmployeeController extends Controller
 					$headerTarget				  = '';
 				}
 
+				$target            		= 'storage/uploads/work_cv/';
+				$work_cv     		= $request->file('work_cv');                
+				if(!empty($work_cv))
+				{
+					$headerImageName	= $work_cv->getClientOriginalName();
+					$ext1				= $work_cv->getClientOriginalExtension();
+					$temp1				= explode(".",$headerImageName);					
+					$newHeaderLogo		= 'work_cv'.round(microtime(true)).".".end($temp1);				
+					$headerTarget		= 'storage/uploads/work_cv/'.$newHeaderLogo;
+					$work_cv->move($target,$newHeaderLogo);	
+				} 
+				else
+				{
+					$headerTarget				  = '';
+				}
+
                 //personal information
                 $employee->first_name 		  	  = $request['first_name'];
 				$employee->middle_name 		  	  = $request['middle_name'];
@@ -486,8 +505,99 @@ class EmployeeController extends Controller
                 $employee->role_id 	      		  = '3';
                 //personal information
 
+                //educational information
+                $employee->professional_type 	  = $request['professional_type'];
+                $employee->work_cv	      		  = $headerTarget;
+                //educational information
+
+                //assignment
+                $employee->project_id             = $request["project_id"];
+                $employee->department_id    	  = $request['department_id'];
+                $employee->category_id    	  	  = $request['category_id'];
+				$employee->sub_category_id    	  = $request['sub_category_id'];
+			    $employee->group_type 			  = $request["group_type"];
+			    $employee->work_schedule		  = $request["work_schedule"];
+			    $employee->date_of_hiring     	  = $request['date_of_hiring'];
+			    $employee->employment_date 		  = $request['employment_date'];
+			    $employee->contract      		  = $request['contract'];
+			    $employee->contract_start_date 	  = $request['contract_start_date'];
+			    $employee->contract_end_date 	  = $request['contract_end_date'];
+			    $employee->assigned_role 		  = $request['assigned_role'];
+			    $employee->hierarchy_name    	  = $request['hierarchy_name'];
+			    $employee->ASSIGNED_ENRROLMENT_MARTICULE	= $request['ASSIGNED_ENRROLMENT_MARTICULE'];
+                //assignment
+
+                //activation
+                $employee->login_required    	  = $request['login_required'];
+                $employee->password	      		  = bcrypt($request['login_password']);
+                $employee->login_username	      = $request['login_username'];
+                $employee->role_id                = $request['login_role'];
+                $employee->user_type 			  = $request['user_type'];
+                //activation
+
                 $employee->save();
-                
+
+                //document and certificates
+                $document_type = $request['document_type'];
+                $atttain_from = $request['atttain_from'];
+                $atttain_from_file = $request['atttain_from_file'];
+
+                if(!empty($document_type)){
+	                foreach ($document_type as $key => $val) {
+	                 	$fdocument_type = $document_type[$key];
+	                	$fatttain_from = $atttain_from[$key];
+	                	$fatttain_from_file = $atttain_from_file[$key];
+
+	                	$target            		= 'storage/uploads/certificates/';
+						if(!empty($fatttain_from_file))
+						{
+							$headerImageName	= $fatttain_from_file->getClientOriginalName();
+							$ext1				= $fatttain_from_file->getClientOriginalExtension();
+							$temp1				= explode(".",$headerImageName);					
+							$newHeaderLogo		= 'fatttain_from_file'.round(microtime(true)).".".end($temp1);				
+							$headerTarget		= 'storage/uploads/work_cv/'.$newHeaderLogo;
+							$fatttain_from_file->move($target,$newHeaderLogo);	
+						} 
+						else
+						{
+							$headerTarget				  = '';
+						}
+
+	                	DB::table('certifcates')->insert([
+						   'user_id' => $id,
+						   'certi_name' => $fdocument_type,
+						   'org_name'=> $fatttain_from,
+						   'docu_name'=>$headerTarget
+						]);
+	                 }
+             	}
+
+             	//roles and experience
+             	$r_role_name = $request['r_role_name'];
+                $r_role_function = $request['r_role_function'];
+                $r_role_company = $request['r_role_company'];
+                $r_role_startdate = $request['r_role_startdate'];
+                $r_role_enddate = $request['r_role_enddate'];
+
+                if(!empty($r_role_name)){
+	                foreach ($r_role_name as $key => $val) {
+	                 	$fr_role_name = $r_role_name[$key];
+		                $fr_role_function = $r_role_function[$key];
+		                $fr_role_company = $r_role_company[$key];
+		                $fr_role_startdate = $r_role_startdate[$key];
+		                $fr_role_enddate = $r_role_enddate[$key];
+
+	                	DB::table('exp')->insert([
+						   'user_id' 	  	   => $id,
+						   'fr_role_name' 	   => $fr_role_name, 
+						   'fr_role_function'  => $fr_role_function,
+						   'fr_role_company'   => $fr_role_company,
+						   'fr_role_startdate' => $fr_role_startdate, 
+						   'fr_role_enddate'   => $fr_role_enddate
+						]);
+	                 }
+             	}
+
 				Session::flash('message', 'Employee updated Successfully!');
 				return back();
 			} 
@@ -960,5 +1070,17 @@ class EmployeeController extends Controller
     	DB::table('secondry_bonus')
         ->where('id', $id)  // find your user by their email
         ->update(array('status' => $status));  // update the record in the DB. 
+    }
+
+    public function deleteCertificate(Request $request){
+    	$id = $request->id;
+
+    	DB::table('certifcates')->delete($id);
+    }
+
+    public function deleteExperience(Request $request){
+    	$id = $request->id;
+
+    	DB::table('exp')->delete($id);
     }
 }
