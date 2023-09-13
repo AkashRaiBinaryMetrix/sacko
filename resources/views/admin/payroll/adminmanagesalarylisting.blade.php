@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="feather icon-home"></i></a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.menu.index') }}">Module</a></li>
-            <li class="breadcrumb-item active">Payroll Management / Holiday Listing</li>
+            <li class="breadcrumb-item active">Payroll Management / Advance Payment Listing</li>
         </ol>
     </div>
     <div class="row">
@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                        	<h6 class="card-header" style="color:blue;">Holiday Listing</Details></h6>
+                        	<h6 class="card-header" style="color:blue;">Advance Payment Listing</Details></h6>
                        		<div class="card-body" style="position: relative; overflow: auto">
 								<div class="form-row">
 								<table id="report-table" class="table table-bordered table-striped mb-0">
@@ -43,14 +43,8 @@
 										<th>@lang('message.employee_name')</th>
 										<th>@lang('message.employee_id')</th>
 										<th>@lang('message.Project_Id')</th>
-<!-- 										<th>@lang('message.Proposed_Salary')</th>
- -->										<th>@lang('message.Local_Currency')</th>
-<!-- 										<th>@lang('message.Employee_Rate')</th>
- -->										<th>@lang('message.Monthly_Hour')</th>
-										<th>@lang('message.Hourly_Rate')</th>
+									<th>@lang('message.Local_Currency')</th>
 										<th>@lang('message.Basic_Salary')</th>
-										<th>@lang('message.Primary_Bonus')</th>
-										<th>@lang('message.Prime_de')</th>
 										<th>@lang('message.action')</th>
 									</tr>
 								</thead>
@@ -70,18 +64,11 @@
 											@endphp
 											{{$projectName[0]->title}}
 										</td>
-<!-- 										<td>{{$result->proposed_salary}}</td>
- -->										<td>{{$result->currency}}</td>
-<!-- 										<td>{{$result->employee_rate}}</td>
- -->										<td>{{$result->monthly_hour}}</td>
-										<td>{{$result->hourly_hour}}</td>
+										<td>{{$result->currency}}</td>
 										<td>{{$result->basic_salary}}</td>
-										<td>{{$result->prime_sal}}</td>
-										<td>{{$result->prime_rent}}</td>
  									 	<td>
- 									 		<i class="feather icon-edit" title="Edit"></i>
- 									 		<i class="feather icon-delete" title="Active/In-Active"></i>
- 									 		<img title="Generate Payroll" src="https://cdn-icons-png.flaticon.com/512/337/337946.png" style="width:24px;height: 23px;">
+ 									 		<a href="{{url('admin/editadvancesalary')}}/{{$result->id}}"><i class="feather icon-edit" title="Edit"></i></a>
+ 									 		<img title="Generate Receipt" src="https://cdn-icons-png.flaticon.com/512/337/337946.png" style="width:24px;height: 23px;">
  									 	</td>
 									</tr>
 									@endforeach

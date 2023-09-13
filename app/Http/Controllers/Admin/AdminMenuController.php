@@ -194,7 +194,7 @@ class AdminMenuController extends Controller
         $day_work_hours = $request->day_work_hours;
         $Number_of_Shifts = $request->Number_of_Shifts;
  
-        DB::table('projects')->insert(
+        $project_id = DB::table('projects')->insertGetId(
              array(
                     'created_by'     => $id,
                     'title'          => $project_title,
@@ -222,9 +222,23 @@ class AdminMenuController extends Controller
              )
         );
 
+        //insert usershifts
+        $shift_name = $request->shift_name;
+        $shift_start_date = $request->shift_start_date;
+        $shift_end_date = $request->shift_end_date;
+
+        foreach( $shift_name as $index => $code ) {
+                    DB::table('usershifts')->insert(
+                     array(
+                            "project_id"        => $project_id,
+                            "shift_title"       => $shift_name[$index],
+                            "shift_start_time"  => $shift_start_date[$index],
+                            "shift_end_time"    => $shift_end_date[$index]
+                     )
+                );
+        }
+
          return view('admin.project.createproject', compact(['countries', 'states', 'cities','menus', 'datacountlists','parent_menus']));
-         
-        // return view('admin.project.createproject', compact(['menus', 'datacountlists','parent_menus']));
     }
 
     public function adminManageManageprojectlist(){
@@ -267,8 +281,8 @@ class AdminMenuController extends Controller
         $projectlist    = DB::table('projects')->where("id","=",$uid)->first();
 
         $countries         = \App\Models\Country::get(["name", "id"]);
-        $states         = \App\Models\State::where("country_id",$request->country_id)->get(["name", "id"]);
-        $cities         = \App\Models\City::where("state_id",$request->state_id)->get(["name", "id"]);
+        $states         = \App\Models\State::get(["name", "id"]);
+        $cities         = \App\Models\City::get(["name", "id"]);
 
         return view('admin.project.editproject', compact(['countries', 'states', 'cities','menus', 'datacountlists','parent_menus','projectlist']));
     }
@@ -552,7 +566,9 @@ class AdminMenuController extends Controller
                     'hourly_hour'                    => $request->hourly_hour,
                     'basic_salary'                   => $request->basic_salary,
                     'prime_sal'                      => $request->prime_sal,
-                    'prime_rent'                     => $request->prime_rent
+                    'prime_rent'                     => $request->prime_rent,
+                    'category_id'                    => $request->category_id,
+                    "sub_category_id"                => $request->sub_category_id
              )
         );
 
@@ -561,7 +577,32 @@ class AdminMenuController extends Controller
         return view('admin.payroll.adminmanagesalaryadmin', compact(['menus','parent_menus','categories','employeeList','projectList']));  
     }
 
-     public function adminManageManageSalaryListing(Request $request){
+    public function updateAdvancepayment(Request $request){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $sub_categories         = DB::table('sub_categories')->get();
+        $employeeList           = DB::table('users')->get();
+        $projectList            = DB::table('projects')->get();
+
+        $payment_id             = $request->payment_id;
+        $basic_salary           = $request->basic_salary;
+
+        //update data
+        DB::table('save_salary')
+        ->where('id', $payment_id)  // find your user by their email
+        ->update(array('basic_salary' => $request->basic_salary));  // update the record in the DB. 
+
+        $advance_payment_list   = DB::table('save_salary')
+                                    ->where("id","=",$payment_id)->get();
+
+        Session::flash('message', 'Record Successfully updated !');
+
+        return view('admin.payroll.adminmanagesalaryadminupdate', compact(['menus','parent_menus','categories','employeeList','projectList','advance_payment_list','sub_categories']));
+    }
+
+    public function advancePaymentListing(Request $request){
         $id = Auth::user()->id;
         $menus                  = AdminMenu::select('*')->paginate(10);
         $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
@@ -572,6 +613,38 @@ class AdminMenuController extends Controller
         $salaryList            = DB::table('save_salary')->get();
 
         return view('admin.payroll.adminmanagesalarylisting', compact(['menus','parent_menus','categories','employeeList','projectList','salaryList']));
+    }
+
+    public function editAdvancesalary(Request $request, $payment_id){
+        $id = Auth::user()->id;
+        $menus                  = AdminMenu::select('*')->paginate(10);
+        $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        $categories             = DB::table('categories')->get();
+        $sub_categories         = DB::table('sub_categories')->get();
+        $employeeList           = DB::table('users')->get();
+        $projectList            = DB::table('projects')->get();
+
+        $advance_payment_list   = DB::table('save_salary')
+                                    ->where("id","=",$payment_id)->get();
+
+        // echo "<pre>";
+        // print_r($advance_payment_list);
+        // exit;
+
+        return view('admin.payroll.adminmanagesalaryadminupdate', compact(['menus','parent_menus','categories','employeeList','projectList','advance_payment_list','sub_categories']));
+    }
+
+     public function adminManageManageSalaryListing(Request $request){
+        // $id = Auth::user()->id;
+        // $menus                  = AdminMenu::select('*')->paginate(10);
+        // $parent_menus           = AdminMenu::select('id','name')->where('parent_menu_id',0)->get();
+        // $categories             = DB::table('categories')->get();
+        // $employeeList           = DB::table('users')->where("role_id",3)->get();
+        // $projectList            = DB::table('projects')->get();
+
+        // $salaryList            = DB::table('save_salary')->get();
+
+        // return view('admin.payroll.adminmanagesalarylisting', compact(['menus','parent_menus','categories','employeeList','projectList','salaryList']));
     }
     
 } 

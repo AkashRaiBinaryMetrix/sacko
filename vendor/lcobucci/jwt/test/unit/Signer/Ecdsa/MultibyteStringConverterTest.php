@@ -1,15 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\JWT\Signer\Ecdsa;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+
+use function assert;
 use function bin2hex;
 use function hex2bin;
+use function is_string;
 use function strlen;
 
-/**
- * @coversDefaultClass \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
- */
+/** @coversDefaultClass \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter */
 final class MultibyteStringConverterTest extends TestCase
 {
     /**
@@ -21,12 +23,13 @@ final class MultibyteStringConverterTest extends TestCase
      * @covers ::preparePositiveInteger
      */
     public function toAsn1ShouldReturnThePointsInAnAsn1SequenceFormat(
-        $r,
-        $s,
-        $asn1
-    ) {
+        string $r,
+        string $s,
+        string $asn1
+    ): void {
         $converter = new MultibyteStringConverter();
         $message   = hex2bin($r . $s);
+        assert(is_string($message));
 
         self::assertSame($asn1, bin2hex($converter->toAsn1($message, strlen($r))));
     }
@@ -36,12 +39,14 @@ final class MultibyteStringConverterTest extends TestCase
      *
      * @covers ::toAsn1
      * @covers ::octetLength
+     * @covers \Lcobucci\JWT\Signer\Ecdsa\ConversionFailed
      */
-    public function toAsn1ShouldRaiseExceptionWhenPointsDoNotHaveCorrectLength()
+    public function toAsn1ShouldRaiseExceptionWhenPointsDoNotHaveCorrectLength(): void
     {
         $converter = new MultibyteStringConverter();
 
-        self::expectException(InvalidArgumentException::class);
+        $this->expectException(ConversionFailed::class);
+        $this->expectExceptionMessage('Invalid signature length');
         $converter->toAsn1('a very wrong string', 64);
     }
 
@@ -54,18 +59,17 @@ final class MultibyteStringConverterTest extends TestCase
      * @covers ::readAsn1Integer
      * @covers ::retrievePositiveInteger
      */
-    public function fromAsn1ShouldReturnTheConcatenatedPoints($r, $s, $asn1)
+    public function fromAsn1ShouldReturnTheConcatenatedPoints(string $r, string $s, string $asn1): void
     {
         $converter = new MultibyteStringConverter();
         $message   = hex2bin($asn1);
+        assert(is_string($message));
 
         self::assertSame($r . $s, bin2hex($converter->fromAsn1($message, strlen($r))));
     }
 
-    /**
-     * @return string[][]
-     */
-    public function pointsConversionData()
+    /** @return string[][] */
+    public function pointsConversionData(): iterable
     {
         return [
             [
@@ -101,27 +105,28 @@ final class MultibyteStringConverterTest extends TestCase
      * @covers ::readAsn1Content
      * @covers ::readAsn1Integer
      * @covers ::retrievePositiveInteger
+     * @covers \Lcobucci\JWT\Signer\Ecdsa\ConversionFailed
      */
-    public function fromAsn1ShouldRaiseExceptionOnInvalidMessage($message)
+    public function fromAsn1ShouldRaiseExceptionOnInvalidMessage(string $message, string $expectedMessage): void
     {
         $converter = new MultibyteStringConverter();
         $message   = hex2bin($message);
+        assert(is_string($message));
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ConversionFailed::class);
+        $this->expectExceptionMessage($expectedMessage);
         $converter->fromAsn1($message, 64);
     }
 
-    /**
-     * @return string[][]
-     */
-    public function invalidAsn1Structures()
+    /** @return string[][] */
+    public function invalidAsn1Structures(): iterable
     {
         return [
-            'Not a sequence'           => [''],
-            'Sequence without length'  => ['30'],
-            'Only one string element'  => ['3006030204f0'],
-            'Only one integer element' => ['3004020101'],
-            'Integer+string elements'  => ['300a020101030204f0'],
+            'Not a sequence'           => ['', 'Should start with a sequence'],
+            'Sequence without length'  => ['30', 'Should contain an integer'],
+            'Only one string element'  => ['3006030204f0', 'Should contain an integer'],
+            'Only one integer element' => ['3004020101', 'Should contain an integer'],
+            'Integer+string elements'  => ['300a020101030204f0', 'Should contain an integer'],
         ];
     }
 }

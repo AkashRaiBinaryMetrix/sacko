@@ -1,60 +1,80 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
+declare(strict_types=1);
 
 namespace Lcobucci\JWT\Signer\Ecdsa;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 2.1.0
- */
-class Sha384Test extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+use const OPENSSL_ALGO_SHA384;
+
+/** @coversDefaultClass \Lcobucci\JWT\Signer\Ecdsa\Sha384 */
+final class Sha384Test extends TestCase
 {
     /**
      * @test
      *
-     * @uses Lcobucci\JWT\Signer\Ecdsa
-     * @uses Lcobucci\JWT\Signer\OpenSSL
+     * @covers \Lcobucci\JWT\Signer\Ecdsa::create
+     * @covers \Lcobucci\JWT\Signer\Ecdsa::__construct
      *
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha384::getAlgorithmId
+     * @uses \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
      */
-    public function getAlgorithmIdMustBeCorrect()
+    public function createShouldReturnAValidInstance(): void
     {
-        $signer = new Sha384();
+        $signer = Sha384::create(); // @phpstan-ignore-line
 
-        $this->assertEquals('ES384', $signer->getAlgorithmId());
+        self::assertInstanceOf(Sha384::class, $signer);
     }
 
     /**
      * @test
      *
-     * @uses Lcobucci\JWT\Signer\Ecdsa
-     * @uses Lcobucci\JWT\Signer\OpenSSL
+     * @covers ::algorithmId
      *
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha384::getAlgorithm
+     * @uses \Lcobucci\JWT\Signer\Ecdsa
      */
-    public function getAlgorithmMustBeCorrect()
+    public function algorithmIdMustBeCorrect(): void
     {
-        $signer = new Sha384();
-
-        $this->assertEquals('sha384', $signer->getAlgorithm());
+        self::assertSame('ES384', $this->getSigner()->algorithmId());
     }
 
     /**
      * @test
      *
-     * @uses Lcobucci\JWT\Signer\Ecdsa
-     * @uses Lcobucci\JWT\Signer\OpenSSL
+     * @covers ::algorithm
      *
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha384::getKeyLength
+     * @uses \Lcobucci\JWT\Signer\Ecdsa
      */
-    public function getKeyLengthMustBeCorrect()
+    public function algorithmMustBeCorrect(): void
     {
-        $signer = new Sha384();
+        self::assertSame(OPENSSL_ALGO_SHA384, $this->getSigner()->algorithm());
+    }
 
-        $this->assertEquals(96, $signer->getKeyLength());
+    /**
+     * @test
+     *
+     * @covers ::pointLength
+     *
+     * @uses \Lcobucci\JWT\Signer\Ecdsa
+     */
+    public function keyLengthMustBeCorrect(): void
+    {
+        self::assertSame(96, $this->getSigner()->pointLength());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::expectedKeyLength
+     *
+     * @uses \Lcobucci\JWT\Signer\Ecdsa::__construct
+     */
+    public function expectedKeyLengthMustBeCorrect(): void
+    {
+        self::assertSame(384, $this->getSigner()->expectedKeyLength());
+    }
+
+    private function getSigner(): Sha384
+    {
+        return new Sha384($this->createMock(SignatureConverter::class));
     }
 }
