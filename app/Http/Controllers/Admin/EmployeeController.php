@@ -258,6 +258,7 @@ class EmployeeController extends Controller
                 $employee->king_number 		      = $request['king_number'];
                 $employee->number_of_dependent 	  = $request['number_of_dependent'];
                 $employee->role_id 	      		  = '3';
+                $employee->status 	      		  = '1';
                 //personal information
 
                 $employee->save();
@@ -656,18 +657,28 @@ class EmployeeController extends Controller
         // 						->where('employee_type', '!=', '1')
         // 						->get();
 
-        $data['subCategory'] =  DB::table('users')
-			->select('users.shift_id','usershifts.id','usershifts.shift_title')
-			->join('usershifts','usershifts.id','=','users.shift_id')
-			->where('users.category_id', '=', $request->category_id)
-        	->where('users.sub_category_id', '=', $request->subcategory_id)
-        	//->where('users.group_type', '=', $request->group_id)
-        	->where('users.employee_type', '!=', '1')
-        	->groupBy('usershifts.id')
-        	->groupBy('users.shift_id')
-        	->groupBy('usershifts.shift_title')
-        	->get(['usershifts.id','usershifts.shift_title']);
+   //      $data['subCategory'] =  DB::table('users')
+			// ->select('users.shift_id','usershifts.id','usershifts.shift_title')
+			// ->join('usershifts','usershifts.id','=','users.shift_id')
+			// ->where('users.category_id', '=', $request->category_id)
+   //      	->where('users.sub_category_id', '=', $request->subcategory_id)
+   //      	//->where('users.group_type', '=', $request->group_id)
+   //      	->where('users.employee_type', '!=', '1')
+   //      	->groupBy('usershifts.id')
+   //      	->groupBy('users.shift_id')
+   //      	->groupBy('usershifts.shift_title')
+   //      	->get(['usershifts.id','usershifts.shift_title']);
 
+    	$category_id    = $request->category_id;
+    	$subcategory_id = $request->subcategory_id;
+    	$project_id     = $request->project_id;
+
+    	$data['subCategory'] =  DB::table('users')
+			->select('users.*')
+			->where('users.category_id', '=', $category_id)
+        	->where('users.sub_category_id', '=', $subcategory_id)
+        	->where('users.project_id', '=', $project_id)
+        	->get();
 
         return response()->json($data);
     }

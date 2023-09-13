@@ -35,17 +35,18 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-general">
-                    	<form role="form" action="{{ route('admin.manage.savesalary') }}" method="POST" enctype="multipart/form-data"> 
+                    	<form role="form" action="{{ route('admin.manage.updateadvancepayment') }}" method="POST" enctype="multipart/form-data"> 
                         	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        	<input type="hidden" name="payment_id" value="{{$advance_payment_list[0]->id}}">
                         	<h6 class="card-header" style="color:blue;">Manage Advance Salary</Details></h6>
                        		<div class="card-body">
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Project Id</label>
-										<select class="form-control mb-1"  name="project_id" id="datepicker">
+										<select disabled class="form-control mb-1"  name="project_id" id="datepicker">
 											<option>Select</option>
 											@foreach($projectList as $result)
-												<option value="{{$result->id}}">{{$result->title}}</option>
+												<option value="{{$result->id}}" {{ $result->id == $advance_payment_list[0]->project_id ? 'selected' : '' }}>{{$result->title}}</option>
 											@endforeach
 										</select>
 										@if($errors->has('date_select'))
@@ -55,11 +56,11 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Category</label>
-											<select id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
+											<select disabled id="category-dropdown" class="form-control select2 select2-accessible" name="category_id" >                       
 											<option value='' selected >Select</option>
 											@if ($categories->count())
 												@foreach($categories as $val)
-													<option value='{{$val->id}}' @if(old('category_id')==$val->id){{'selected="true"'}}@endif>{{$val->name}}</option>  
+	<option value='{{$val->id}}' {{ $val->id == $advance_payment_list[0]->category_id ? 'selected' : '' }}>{{$val->name}}</option>  
 												@endforeach 
 											@endif             
 										</select>
@@ -71,7 +72,11 @@
 
 									<div class="form-group col-md-6">
 											<label class="form-label">@lang('message.subcategory_title')<span class="text-danger">*</span></label>
-											<select id="sub-dropdown" class="form-control" name="sub_category_id">
+											<select disabled id="sub-dropdown" class="form-control" name="sub_category_id">
+												<option value='' selected >Select</option>
+												@foreach($sub_categories as $val)
+	<option value='{{$val->id}}' {{ $val->id == $advance_payment_list[0]->sub_category_id ? 'selected' : '' }}>{{$val->name}}</option>  
+												@endforeach 
 										    </select>
 											@if($errors->has('state_id'))
 	                                        <div class="text-danger">{{ $errors->first('state_id') }}</div>
@@ -81,7 +86,11 @@
 
 									<div class="form-group col-md-6">
 											<label class="form-label">Employee Name<span class="text-danger">*</span></label>
-											<select id="employee_name_fill" class="form-control" name="employee_name_fill">
+											<select disabled id="employee_name_fill" class="form-control" name="employee_name_fill">
+												<option value='' selected >Select</option>
+												@foreach($employeeList as $val)
+	<option value='{{$val->id}}' {{ $val->id == $advance_payment_list[0]->emp_id ? 'selected' : '' }}>{{$val->first_name}} {{$val->last_name}}</option>  
+												@endforeach 
 										    </select>
 											<div class="clearfix"></div>
 									</div>
@@ -96,8 +105,8 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Local Currency</label>
-										<select class="form-control mb-1" name="currency" id="datepicker">
-											<option value="GNF">GNF</option>
+										<select disabled class="form-control mb-1" name="currency" id="datepicker">
+											<option value="GNF" selected>GNF</option>
 										</select>
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
@@ -130,7 +139,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Payment(GNF)</label>
-										<input type="text" class="form-control mb-1"  name="basic_salary" id="datepicker"/>
+										<input  type="text" class="form-control mb-1"  name="basic_salary" id="datepicker" value="{{$advance_payment_list[0]->basic_salary}}" />
 										@if($errors->has('date_select'))
                                         <div class="text-danger">{{ $errors->first('date_select') }}</div>
                                         @endif
@@ -155,7 +164,7 @@
 								</div>
 							</div>
 							<div class="text-right mt-3">
-									<button type="submit" name="btnSubmit" class="btn btn-primary">Save</button>
+									<button type="submit" name="btnSubmit" class="btn btn-primary">Update</button>
 									&nbsp;
 									<a href="{{ route('admin.menu.index') }}" class="btn btn-default">Cancel</a>
 							</div>

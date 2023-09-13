@@ -1,311 +1,221 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
+declare(strict_types=1);
 
 namespace Lcobucci\JWT\FunctionalTests;
 
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\Signature;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Keys;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Ecdsa\Sha512;
-use Lcobucci\JWT\Signer\Keychain;
-use Lcobucci\JWT\Keys;
+use Lcobucci\JWT\Signer\InvalidKeyProvided;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use PHPUnit\Framework\TestCase;
+
+use function assert;
+
+use const PHP_EOL;
 
 /**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 2.1.0
+ * @covers \Lcobucci\JWT\Configuration
+ * @covers \Lcobucci\JWT\Encoding\JoseEncoder
+ * @covers \Lcobucci\JWT\Encoding\ChainedFormatter
+ * @covers \Lcobucci\JWT\Encoding\MicrosecondBasedDateConversion
+ * @covers \Lcobucci\JWT\Encoding\UnifyAudience
+ * @covers \Lcobucci\JWT\Token\Builder
+ * @covers \Lcobucci\JWT\Token\Parser
+ * @covers \Lcobucci\JWT\Token\Plain
+ * @covers \Lcobucci\JWT\Token\DataSet
+ * @covers \Lcobucci\JWT\Token\Signature
+ * @covers \Lcobucci\JWT\Signer\Key\LocalFileReference
+ * @covers \Lcobucci\JWT\Signer\Key\InMemory
+ * @covers \Lcobucci\JWT\Signer\Ecdsa
+ * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
+ * @covers \Lcobucci\JWT\Signer\Ecdsa\Sha256
+ * @covers \Lcobucci\JWT\Signer\Ecdsa\Sha512
+ * @covers \Lcobucci\JWT\Signer\InvalidKeyProvided
+ * @covers \Lcobucci\JWT\Signer\OpenSSL
+ * @covers \Lcobucci\JWT\SodiumBase64Polyfill
+ * @covers \Lcobucci\JWT\Validation\Validator
+ * @covers \Lcobucci\JWT\Validation\ConstraintViolation
+ * @covers \Lcobucci\JWT\Validation\Constraint\SignedWith
+ * @covers \Lcobucci\JWT\Validation\RequiredConstraintsViolated
  */
-class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
+class EcdsaTokenTest extends TestCase
 {
     use Keys;
 
-    /**
-     * @var Sha256
-     */
-    private $signer;
+    private Configuration $config;
 
-    /**
-     * @before
-     */
-    public function createSigner()
+    /** @before */
+    public function createConfiguration(): void
     {
-        $this->signer = new Sha256();
+        $this->config = Configuration::forAsymmetricSigner(
+            new Sha256(),
+            static::$ecdsaKeys['private'],
+            static::$ecdsaKeys['public1']
+        );
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \InvalidArgumentException
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
-     */
-    public function builderShouldRaiseExceptionWhenKeyIsInvalid()
+    /** @test */
+    public function builderShouldRaiseExceptionWhenKeyIsInvalid(): void
     {
-        $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
+        $builder = $this->config->builder();
 
-        (new Builder())->setId(1)
-                       ->setAudience('http://client.abc.com')
-                       ->setIssuer('http://api.abc.com')
-                       ->set('user', $user)
-                       ->getToken($this->signer, new Key('testing'));
+        $this->expectException(InvalidKeyProvided::class);
+        $this->expectExceptionMessage('It was not possible to parse your key, reason:');
+
+        $builder->identifiedBy('1')
+                ->permittedFor('http://client.abc.com')
+                ->issuedBy('http://api.abc.com')
+                ->withClaim('user', ['name' => 'testing', 'email' => 'testing@abc.com'])
+                ->getToken($this->config->signer(), InMemory::plainText('testing'));
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \InvalidArgumentException
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
-     */
-    public function builderShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible()
+    /** @test */
+    public function builderShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible(): void
     {
-        $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
+        $builder = $this->config->builder();
 
-        (new Builder())->setId(1)
-                       ->setAudience('http://client.abc.com')
-                       ->setIssuer('http://api.abc.com')
-                       ->set('user', $user)
-                       ->getToken($this->signer, static::$rsaKeys['private']);
+        $this->expectException(InvalidKeyProvided::class);
+        $this->expectExceptionMessage('The type of the provided key is not "EC", "RSA" provided');
+
+        $builder->identifiedBy('1')
+                ->permittedFor('http://client.abc.com')
+                ->issuedBy('http://api.abc.com')
+                ->withClaim('user', ['name' => 'testing', 'email' => 'testing@abc.com'])
+                ->getToken($this->config->signer(), static::$rsaKeys['private']);
     }
 
-    /**
-     * @test
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
-     */
-    public function builderCanGenerateAToken()
+    /** @test */
+    public function builderCanGenerateAToken(): Token
     {
-        $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
+        $user    = ['name' => 'testing', 'email' => 'testing@abc.com'];
+        $builder = $this->config->builder();
 
-        $token = (new Builder())->setId(1)
-                              ->setAudience('http://client.abc.com')
-                              ->setIssuer('http://api.abc.com')
-                              ->set('user', $user)
-                              ->setHeader('jki', '1234')
-                              ->sign($this->signer, static::$ecdsaKeys['private'])
-                              ->getToken();
+        $token = $builder->identifiedBy('1')
+                         ->permittedFor('http://client.abc.com')
+                         ->permittedFor('http://client2.abc.com')
+                         ->issuedBy('http://api.abc.com')
+                         ->withClaim('user', $user)
+                         ->withHeader('jki', '1234')
+                         ->getToken($this->config->signer(), $this->config->signingKey());
 
-        $this->assertAttributeInstanceOf(Signature::class, 'signature', $token);
-        $this->assertEquals('1234', $token->getHeader('jki'));
-        $this->assertEquals('http://client.abc.com', $token->getClaim('aud'));
-        $this->assertEquals('http://api.abc.com', $token->getClaim('iss'));
-        $this->assertEquals($user, $token->getClaim('user'));
+        self::assertEquals('1234', $token->headers()->get('jki'));
+        self::assertEquals('http://api.abc.com', $token->claims()->get(Token\RegisteredClaims::ISSUER));
+        self::assertEquals($user, $token->claims()->get('user'));
+
+        self::assertEquals(
+            ['http://client.abc.com', 'http://client2.abc.com'],
+            $token->claims()->get(Token\RegisteredClaims::AUDIENCE)
+        );
 
         return $token;
     }
 
     /**
      * @test
-     *
      * @depends builderCanGenerateAToken
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Parsing\Decoder
-     * @covers Lcobucci\JWT\Signer\Ecdsa
      */
-    public function parserCanReadAToken(Token $generated)
+    public function parserCanReadAToken(Token $generated): void
     {
-        $read = (new Parser())->parse((string) $generated);
+        $read = $this->config->parser()->parse($generated->toString());
+        assert($read instanceof Token\Plain);
 
-        $this->assertEquals($generated, $read);
-        $this->assertEquals('testing', $read->getClaim('user')->name);
+        self::assertEquals($generated, $read);
+        self::assertEquals('testing', $read->claims()->get('user')['name']);
     }
 
     /**
      * @test
-     *
      * @depends builderCanGenerateAToken
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
      */
-    public function verifyShouldReturnFalseWhenKeyIsNotRight(Token $token)
+    public function signatureAssertionShouldRaiseExceptionWhenKeyIsNotRight(Token $token): void
     {
-        $this->assertFalse($token->verify($this->signer, static::$ecdsaKeys['public2']));
+        $this->expectException(RequiredConstraintsViolated::class);
+        $this->expectExceptionMessage('The token violates some mandatory constraints');
+
+        $this->config->validator()->assert(
+            $token,
+            new SignedWith(
+                $this->config->signer(),
+                self::$ecdsaKeys['public2']
+            )
+        );
     }
 
     /**
      * @test
-     *
      * @depends builderCanGenerateAToken
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha512
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
      */
-    public function verifyShouldReturnFalseWhenAlgorithmIsDifferent(Token $token)
+    public function signatureAssertionShouldRaiseExceptionWhenAlgorithmIsDifferent(Token $token): void
     {
-        $this->assertFalse($token->verify(new Sha512(), static::$ecdsaKeys['public1']));
+        $this->expectException(RequiredConstraintsViolated::class);
+        $this->expectExceptionMessage('The token violates some mandatory constraints');
+
+        $this->config->validator()->assert(
+            $token,
+            new SignedWith(
+                new Sha512(),
+                self::$ecdsaKeys['public1']
+            )
+        );
     }
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
-     *
      * @depends builderCanGenerateAToken
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
      */
-    public function verifyShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible(Token $token)
+    public function signatureAssertionShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible(Token $token): void
     {
-        $this->assertFalse($token->verify($this->signer, static::$rsaKeys['public']));
+        $this->expectException(InvalidKeyProvided::class);
+        $this->expectExceptionMessage('The type of the provided key is not "EC", "RSA" provided');
+
+        $this->config->validator()->assert(
+            $token,
+            new SignedWith($this->config->signer(), self::$rsaKeys['public'])
+        );
     }
 
     /**
      * @test
-     *
      * @depends builderCanGenerateAToken
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
      */
-    public function verifyShouldReturnTrueWhenKeyIsRight(Token $token)
+    public function signatureValidationShouldSucceedWhenKeyIsRight(Token $token): void
     {
-        $this->assertTrue($token->verify($this->signer, static::$ecdsaKeys['public1']));
+        $constraint = new SignedWith(
+            $this->config->signer(),
+            $this->config->verificationKey()
+        );
+
+        self::assertTrue($this->config->validator()->validate($token, $constraint));
     }
 
-    /**
-     * @test
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha256
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
-     */
-    public function everythingShouldWorkWithAKeyWithParams()
+    /** @test */
+    public function everythingShouldWorkWithAKeyWithParams(): void
     {
-        $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
+        $builder = $this->config->builder();
+        $signer  = $this->config->signer();
 
-        $token = (new Builder())->setId(1)
-                                ->setAudience('http://client.abc.com')
-                                ->setIssuer('http://api.abc.com')
-                                ->set('user', $user)
-                                ->setHeader('jki', '1234')
-                                ->sign($this->signer, static::$ecdsaKeys['private-params'])
-                                ->getToken();
+        $token = $builder->identifiedBy('1')
+                         ->permittedFor('http://client.abc.com')
+                         ->issuedBy('http://api.abc.com')
+                         ->withClaim('user', ['name' => 'testing', 'email' => 'testing@abc.com'])
+                         ->withHeader('jki', '1234')
+                         ->getToken($signer, static::$ecdsaKeys['private-params']);
 
-        $this->assertTrue($token->verify($this->signer, static::$ecdsaKeys['public-params']));
+        $constraint = new SignedWith(
+            $this->config->signer(),
+            static::$ecdsaKeys['public-params']
+        );
+
+        self::assertTrue($this->config->validator()->validate($token, $constraint));
     }
 
-    /**
-     * @test
-     *
-     * @covers Lcobucci\JWT\Builder
-     * @covers Lcobucci\JWT\Parser
-     * @covers Lcobucci\JWT\Token
-     * @covers Lcobucci\JWT\Signature
-     * @covers Lcobucci\JWT\Signer\Key
-     * @covers Lcobucci\JWT\Signer\BaseSigner
-     * @covers Lcobucci\JWT\Signer\Ecdsa
-     * @covers \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter
-     * @covers Lcobucci\JWT\Signer\Ecdsa\Sha512
-     * @covers \Lcobucci\JWT\Signer\OpenSSL
-     * @covers Lcobucci\JWT\Signer\Keychain
-     * @covers Lcobucci\JWT\Claim\Factory
-     * @covers Lcobucci\JWT\Claim\Basic
-     * @covers Lcobucci\JWT\Parsing\Encoder
-     * @covers Lcobucci\JWT\Parsing\Decoder
-     */
-    public function everythingShouldWorkWhenUsingATokenGeneratedByOtherLibs()
+    /** @test */
+    public function everythingShouldWorkWhenUsingATokenGeneratedByOtherLibs(): void
     {
         $data = 'eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJoZWxsbyI6IndvcmxkIn0.'
                 . 'AQx1MqdTni6KuzfOoedg2-7NUiwe-b88SWbdmviz40GTwrM0Mybp1i1tVtm'
@@ -319,10 +229,11 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
                . 'mZudf1zCUZ8/4eodlHU=' . PHP_EOL
                . '-----END PUBLIC KEY-----';
 
-        $keychain = new Keychain();
-        $token = (new Parser())->parse((string) $data);
+        $token = $this->config->parser()->parse($data);
+        assert($token instanceof Token\Plain);
+        $constraint = new SignedWith(new Sha512(), InMemory::plainText($key));
 
-        $this->assertEquals('world', $token->getClaim('hello'));
-        $this->assertTrue($token->verify(new Sha512(), $keychain->getPublicKey($key)));
+        self::assertTrue($this->config->validator()->validate($token, $constraint));
+        self::assertEquals('world', $token->claims()->get('hello'));
     }
 }

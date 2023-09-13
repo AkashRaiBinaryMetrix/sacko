@@ -1,39 +1,46 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
+declare(strict_types=1);
 
 namespace Lcobucci\JWT\Signer\Hmac;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 0.1.0
- */
-class Sha384Test extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+/** @coversDefaultClass \Lcobucci\JWT\Signer\Hmac\Sha384 */
+final class Sha384Test extends TestCase
 {
     /**
      * @test
      *
-     * @covers Lcobucci\JWT\Signer\Hmac\Sha384::getAlgorithmId
+     * @covers ::algorithmId
      */
-    public function getAlgorithmIdMustBeCorrect()
+    public function algorithmIdMustBeCorrect(): void
     {
         $signer = new Sha384();
 
-        $this->assertEquals('HS384', $signer->getAlgorithmId());
+        self::assertEquals('HS384', $signer->algorithmId());
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\JWT\Signer\Hmac\Sha384::getAlgorithm
+     * @covers ::algorithm
      */
-    public function getAlgorithmMustBeCorrect()
+    public function algorithmMustBeCorrect(): void
     {
         $signer = new Sha384();
 
-        $this->assertEquals('sha384', $signer->getAlgorithm());
+        self::assertEquals('sha384', $signer->algorithm());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::minimumBitsLengthForKey
+     */
+    public function minimumBitsLengthForKeyMustBeCorrect(): void
+    {
+        $signer = new Sha384();
+
+        self::assertSame(384, $signer->minimumBitsLengthForKey());
     }
 }

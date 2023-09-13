@@ -50,11 +50,11 @@
 										<label class="form-label">Type</label>
 										<select class="form-control mb-1" required name="project_type">
 											<option value="">Select</option>
-											<option value="Long-Haul Mining">Long-Haul Mining</option>
-											<option value="Long-Highway haul">Long-Highway haul</option>
-											<option value="Short-Haul-Mining">Short-Haul-Mining</option>
-											<option value="Short-Haul-Highways">Short-Haul-Highways</option>
-											<option value="Rehandle">Rehandle</option>
+											<option value="Long-Haul Mining" {{ ( $projectlist->type == "Long-Haul Mining") ? "selected" : "" }}>Long-Haul Mining</option>
+											<option value="Long-Highway haul" {{ ( $projectlist->type == "Long-Highway haul") ? "selected" : "" }}>Long-Highway haul</option>
+											<option value="Short-Haul-Mining" {{ ( $projectlist->type == "Short-Haul-Mining") ? "selected" : "" }}>Short-Haul-Mining</option>
+											<option value="Short-Haul-Highways" {{ ( $projectlist->type == "Short-Haul-Highways") ? "selected" : "" }}>Short-Haul-Highways</option>
+											<option value="Rehandle" {{ ( $projectlist->type == "Rehandle") ? "selected" : "" }}>Rehandle</option>
 										</select>
 										@if($errors->has('project_type'))
                                         <div class="text-danger">{{ $errors->first('project_type') }}</div>
@@ -63,7 +63,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Distance</label>
-										<input type="text" class="form-control mb-1" required name="distance" value="{{old('distance')}}">
+										<input type="text" class="form-control mb-1" required name="distance" value="{{$projectlist->distance}}">
 										@if($errors->has('distance'))
                                         <div class="text-danger">{{ $errors->first('distance') }}</div>
                                         @endif
@@ -73,12 +73,12 @@
 										<label class="form-label">Material/Product</label>
 										<select class="form-control mb-1" required name="material">
 											<option value="">Select</option>
-											<option value="Gold">Gold</option>
-											<option value="Iron Ore">Iron Ore</option>
-											<option value="Bauxite">Bauxite</option>
-											<option value="Zinc">Zinc</option>
-											<option value="Laterite">Laterite</option>
-											<option value="Cosmetic">Cosmetic</option>
+											<option value="Gold" {{ ( $projectlist->material == "Gold") ? "selected" : "" }}>Gold</option>
+											<option value="Iron Ore" {{ ( $projectlist->material == "Iron Ore") ? "selected" : "" }}>Iron Ore</option>
+											<option value="Bauxite" {{ ( $projectlist->material == "Bauxite") ? "selected" : "" }}>Bauxite</option>
+											<option value="Zinc" {{ ( $projectlist->material == "Zinc") ? "selected" : "" }}>Zinc</option>
+											<option value="Laterite" {{ ( $projectlist->material == "Laterite") ? "selected" : "" }}>Laterite</option>
+											<option value="Cosmetic" {{ ( $projectlist->material == "Cosmetic") ? "selected" : "" }}>Cosmetic</option>
 										</select>
 										@if($errors->has('material'))
                                         <div class="text-danger">{{ $errors->first('material') }}</div>
@@ -105,7 +105,7 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Point A</label>
-										<input type="text" class="form-control mb-1" required name="pointA" value="{{old('pointA')}}">
+										<input type="text" class="form-control mb-1" required name="pointA" value="{{$projectlist->pointA}}">
 										@if($errors->has('pointA'))
                                         <div class="text-danger">{{ $errors->first('pointA') }}</div>
                                         @endif
@@ -113,7 +113,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Point B</label>
-										<input type="text" class="form-control mb-1" required name="pointB" value="{{old('pointB')}}">
+										<input type="text" class="form-control mb-1" required name="pointB" value="{{$projectlist->pointB}}">
 										@if($errors->has('pointB'))
                                         <div class="text-danger">{{ $errors->first('pointB') }}</div>
                                         @endif
@@ -123,7 +123,7 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Loading Point</label>
-										<input type="text" class="form-control mb-1" required name="loading_point" value="{{old('loading_point')}}">
+										<input type="text" class="form-control mb-1" required name="loading_point" value="{{$projectlist->loading_point}}">
 										@if($errors->has('loading_point'))
                                         <div class="text-danger">{{ $errors->first('loading_point') }}</div>
                                         @endif
@@ -131,7 +131,7 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label class="form-label">Dumping Point</label>
-										<input type="text" class="form-control mb-1" required name="dumping_point" value="{{old('dumping_point')}}">
+										<input type="text" class="form-control mb-1" required name="dumping_point" value="{{$projectlist->dumping_point}}">
 										@if($errors->has('dumping_point'))
                                         <div class="text-danger">{{ $errors->first('dumping_point') }}</div>
                                         @endif
@@ -141,7 +141,7 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label class="form-label">Project Duration</label>
-										<input type="text" class="form-control mb-1" required name="project_duration" value="{{old('project_duration')}}">
+										<input type="text" class="form-control mb-1" required name="project_duration" value="{{$projectlist->project_duration}}">
 										@if($errors->has('project_duration'))
                                         <div class="text-danger">{{ $errors->first('project_duration') }}</div>
                                         @endif
@@ -156,12 +156,12 @@
 											<label class="form-label">Material</label>
 											<select class="form-control mb-1" required name="material2">
 												<option value="">Select</option>
-												<option value="Gold">Gold</option>
-												<option value="Iron Ore">Iron Ore</option>
-												<option value="Bauxite">Bauxite</option>
-												<option value="Zinc">Zinc</option>
-												<option value="Laterite">Laterite</option>
-												<option value="Cosmetic">Cosmetic</option>
+												<option value="Gold" {{ ( $projectlist->material2 == "Gold") ? "selected" : "" }}>Gold</option>
+												<option value="Iron Ore" {{ ( $projectlist->material2 == "Iron Ore") ? "selected" : "" }}>Iron Ore</option>
+												<option value="Bauxite" {{ ( $projectlist->material2 == "Bauxite") ? "selected" : "" }}>Bauxite</option>
+												<option value="Zinc" {{ ( $projectlist->material2 == "Zinc") ? "selected" : "" }}>Zinc</option>
+												<option value="Laterite" {{ ( $projectlist->material2 == "Laterite") ? "selected" : "" }}>Laterite</option>
+												<option value="Cosmetic" {{ ( $projectlist->material2 == "Cosmetic") ? "selected" : "" }}>Cosmetic</option>
 											</select>
 											@if($errors->has('material2'))
 	                                        <div class="text-danger">{{ $errors->first('material2') }}</div>
@@ -170,7 +170,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label class="form-label">Emperical density</label>
-											<input type="text" class="form-control mb-1" name="emperical_density" value="{{old('emperical_density')}}">
+											<input type="text" class="form-control mb-1" name="emperical_density" value="{{$projectlist->emperical_density}}">
 											@if($errors->has('emperical_density'))
 	                                        <div class="text-danger">{{ $errors->first('emperical_density') }}</div>
 	                                        @endif
@@ -178,7 +178,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label class="form-label">Lab density</label>
-											<input type="text" class="form-control mb-1" name="lab_density" value="{{old('lab_density')}}">
+											<input type="text" class="form-control mb-1" name="lab_density" value="{{$projectlist->lab_density}}">
 											@if($errors->has('lab_density'))
 	                                        <div class="text-danger">{{ $errors->first('lab_density') }}</div>
 	                                        @endif
@@ -193,13 +193,13 @@
 												<label class="form-label">Country</label>
 												<!-- <input type="text" class="form-control mb-1" required name="Country" value="{{old('Country')}}"> -->
 												<select id="country-dropdown" name="Country" class="form-control">
-											<option value="">Select</option>
-											@if ($countries->count())
-												@foreach ($countries as $country)
-													<option value="{{ $country->id }}">{{ $country->name }}</option>
-												@endforeach
-											@endif
-										</select>
+													<option value="">Select</option>
+													@if ($countries->count())
+														@foreach ($countries as $country)
+															<option value="{{ $country->id }}" {{ ( $projectlist->Country == $country->id) ? "selected" : "" }}>{{ $country->name }}</option>
+														@endforeach
+													@endif
+												</select>
 												@if($errors->has('Country'))
 		                                        <div class="text-danger">{{ $errors->first('Country') }}</div>
 		                                        @endif
@@ -209,7 +209,13 @@
 												<label class="form-label">State</label>
 												<!-- <input type="text" class="form-control mb-1" required name="City" value="{{old('City')}}"> -->
 												<select id="state-dropdown" name="State" class="form-control">
-										</select>
+													<option value="">Select</option>
+													@if ($states->count())
+														@foreach ($states as $state)
+															<option value="{{ $state->id }}" {{ ( $projectlist->State == $state->id) ? "selected" : "" }}>{{ $state->name }}</option>
+														@endforeach
+													@endif
+												</select>
 										@if($errors->has('state_id'))
                                         <div class="text-danger">{{ $errors->first('state_id') }}</div>
                                         @endif
@@ -218,8 +224,14 @@
 										<div class="form-group col-md-4">
 												<label class="form-label">City</label>
 												<!-- <input type="text" class="form-control mb-1" required name="City" value="{{old('City')}}"> -->
-												<select id="city-dropdown" name="City" class="form-control">				 
-									  </select>
+												<select id="city-dropdown" name="City" class="form-control">	
+												    <option value="">Select</option>
+													@if ($cities->count())
+														@foreach ($cities as $city)
+															<option value="{{ $city->id }}" {{ ( $projectlist->City == $city->id) ? "selected" : "" }}>{{ $city->name }}</option>
+														@endforeach
+													@endif			 
+									  			</select>
 												@if($errors->has('City'))
 		                                        <div class="text-danger">{{ $errors->first('City') }}</div>
 		                                        @endif
@@ -227,7 +239,7 @@
 										</div>
 										<div class="form-group col-md-6">
 												<label class="form-label">Site Name</label>
-												<input type="text" class="form-control mb-1" required name="site_name" value="{{old('site_name')}}">
+												<input type="text" class="form-control mb-1" required name="site_name" value="{{$projectlist->site_name}}">
 												@if($errors->has('site_name'))
 		                                        <div class="text-danger">{{ $errors->first('site_name') }}</div>
 		                                        @endif
@@ -235,7 +247,7 @@
 										</div>
 										<div class="form-group col-md-6">
 												<label class="form-label">Site Manager</label>
-												<input type="text" class="form-control mb-1" required name="site_manager" value="{{old('site_manager')}}">
+												<input type="text" class="form-control mb-1" required name="site_manager" value="{{$projectlist->site_manager}}">
 												@if($errors->has('site_manager'))
 		                                        <div class="text-danger">{{ $errors->first('site_manager') }}</div>
 		                                        @endif
@@ -243,7 +255,7 @@
 										</div>
 										<div class="form-group col-md-6">
 												<label class="form-label">Project Manager</label>
-												<input type="text" class="form-control mb-1" required name="Project_Manager" value="{{old('Project_Manager')}}">
+												<input type="text" class="form-control mb-1" required name="Project_Manager" value="{{$projectlist->Project_Manager}}">
 												@if($errors->has('Project_Manager'))
 		                                        <div class="text-danger">{{ $errors->first('Project_Manager') }}</div>
 		                                        @endif
@@ -256,7 +268,7 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 												<label class="form-label">Day Work Hours</label>
-												<input type="text" class="form-control mb-1" required name="day_work_hours" value="{{old('day_work_hours')}}">
+												<input type="text" class="form-control mb-1" required name="day_work_hours" value="{{$projectlist->day_work_hours}}">
 												@if($errors->has('day_work_hours'))
 		                                        <div class="text-danger">{{ $errors->first('day_work_hours') }}</div>
 		                                        @endif
@@ -264,7 +276,7 @@
 										</div>
 										<div class="form-group col-md-6">
 												<label class="form-label">Number of Shifts</label>
-												<input type="text" class="form-control mb-1" required name="Number_of_Shifts" value="{{old('Number_of_Shifts')}}">
+												<input type="text" class="form-control mb-1" required name="Number_of_Shifts" value="{{$projectlist->Number_of_Shifts}}">
 												@if($errors->has('Number_of_Shifts'))
 		                                        <div class="text-danger">{{ $errors->first('Number_of_Shifts') }}</div>
 		                                        @endif

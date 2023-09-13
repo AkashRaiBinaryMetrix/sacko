@@ -133,7 +133,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('fetch-cities',[EmployeeController::class, 'fetchCity'])->name('admin.employee.fetchCity');
     Route::get('employee/export',[EmployeeController::class,'exportemployee'])->name('admin.employee.exportemployee');
     Route::post('subcategory-by-category', [EmployeeController::class, 'getSubCategory']);
+    
     Route::post('group-by-category-subcat', [EmployeeController::class, 'getGroupSubCategory']);
+
+    Route::get('editadvancesalary/{slug?}', [AdminMenuController::class, 'editAdvancesalary']);
+
     Route::post('shift-group-by-category-subcat', [EmployeeController::class, 'shiftGetGroupSubCategory']);
     Route::post('employee-by-hierarchy', [EmployeeController::class, 'getHierarchy']);
     Route::get('employee-apply-leave',[EmployeeController::class, 'employeeApplyLeave'])->name('admin.employee.applyleave');
@@ -178,7 +182,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
       Route::get('admin-manage-advancepayment',[AdminMenuController::class, 'manageAdvancepaymentPage'])->name('admin.manage.advancepayment');
 
+      Route::get('admin-manage-advancepaymentlisting',[AdminMenuController::class, 'advancePaymentListing'])->name('admin.manage.advancepaymentlisting');
+
      Route::post('admin-manage-savesalary',[AdminMenuController::class, 'adminManageSaveSalaryAdmin'])->name('admin.manage.savesalary');
+
+      Route::post('admin-manage-updateadvancepayment',[AdminMenuController::class, 'updateAdvancePayment'])->name('admin.manage.updateadvancepayment');
 
 Route::any('editholidaylist/{id}',[AdminMenuController::class, 'editHolidayList']);
 

@@ -24,7 +24,7 @@
 		@if(is_object(getMenu(Auth::user()->role_id)))
 		@foreach(getMenu(Auth::user()->role_id) as $val)
 		@php
-			if($val->name != "Attendance Management"){
+			if($val->name != "Attendance Management" && $val->name != "User Management" && $val->name != "Module"){
 		@endphp
 		<li class="sidenav-item">
             <a href="javascript:" class="sidenav-link sidenav-toggle">
@@ -155,6 +155,11 @@
 	                <li class="sidenav-item">
 	                    <a href="{{ route('admin.manage.advancepayment') }}" class="sidenav-link">
 	                        <div>Advance Payment</div>
+	                    </a>
+	                </li>
+	                <li class="sidenav-item">
+	                    <a href="{{ route('admin.manage.advancepaymentlisting') }}" class="sidenav-link">
+	                        <div>Advance Payment Listing</div>
 	                    </a>
 	                </li>
 	                <li class="sidenav-item">
